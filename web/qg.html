@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Quartel-General</title>
+  <link rel="icon" href="data:,">
+  <link rel="stylesheet" href="css/fonts.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/map.css">
+  <link rel="stylesheet" href="css/calc.css">
+  <link rel="stylesheet" href="css/qg.css">
+</head>
+<body class="desk qg" data-status="loading">
+  <a class="sr-only" href="#folder">Ir ao conteúdo</a>
+
+  <!-- ============ timbre: a folha de papel timbrada da nação ============ -->
+  <header class="timbre paper" id="timbre">
+    <div class="timbre__id">
+      <div class="seal" id="seal" aria-hidden="true"></div>
+      <div class="timbre__names">
+        <h1 class="stencil" id="t-name">Quartel-General</h1>
+        <p class="typed timbre__cap" id="t-cap">Capital: —</p>
+      </div>
+    </div>
+
+    <div class="ledger-tags" id="ledger" aria-label="Estoques e tropas"></div>
+
+    <div class="moral" id="moral" aria-label="Moral"></div>
+
+    <div class="turnbox" id="turnbox">
+      <div class="turnbox__top">
+        <span class="stamp stamp--olive" id="phase">CONECTANDO</span>
+        <span class="caps" id="t-turn">Turno —</span>
+      </div>
+      <b class="clockface mono" id="clock" aria-live="off" aria-label="Tempo restante">--:--</b>
+    </div>
+
+    <div class="timbre__ctrl">
+      <span class="conn" id="conn" data-s="connecting">Conectando…</span>
+      <div class="btn-row">
+        <button class="btn btn--small" id="b-boletim" type="button">Boletim</button>
+        <button class="btn btn--small" id="b-arquivo" type="button" aria-expanded="false" aria-controls="archive">Arquivo</button>
+        <button class="btn btn--small" id="b-som" type="button">Som</button>
+        <button class="btn btn--small btn--stamp" id="b-sair" type="button">Sair</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ============ a pasta de papel pardo com as quatro seções ============ -->
+  <main class="qg-main">
+    <nav class="folder" aria-label="Seções do Quartel-General">
+      <div class="folder__tabs" role="tablist" id="tabs" aria-label="Seções">
+        <button class="folder__tab" role="tab" type="button" id="tab-intendencia" aria-controls="sec-intendencia">Intendência</button>
+        <button class="folder__tab" role="tab" type="button" id="tab-operacoes" aria-controls="sec-operacoes">Operações</button>
+        <button class="folder__tab" role="tab" type="button" id="tab-inteligencia" aria-controls="sec-inteligencia">Inteligência</button>
+        <button class="folder__tab" role="tab" type="button" id="tab-governo" aria-controls="sec-governo">Governo</button>
+      </div>
+      <div class="folder__body" id="folder">
+        <div class="sec" role="tabpanel" id="sec-intendencia" aria-labelledby="tab-intendencia" hidden></div>
+        <div class="sec" role="tabpanel" id="sec-operacoes" aria-labelledby="tab-operacoes" hidden></div>
+        <div class="sec" role="tabpanel" id="sec-inteligencia" aria-labelledby="tab-inteligencia" hidden></div>
+        <div class="sec" role="tabpanel" id="sec-governo" aria-labelledby="tab-governo" hidden></div>
+      </div>
+    </nav>
+  </main>
+
+  <!-- ============ objetos sobrepostos ============ -->
+  <aside class="archive paper hidden" id="archive" aria-label="Arquivo de telegramas"></aside>
+  <div class="veil hidden" id="veil"></div>
+  <section class="boletim paper hidden" id="boletim" role="dialog" aria-modal="true" aria-labelledby="boletim-title" tabindex="-1"></section>
+  <div class="dispatch-stack" id="dispatches" aria-live="polite"></div>
+
+  <!-- ============ gaveta inferior: a Mesa de Cálculo traz a própria alça ============ -->
+  <div id="calc-drawer"></div>
+
+  <div class="qg-loading" id="loading" role="status">
+    <div class="stamp stamp--double" id="loading-stamp">Carregando</div>
+    <p class="typed" id="loading-note">Abrindo o Quartel-General…</p>
+  </div>
+
+  <script type="module" src="js/qg.js"></script>
+</body>
+</html>

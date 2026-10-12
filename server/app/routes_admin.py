@@ -11,6 +11,7 @@ from fastapi.responses import JSONResponse
 
 from app.auth import require_admin, set_session
 from app.config import settings
+from app import persistence
 from app.persistence import load_turn_archive
 
 router = APIRouter()
@@ -104,6 +105,7 @@ async def admin_new_game(request: Request):
     app = request.app
     async with app.state.lock:
         app.state.game = app.state.new_game(**params)
+        persistence.clear_turn_archives()
         await app.state.commit([_state_event()])
     return {"ok": True}
 
