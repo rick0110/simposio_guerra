@@ -28,7 +28,7 @@ export const CIPHER_CRIB = "URGENTE ";
 const nfCache = new Map();
 function nf(max, min) {
   const key = `${max}|${min}`;
-  if (!nfCache.has(key)) nfCache.set(key, new Intl.NumberFormat("pt-BR", { minimumFractionDigits: min, maximumFractionDigits: max }));
+  if (!nfCache.has(key)) nfCache.set(key, new Intl.NumberFormat("pt-BR", { minimumFractionDigits: min, maximumFractionDigits: max, useGrouping: false }));
   return nfCache.get(key);
 }
 /** fmt(21.5) -> "21,5"; fmt(3.14159, 2) -> "3,14"; null/NaN -> "—" */

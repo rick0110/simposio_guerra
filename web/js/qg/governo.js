@@ -148,6 +148,10 @@ export function mountGoverno(root, ctx) {
       h("p", { class: "caps faint" }, "Pactos de não agressão"),
       pactList));
 
+  // padrões do regulamento: ração normal e jornada de 8 horas
+  orderBody.querySelector('input[name="gov-racao"][value="0"]').checked = true;
+  orderBody.querySelector('input[name="gov-horas"][value="8"]').checked = true;
+
   const sheet = orderSheet({
     ctx, section: "governo", body: orderBody,
     getPayload: () => {
