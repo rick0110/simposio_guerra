@@ -559,8 +559,10 @@ class Game:
                     "reward": None}
         if res["status"] == "wrong":
             st["attempts_left"] -= 1
-            msg = res["message"] + (f" Restam {st['attempts_left']} tentativa(s)." if st["attempts_left"]
-                                    else " Sem mais tentativas.")
+            left = st["attempts_left"]
+            msg = res["message"] + (
+                (" Resta 1 tentativa." if left == 1 else f" Restam {left} tentativas.") if left
+                else " Sem mais tentativas.")
             return {"correct": False, "message": msg, "attempts_left": st["attempts_left"], "reward": None}
         st["solved"] = True
         f.challenges_solved += 1

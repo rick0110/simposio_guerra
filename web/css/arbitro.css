@@ -90,7 +90,7 @@ body.arbitro {
 /* ------------------------------------------------------------- layout */
 .layout {
   display: grid;
-  grid-template-columns: 330px minmax(0, 1fr) 430px;
+  grid-template-columns: 300px minmax(0, 1fr) 390px;
   gap: 12px;
   align-items: stretch;
 }
@@ -305,7 +305,7 @@ body.arbitro {
 
 /* ----------------------------------------------------- gaveta (pasta) */
 .drawer { margin-top: 36px; }
-.drawer__body { min-height: 240px; max-height: 420px; overflow: auto; padding: 18px 20px 16px; }
+.drawer__body { min-height: 240px; max-height: 420px; overflow: auto; padding: 18px 20px 16px; color: var(--ink); }
 .drawer .folder__tab { font-size: 14px; padding: 9px 14px 8px; }
 .drawer .folder__tab.is-active { padding-bottom: 12px; }
 .tab-panel { min-height: 0; }
@@ -482,3 +482,8 @@ body.arbitro {
 @media (prefers-reduced-motion: reduce) {
   .lamp--red.is-blink i { animation: none; }
 }
+
+/* endereço editável nas credenciais */
+.cred-addr { flex: 1 1 100%; max-width: 640px; }
+.cred-addr label { color: var(--paper-2); font-size: 13px; }
+.cred-addr input { font-family: var(--f-mono); font-size: 16px; }

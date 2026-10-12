@@ -5,7 +5,7 @@
    diplomática (telegramas entre Governos).
    ===================================================================== */
 import {
-  h, fmt, parseNum, svgEl, RES, RES_NAMES, stampEl, telegramEl, listBox,
+  h, fmt, parseNum, svgEl, RES, RES_NAMES, plural, stampEl, telegramEl, listBox,
   dossierPaper, challengeBox, orderSheet,
 } from "./common.js";
 import { emblemSVG } from "../emblems.js";
@@ -33,6 +33,7 @@ export function mountGoverno(root, ctx) {
   let fid = null;
   let factionKey = "";
   let busyMsg = false;
+  let dossierShown;
 
   /* ------------------------------------------------------------ política */
   const radioGroup = (name, opts, label) => opts.map((o) => {
@@ -53,7 +54,7 @@ export function mountGoverno(root, ctx) {
     const st = ctx.state();
     const acoStock = st ? Number(st.faction.stock.ACO) || 0 : 0;
     const p = Number(propRange.value);
-    propHint.textContent = `Propaganda custa 1 ACO por ponto (${p} ponto(s) = ${p} ACO). Estoque de Aço: ${fmt(acoStock)}.`;
+    propHint.textContent = `Propaganda custa 1 ACO por ponto (${plural(p, "ponto", "pontos")} = ${p} ACO). Estoque de Aço: ${fmt(acoStock)}.`;
   }
 
   /* transferências: linhas dinâmicas */
@@ -270,7 +271,10 @@ export function mountGoverno(root, ctx) {
   function update() {
     const d = ctx.dossier("governo");
     const st = ctx.state();
-    dossierSlot.replaceChildren(dossierPaper(d, { ctx, section: "governo" }));
+    if (d !== dossierShown) {      // refaz a folha só quando chega dossiê novo (não perde a rolagem das tabelas)
+      dossierShown = d;
+      dossierSlot.replaceChildren(dossierPaper(d, { ctx, section: "governo" }));
+    }
     chal.update(d ? d.challenges : []);
     if (!st) return;
     fid = st.faction.id;

@@ -130,6 +130,8 @@ Isso é importante: a pasta de turnos guarda os arquivos de todas as partidas an
 
 No painel, IMPRIMIR CREDENCIAIS lista, para cada nação, a sigla, o nome e a senha. Imprima uma folha por sala, com a sigla, o nome, a senha e o endereço do servidor. Entregue cada folha à sala antes do início. Guarde uma cópia com o árbitro.
 
+Se você abriu o painel por `localhost`, as folhas saem com esse endereço. Antes de imprimir, troque-o no campo **Endereço impresso nas folhas** pelo IP do PC servidor (por exemplo `http://192.168.0.25:8000`); as folhas se atualizam na hora.
+
 Pelo endpoint, depois de entrar como árbitro: `GET /api/admin/credentials` devolve o dicionário `{sigla: senha}`.
 
 ---

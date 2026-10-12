@@ -583,6 +583,10 @@ A **Mesa de Cálculo** fica na gaveta da tela do QG. Ela tem as ferramentas abai
 | Regressão | as observações (ou o CSV), a lista das variáveis explicativas e o alvo | os coeficientes e o R² |
 | Lanchester | A0, B0, α, β e T | o vencedor, os sobreviventes e a trajetória |
 
+**Da Mesa para o questionário.** Cada resultado vai para a **fita de resultados**, à direita da gaveta. Nos resultados que respondem ao questionário da sua seção (o x do Leontief, a probabilidade de tempestade do Markov, a posição ou a quadrícula da Triangulação e o coeficiente da propaganda da Regressão), a fita traz o botão **usar no questionário**: ele escreve a resposta, já no formato pedido, no campo certo, fecha a gaveta e deixa tudo pronto para você conferir e enviar. O botão **copiar** continua valendo para levar números a outro lugar.
+
+**Mapa de Operações.** Use a roda do mouse para aproximar, arraste para mover a carta e dê duplo clique (ou clique em **Enquadrar**) para ver o continente inteiro. Os botões **+** e **−** fazem o mesmo.
+
 **Para quem prefere programar:** o arquivo `tools/toolkit.py` tem as mesmas funções em Python, usando só NumPy. Coloque o arquivo na pasta do seu script e importe as funções. Ele também sabe ler os CSVs baixados do jogo.
 
 ---

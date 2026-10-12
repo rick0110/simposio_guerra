@@ -9,6 +9,17 @@ mostra o teatro de operações. As regras completas estão em [docs/DESIGN.md](d
 O jogo roda num **PC servidor**. Os outros computadores da mesma rede (Wi-Fi ou cabo) acessam o jogo
 pelo navegador. Não é preciso instalar nada nos computadores das equipes.
 
+## Capturas
+
+Imagens de uma partida real (4 nações, jogada pela interface). As demais estão em [docs/capturas/](docs/capturas/).
+
+| | |
+|---|---|
+| ![Teatro de Operações durante uma batalha](docs/capturas/teatro_batalha.jpg) | ![Quartel-General, seção Operações](docs/capturas/qg_operacoes.jpg) |
+| **Teatro de Operações** (projetor): o comunicado de campanha acompanha a batalha | **Operações**: carta com névoa de guerra, ordens de marcha por clique e zoom |
+| ![Mesa de Cálculo com resultados](docs/capturas/mesa_calculo.jpg) | ![Mesa do Árbitro](docs/capturas/arbitro.jpg) |
+| **Mesa de Cálculo**: a fita de resultados leva a resposta direto ao questionário | **Árbitro**: relógio, nações, diário e ferramentas |
+
 ## Como rodar no PC servidor
 
 1. **Instale o Docker.**
