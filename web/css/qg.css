@@ -129,13 +129,21 @@ body.qg {
 .sec--operacoes {
   grid-template-columns: minmax(0, 1.6fr) minmax(330px, 1fr);
   grid-template-areas:
-    "map side"
-    "dossier chal";
+    "map order"
+    "battle chal"
+    "dossier dossier";
 }
 .sec--operacoes > .area-map { grid-area: map; }
-.sec--operacoes > .area-side { grid-area: side; display: grid; gap: 22px; align-content: start; }
+.sec--operacoes > .area-side { grid-area: order; display: grid; gap: 22px; align-content: start; }
+.sec--operacoes > .area-battle { grid-area: battle; }
 .sec--operacoes > .area-dossier { grid-area: dossier; }
 .sec--operacoes > .area-chal { grid-area: chal; }
+.chal__input {
+  background: rgba(255, 252, 240, .55); border: 1.5px solid var(--ink-soft);
+  padding: 7px 9px; font-size: 18px;
+}
+.chal__input:focus { border-color: var(--stamp-blue); background: rgba(255, 252, 240, .8); }
+.ds .ledger-wrap:has(tbody tr:nth-child(13)) { max-height: 330px; overflow-y: auto; }
 
 .sec--inteligencia > .area-dossier,
 .sec--inteligencia > .area-side { display: grid; gap: 22px; align-content: start; }

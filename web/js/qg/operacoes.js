@@ -118,7 +118,8 @@ export function mountOperacoes(root, ctx) {
 
   root.replaceChildren(
     h("div", { class: "area-map" }, mapSheet),
-    h("div", { class: "area-side" }, sheet.el, battle),
+    h("div", { class: "area-side" }, sheet.el),
+    h("div", { class: "area-battle" }, battle),
     h("div", { class: "area-dossier" }, dossierSlot),
     h("div", { class: "area-chal" }, chal.el));
 
