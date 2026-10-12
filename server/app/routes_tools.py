@@ -119,7 +119,7 @@ ID_COLUMNS = {"obs", "id", "observacao", "observação", "linha", "provincia", "
 
 
 def _parse_csv(text: str) -> tuple[list[dict], list[str]]:
-    text = text.lstrip("\ufeff")  # CSV baixado do jogo vem com BOM UTF-8
+    text = text.lstrip(chr(0xFEFF))  # CSV baixado do jogo vem com BOM UTF-8
     lines = [ln for ln in text.splitlines() if ln.strip()]
     if len(lines) < 2:
         raise ValueError("O CSV precisa de cabeçalho e ao menos uma linha de dados")
