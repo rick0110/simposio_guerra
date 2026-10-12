@@ -145,12 +145,24 @@ function sec(title, expl, go, ...kids) {
   return el;
 }
 
+/** Seção de resultado: vai para a coluna lateral do painel. */
+function outSec(out) {
+  const el = sec("Resultado", null, null, out);
+  el.classList.add("calc-sec--out");
+  return el;
+}
+
+/** Painel: entradas à esquerda; seções de resultado (calc-sec--out) à direita, quando existirem. */
 function panelEl(tool, title, expl, ...kids) {
-  return h("article", { class: "calc-panel", "data-tool": tool, hidden: true },
+  const flat = kids.flat(Infinity).filter(Boolean);
+  const side = flat.filter((k) => k.classList && k.classList.contains("calc-sec--out"));
+  const main = flat.filter((k) => !side.includes(k));
+  return h("article", { class: `calc-panel${side.length ? "" : " calc-panel--single"}`, "data-tool": tool, hidden: true },
     h("header", { class: "calc-panel__head" },
       h("h2", { class: "calc-panel__title stencil" }, title),
       h("p", { class: "calc-panel__expl typed" }, expl)),
-    ...kids);
+    h("div", { class: "calc-panel__main" }, main),
+    side.length ? h("div", { class: "calc-panel__side" }, side) : null);
 }
 
 /* ------------------------------------------------------------ números e texto */
@@ -195,7 +207,7 @@ function parseNum(raw) {
  * Separador: tab, depois ponto e vírgula, depois vírgula; sem nenhum, espaços.
  */
 function splitTable(text) {
-  const lines = String(text).replace(/\r/g, "").split("\n").filter((l) => l.trim() !== "");
+  const lines = String(text).replace(/^\uFEFF/, "").replace(/\r/g, "").split("\n").filter((l) => l.trim() !== "");
   const sep = lines.some((l) => l.includes("\t")) ? "\t"
     : lines.some((l) => l.includes(";")) ? ";"
       : lines.some((l) => l.includes(",")) ? ","
@@ -290,7 +302,7 @@ function matrixEditor(o = {}) {
       if (labeled) kids.push(h("span", { class: "calc-ed__lbl" }, o.rowLabel(i, R)));
       for (let j = 0; j < C; j++) kids.push(cell(i, j));
     }
-    const cols = `${labeled ? "max-content " : ""}repeat(${C}, minmax(0, 1fr))`;
+    const cols = `${labeled ? "max-content " : ""}repeat(${C}, minmax(60px, 104px))`;
     mx.replaceChildren(h("div", { class: "calc-ed__grid", style: `grid-template-columns:${cols}` }, kids));
   }
 
@@ -465,8 +477,7 @@ function valueBlock(label, v, kind, opts = {}) {
     return block(label, vecNode(v, { labels, complex }), lines, items.join("\n"), use);
   }
   const txt = v.map((row) => row.map((x) => fmtCell(x, complex)));
-  const pad = " ".repeat(label.length + 3);
-  const lines = txt.map((r, i) => (i === 0 ? `${label} = ` : pad) + "[ " + r.join("  ") + " ]");
+  const lines = [`${label}:`, ...txt.map((r) => "[ " + r.join("  ") + " ]")];
   return block(label, matNode(v, { complex, rowLabels, colLabels }), lines, txt.map((r) => r.join("\t")).join("\n"), use);
 }
 
@@ -746,7 +757,7 @@ function matrixPanel(ctx) {
       sec("Dados", null, run1.go,
         h("div", { class: "calc-cols" }, A.el, h("div", { class: "calc-stack" }, B.el, b.el, kField)),
         h("div", { class: "calc-actions" }, run1.el)),
-      sec("Resultado", null, null, out)),
+      outSec(out)),
     prefill(p) {
       if (p.op && OPS.some((o) => o[0] === p.op)) sel.value = p.op;
       if (p.A) A.setNumbers(p.A);
@@ -879,7 +890,7 @@ function leontiefPanel(ctx) {
       sec("Demanda e produção", "d: demanda final, para obter x necessário. x: produção bruta, para obter a produção líquida (I − A)·x e a mão de obra L·x.", run1.go,
         h("div", { class: "calc-cols" }, d.el, x.el, L.el),
         h("div", { class: "calc-actions" }, run1.el)),
-      sec("Resultado", null, null, out)),
+      outSec(out)),
     prefill(p) {
       if (p.Z) Z.setNumbers(p.Z);
       if (p.X) X.setNumbers(p.X);
@@ -962,7 +973,7 @@ function markovPanel(ctx) {
       sec("Previsão", "Distribuição após k passos, a partir do estado atual: linha de P^k.", run1.go,
         h("div", { class: "calc-cols" }, field("estado atual", stateSel), field("passos k", kIn)),
         h("div", { class: "calc-actions" }, run1.el)),
-      sec("Resultado", null, null, out)),
+      outSec(out)),
     prefill(p) {
       if (p.sequence) seqTA.value = p.sequence.join(", ");
       if (p.P) P.setNumbers(p.P);
@@ -1035,7 +1046,7 @@ function trilaterPanel(ctx) {
         h("details", { class: "calc-paste" }, h("summary", {}, "colar leituras do Excel ou CSV"), readings, applyReadings)),
       sec("Posição", null, run1.go,
         h("div", { class: "calc-actions" }, run1.el)),
-      sec("Resultado", null, null, out)),
+      outSec(out)),
     prefill(p) {
       if (!Array.isArray(p.stations) || !Array.isArray(p.distances)) throw calcErr("Prefill de triangulação: informe stations e distances.");
       rows = p.stations.map((s, i) => ({ x: fInput(s[0]), y: fInput(s[1]), d: fInput(p.distances[i]) }));
@@ -1135,7 +1146,7 @@ function regressionPanel(ctx) {
           h("div", {}, h("span", { class: "calc-field__lbl" }, "alvo (y)"), targetBox),
           h("div", {}, h("span", { class: "calc-field__lbl" }, "explicativas (x)"), featBox)),
         h("div", { class: "calc-actions" }, run1.el)),
-      sec("Resultado", null, null, out)),
+      outSec(out)),
     prefill(p) {
       let d;
       if (Array.isArray(p.rows)) d = dataFromRows(p.rows);
@@ -1191,7 +1202,7 @@ function lanchesterPanel(ctx) {
       sec("Parâmetros", null, run1.go,
         h("div", { class: "calc-cols calc-cols--5" }, ...Object.keys(LABELS).map((k) => field(LABELS[k], inputs[k]))),
         h("div", { class: "calc-actions" }, run1.el)),
-      sec("Resultado", null, null, out)),
+      outSec(out)),
     prefill(p) {
       for (const k of Object.keys(LABELS)) {
         if (p[k] !== undefined && p[k] !== null) inputs[k].value = fInput(Number(p[k]));
