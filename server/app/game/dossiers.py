@@ -51,8 +51,9 @@ def _to_float(token: str) -> float | None:
 def parse_numbers(text: str, n: int, example: str = "") -> list[float]:
     """Extrai exatamente `n` números; aceita vírgula decimal e separadores flexíveis (; espaço, quebra de linha)."""
     s = str(text or "").strip()
+    what = "um número" if n == 1 else f"{n} números separados por ponto e vírgula"
     if not s:
-        raise ValueError(f"Resposta vazia. Esperava {n} número(s) separado(s) por ponto e vírgula{example}.")
+        raise ValueError(f"Resposta vazia. Esperava {what}{example}.")
     s = re.sub(r"[\(\)\[\]\{\}]", " ", s)
     s = re.sub(r"\s+%", "%", s)
     if ";" in s or "\n" in s:
@@ -71,12 +72,12 @@ def parse_numbers(text: str, n: int, example: str = "") -> list[float]:
         v = _to_float(t)
         if v is None:
             raise ValueError(
-                f"Não entendi o valor «{t}». Esperava {n} número(s) separado(s) por ponto e vírgula{example} "
+                f"Não entendi o valor «{t}». Esperava {what}{example} "
                 "(vírgula decimal é aceita, ex.: 1,25).")
         values.append(v)
     if len(values) != n:
         raise ValueError(
-            f"Esperava {n} número(s) separado(s) por ponto e vírgula{example}, mas recebi {len(values)}.")
+            f"Esperava {what}{example}, mas recebi {len(values)}.")
     return values
 
 

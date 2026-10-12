@@ -255,7 +255,8 @@ body.qg {
 .order__head .caps { font-size: 13.5px; letter-spacing: .14em; margin: 0 0 4px; font-weight: 700; }
 .order__head .typed { font-size: 13px; margin: 0; }
 .order__no { font-family: var(--f-mono); font-weight: 700; letter-spacing: .04em; }
-.order-body { display: grid; gap: 16px; }
+.order-body { display: grid; grid-template-columns: minmax(0, 1fr); gap: 16px; }
+.order-body > * { min-width: 0; }
 .order__last {
   margin: 14px 0 6px; padding: 9px 12px 8px; border: 1.5px dashed var(--rule);
   background: rgba(255, 255, 255, .28);
@@ -268,6 +269,7 @@ body.qg {
 .order__stamp { position: absolute; top: 14px; right: 18px; pointer-events: none; text-align: center; }
 .order__stamp .stamp { font-size: 30px; padding: 5px 14px 3px; }
 .order__stamp .typed { margin: 2px 0 0; font-size: 13px; }
+@media (min-width: 721px) { .order__head { padding-right: 190px; } }   /* o carimbo EXPEDIDA não cobre o texto */
 .expedida { display: inline-grid; justify-items: center; }
 
 /* prévia da intendência */
@@ -481,12 +483,12 @@ body.qg {
 .qg-loading .stamp { font-size: 36px; }
 
 /* ------------------------------------------------------------ largura estreita */
-@media (max-width: 1280px) {
+@media (max-width: 1100px) {
   .sec { grid-template-columns: minmax(0, 1fr); }
   .sec--operacoes, .sec--governo {
     grid-template-columns: minmax(0, 1fr);
-    grid-template-areas: "map" "side" "dossier" "chal";
   }
+  .sec--operacoes { grid-template-areas: "map" "order" "battle" "chal" "dossier"; }
   .sec--governo { grid-template-areas: "dossier" "side" "chal" "tele"; }
   .sec--operacoes > .area-side { display: grid; }
 }

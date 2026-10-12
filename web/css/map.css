@@ -133,3 +133,20 @@
 .carta .rose-dark { fill: var(--c-ink); }
 .carta .rose-light { fill: #f1e8d0; stroke: var(--c-ink); stroke-width: .8; }
 .carta .rose-n { font-family: var(--f-news, serif); font-weight: 700; font-size: 20px; fill: var(--c-ink); }
+
+/* zoom (opção zoom do renderMap): botões sobre a carta */
+.carta.is-zoomed { cursor: grab; }
+.carta.is-zoomed:active { cursor: grabbing; }
+.map-zoom {
+  position: absolute; top: 10px; right: 10px; z-index: 3;
+  display: flex; gap: 4px; align-items: stretch;
+}
+.map-zoom__btn {
+  min-width: 34px; height: 32px; padding: 0 8px;
+  font-family: var(--f-stencil, Impact, sans-serif); font-weight: 700; font-size: 18px; line-height: 1; letter-spacing: .06em;
+  color: var(--c-ink, #2a241a); background: rgba(241, 232, 208, .94);
+  border: 1.5px solid var(--c-ink, #2a241a); box-shadow: 2px 2px 0 rgba(30, 20, 8, .35); cursor: pointer;
+}
+.map-zoom__btn--wide { font-size: 13px; text-transform: uppercase; }
+.map-zoom__btn:hover { background: #fff7de; }
+.map-zoom__btn:focus-visible { outline: 2px dashed var(--c-ink, #2a241a); outline-offset: 2px; }

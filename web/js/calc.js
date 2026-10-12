@@ -485,8 +485,16 @@ function valueBlock(label, v, kind, opts = {}) {
 function finish(out, ctx, tool, blocks, extra = []) {
   out.replaceChildren(...blocks.map((b) => b.node), ...extra);
   for (const b of blocks) {
-    ctx.tape({ tool, title: `${TOOL_LABEL[tool]} · ${b.label}`, lines: b.lines, copy: b.copy, use: b.use });
+    ctx.tape({ tool, title: `${TOOL_LABEL[tool]} · ${b.label}`, lines: b.lines, copy: b.copy, use: b.use, answer: b.answer || null });
   }
+}
+
+/** Texto de resposta para o questionário: número com vírgula decimal, sem zeros inúteis. */
+const ansNum = (x, casas = 4) => String(Number(Number(x).toFixed(casas))).replace(".", ",");
+/** Marca um bloco com a resposta que o questionário aceita (botão "usar no questionário" da fita). */
+function withAnswer(b, answer) {
+  b.answer = answer;
+  return b;
 }
 
 function telegramBox(head, text) {
@@ -649,6 +657,10 @@ function parseReadings(text) {
   return out;
 }
 
+/** Colunas que só numeram as observações: nunca entram na regressão (o servidor faz o mesmo). */
+const ID_COLUMNS = new Set(["obs", "id", "observacao", "observação", "linha", "n", "nº", "#", "provincia", "província"]);
+const isIdColumn = (name) => ID_COLUMNS.has(String(name).trim().toLowerCase());
+
 /** CSV de regressão → {cols, rows, ignored}. Mantém só colunas numéricas. */
 function dataFromCSV(text) {
   const rows = splitTable(text).filter((r) => r.some((c) => c !== ""));
@@ -657,7 +669,7 @@ function dataFromCSV(text) {
   if (new Set(header).size !== header.length) throw calcErr("Cabeçalho com nomes repetidos.");
   if (rows.slice(1).some((r) => r.length !== header.length)) throw calcErr("Há linhas com quantidade de colunas diferente do cabeçalho.");
   const body = rows.slice(1);
-  const numericIdx = header.map((_, j) => j).filter((j) => body.every((r) => !Number.isNaN(parseNum(r[j]))));
+  const numericIdx = header.map((_, j) => j).filter((j) => !isIdColumn(header[j]) && body.every((r) => !Number.isNaN(parseNum(r[j]))));
   const cols = numericIdx.map((j) => header[j]);
   const ignored = header.filter((_, j) => !numericIdx.includes(j));
   if (!cols.length) throw calcErr("Nenhuma coluna numérica encontrada.");
@@ -670,7 +682,7 @@ function dataFromRows(raw) {
     throw calcErr("Os dados devem ser uma lista de objetos (uma linha por observação).");
   }
   const keys = [...new Set(raw.flatMap((r) => Object.keys(r)))];
-  const cols = keys.filter((k) => raw.every((r) => !Number.isNaN(parseNum(r[k]))));
+  const cols = keys.filter((k) => !isIdColumn(k) && raw.every((r) => !Number.isNaN(parseNum(r[k]))));
   const ignored = keys.filter((k) => !cols.includes(k));
   return { cols, ignored, rows: raw.map((r) => Object.fromEntries(cols.map((k) => [k, parseNum(r[k])]))) };
 }
@@ -874,7 +886,11 @@ function leontiefPanel(ctx) {
     const res = await ctx.call("leontief", body);
     const blocks = [];
     if (res.A) blocks.push(valueBlock("A = Z·diag(X)⁻¹", res.A, "mat", { rowLabels: SECTORS, colLabels: SECTORS, use: { tool: "leontief", prefill: { A: res.A } } }));
-    if (res.x_required) blocks.push(valueBlock("x necessário, (I − A)·x = d", res.x_required, "vec", { labels: SECTORS, use: { tool: "leontief", prefill: { x: res.x_required } } }));
+    if (res.x_required) {
+      blocks.push(withAnswer(
+        valueBlock("x necessário, (I − A)·x = d", res.x_required, "vec", { labels: SECTORS, use: { tool: "leontief", prefill: { x: res.x_required } } }),
+        res.x_required.map((v) => ansNum(v, 2)).join("; ")));
+    }
     if (res.net) blocks.push(valueBlock("produção líquida (I − A)·x", res.net, "vec", { labels: SECTORS }));
     if (res.labor !== undefined) blocks.push(valueBlock("mão de obra L·x", res.labor, "num"));
     const notes = hasL && !hasX ? [h("p", { class: "calc-note typed" }, "A mão de obra L·x não foi calculada: informe a produção x.")] : [];
@@ -947,7 +963,10 @@ function markovPanel(ctx) {
       blocks.push(valueBlock("P estimada", res.P_estimated, "mat", { rowLabels: names, colLabels: names, use: { tool: "markov", prefill: { P: res.P_estimated } } }));
     }
     if (res.forecast) {
-      blocks.push(barsBlock(`previsão: a partir de ${names[body.state] ?? body.state}, após ${body.k} passo(s)`, res.forecast, names));
+      const fb = barsBlock(`previsão: a partir de ${names[body.state] ?? body.state}, após ${body.k} passo(s)`, res.forecast, names);
+      // o questionário do clima pede a probabilidade de tempestade (3º estado)
+      if (res.forecast.length === 3) withAnswer(fb, ansNum(res.forecast[2], 4));
+      blocks.push(fb);
     }
     if (res.stationary) blocks.push(valueBlock("estacionário π", res.stationary, "vec", { labels: names }));
     else if (res.stationary === null) blocks.push(block("estacionário", h("p", { class: "calc-note typed" }, "A cadeia não tem distribuição estacionária única."), ["estacionário: não há distribuição única"], "não há distribuição única"));
@@ -1028,8 +1047,9 @@ function trilaterPanel(ctx) {
     const res = await ctx.call("trilaterate", { stations, distances });
     const cellLbl = res.grid;
     mapWrap.innerHTML = mapSVG(stations, distances, res.x, res.y);
-    const gridBlock = block("quadrícula", h("span", { class: "stamp stamp--blue" }, cellLbl), [`quadrícula = ${cellLbl}`], cellLbl);
-    finish(out, ctx, "trilaterate", [valueBlock("posição (x; y)", [res.x, res.y], "vec", { labels: ["x", "y"] }), gridBlock], [mapWrap]);
+    const gridBlock = withAnswer(block("quadrícula", h("span", { class: "stamp stamp--blue" }, cellLbl), [`quadrícula = ${cellLbl}`], cellLbl), cellLbl);
+    const posBlock = withAnswer(valueBlock("posição (x; y)", [res.x, res.y], "vec", { labels: ["x", "y"] }), `${Math.round(res.x)}; ${Math.round(res.y)}`);
+    finish(out, ctx, "trilaterate", [posBlock, gridBlock], [mapWrap]);
   }
   const run1 = runBtn("Triangular", run, out);
   draw();
@@ -1125,6 +1145,9 @@ function regressionPanel(ctx) {
       h("thead", {}, h("tr", {}, h("th", {}, "variável"), h("th", {}, "β"))),
       h("tbody", {}, coefs.map(([k, v]) => h("tr", {}, h("td", {}, k), h("td", { class: "mono" }, f4(v))))));
     const coefBlock = block("coeficientes", tbl, coefs.map(([k, v]) => `${k} = ${f4(v)}`), coefs.map(([k, v]) => `${k}\t${f4(v)}`).join("\n"));
+    // o questionário do Governo pede o efeito da propaganda
+    const prop = coefs.find(([k]) => k === "propaganda");
+    if (prop) withAnswer(coefBlock, ansNum(prop[1], 4));
     const notes = fl.map((f) => {
       const beta = res.coefficients[f];
       return h("p", { class: "calc-note typed" }, `Cada unidade a mais de ${f} muda ${target} em ${f4(beta)}, mantidas as demais variáveis.`);
@@ -1241,9 +1264,11 @@ function flash(btn, text) {
 
 /**
  * Monta a gaveta da Mesa de Cálculo dentro de containerEl (fixo no rodapé).
+ * options.onAnswer(texto, ferramenta): quando informado, resultados que respondem a um questionário
+ * ganham o botão "usar no questionário" (o Quartel-General cola o texto no campo certo).
  * Devolve {open(tool, prefill?), toggle(), close(), isOpen()}.
  */
-export function mountCalc(containerEl) {
+export function mountCalc(containerEl, options = {}) {
   if (!containerEl) throw new Error("mountCalc: contêiner ausente");
   if (containerEl.__calc) return containerEl.__calc;
   ensureCss();
@@ -1312,10 +1337,16 @@ export function mountCalc(containerEl) {
     const useB = item.use
       ? h("button", { class: "btn btn--small", type: "button", onclick: () => open(item.use.tool, item.use.prefill) }, "usar como entrada")
       : null;
+    const ansB = item.answer && typeof options.onAnswer === "function"
+      ? h("button", { class: "btn btn--small btn--blue", type: "button", title: `Cola «${item.answer}» no campo de resposta do questionário`, onclick: () => {
+        const ok = options.onAnswer(item.answer, item.tool);
+        flash(ansB, ok === false ? "sem questionário" : "colado");
+      } }, "usar no questionário")
+      : null;
     return h("li", { class: "calc-tape__item" },
       h("div", { class: "calc-tape__title stencil" }, item.title),
       h("pre", { class: "calc-tape__lines mono" }, item.lines.join("\n")),
-      h("div", { class: "calc-tape__acts" }, copyB, useB));
+      h("div", { class: "calc-tape__acts" }, copyB, useB, ansB));
   }
 
   function addTape(item) {

@@ -11,7 +11,7 @@ import { connect } from "./ws.js";
 import { sfx } from "./sfx.js";
 import { emblemSVG, FACTION_DEFAULTS } from "./emblems.js";
 import {
-  h, fmt, clockText, svgEl, telegramEl, cipherText, SECTIONS, SEC_NAMES,
+  h, fmt, clockText, svgEl, telegramEl, cipherText, plural, SECTIONS, SEC_NAMES,
 } from "./qg/common.js";
 import { mountIntendencia } from "./qg/intendencia.js";
 import { mountOperacoes } from "./qg/operacoes.js";
@@ -88,10 +88,27 @@ function openCalc(tool, payload) {
   }
 }
 
+/** Cada ferramenta da Mesa responde ao questionário de uma seção. */
+const TOOL_SECTION = { leontief: "intendencia", markov: "operacoes", trilaterate: "inteligencia", regression: "governo" };
+
+/** Botão "usar no questionário" da fita: cola a resposta no campo da seção certa, fecha a Mesa e põe o foco nele. */
+function useAnswer(text, tool) {
+  const sec = TOOL_SECTION[tool];
+  const input = sec && document.getElementById(`chal-in-${sec}`);
+  if (!input || input.disabled) return false;
+  showSection(sec);
+  input.value = text;
+  input.dispatchEvent(new Event("input", { bubbles: true }));
+  if (calc) calc.close();
+  input.focus({ preventScroll: true });
+  input.scrollIntoView({ block: "center", behavior: REDUCED ? "auto" : "smooth" });
+  return true;
+}
+
 async function loadCalc() {
   try {
     const mod = await import("./calc.js");
-    calc = mod.mountCalc($("calc-drawer"));
+    calc = mod.mountCalc($("calc-drawer"), { onAnswer: useAnswer });
   } catch (e) {
     console.warn("Mesa de Cálculo indisponível:", e && e.message);
     calc = null;
@@ -331,7 +348,7 @@ function onResolution(r) {
   if (battles.length) sfx.thud();
   dispatch({
     head: `Resolução do turno ${r.turn}`,
-    text: `${battles.length} batalha(s), ${caps} território(s) tomado(s), ${(r.moves || []).length} movimento(s). O boletim está na mesa.`,
+    text: `${plural(battles.length, "batalha", "batalhas")}, ${caps === 1 ? "1 território tomado" : `${caps} territórios tomados`}, ${plural((r.moves || []).length, "movimento", "movimentos")}. O boletim está na mesa.`,
   });
 }
 
@@ -348,7 +365,7 @@ function onMessage(msg) {
       if (CIPHER_KINDS.has(data.kind)) loadDossier("inteligencia").catch(handleErr);
       break;
     case "dossier":
-      dispatch({ head: "Dossiê novo", text: `Dossiês do turno ${data.turn} prontos nas quatro seções.` });
+      // sem despacho: o telegrama «Briefing» do turno já avisa que os dossiês chegaram
       loadAllDossiers();
       loadState().catch(handleErr);
       break;

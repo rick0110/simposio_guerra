@@ -14,13 +14,15 @@
 import { api, serverClock, MOCK } from "./api.js";
 import { connect } from "./ws.js";
 import { sfx } from "./sfx.js";
-import { renderMap } from "./map.js";
+import { renderMap, autoLabelScale, zoomControls } from "./map.js";
 import { emblemSVG, FACTION_DEFAULTS } from "./emblems.js";
 
 const $ = (id) => document.getElementById(id);
 const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
 const p2 = (n) => String(Math.max(0, Math.floor(n))).padStart(2, "0");
 const fmtNum = (v, max = 1) => (v == null || Number.isNaN(Number(v)) ? "—" : Number(v).toLocaleString("pt-BR", { maximumFractionDigits: max }));
+/** plural(1, "batalhão", "batalhões") -> "1 batalhão" */
+const plural = (n, um, varios) => `${n} ${Number(n) === 1 ? um : varios}`;
 const clamp = (v, lo, hi) => Math.min(hi, Math.max(lo, Number(v) || 0));
 const hms = (ms) => { const d = new Date(ms); return [d.getHours(), d.getMinutes(), d.getSeconds()].map(p2).join(":"); };
 const clockText = (ms) => { const s = Math.ceil(ms / 1000); return `${p2(Math.floor(s / 60))}:${p2(s % 60)}`; };
@@ -48,6 +50,7 @@ let authed = false;
 let setupDone = false;
 let showSecrets = false;
 let selectedTerritory = "T01";
+let territoryPicked = false;     // o árbitro já escolheu um território (realce da carta)
 let refreshQueued = null;
 let refreshing = false;
 let refreshAgain = false;
@@ -239,14 +242,37 @@ async function enter() {
   loadCreds();
 }
 
-async function setup() {
-  clock = await serverClock();
-  mapData = await api.get("/api/public/map");
+let mapLabelScale = 1;
+
+/** Desenha a carta com fichas e nomes proporcionais à largura que ela tem na tela. */
+function buildMap() {
+  mapLabelScale = autoLabelScale($("map").getBoundingClientRect().width);
+  if (mapCtrl) mapCtrl.destroy();
   mapCtrl = renderMap($("map"), mapData, {
-    mode: "faction", interactive: true, showIds: true, factions: factionList(),
+    mode: "faction", interactive: true, showIds: true, factions: factionList(), labelScale: mapLabelScale, zoom: true,
   });
   mapCtrl.onTerritoryHover((id) => showCaption(id));
   mapCtrl.onTerritoryClick((id) => { if (id) pickTerritory(id); });
+  if (S) renderMapState();
+  if (territoryPicked) mapCtrl.setSelection([selectedTerritory]);
+}
+
+async function setup() {
+  clock = await serverClock();
+  mapData = await api.get("/api/public/map");
+  buildMap();
+  $("map").parentElement.append(zoomControls({ zoomBy: (f) => mapCtrl && mapCtrl.zoomBy(f), resetView: () => mapCtrl && mapCtrl.resetView() }));
+  // a largura da carta muda com a janela: refaz só se a escala dos rótulos mudou
+  if (typeof ResizeObserver === "function") {
+    let timer = null;
+    new ResizeObserver(() => {
+      clearTimeout(timer);
+      timer = setTimeout(() => {
+        const want = autoLabelScale($("map").getBoundingClientRect().width);
+        if (mapCtrl && Math.abs(want - mapLabelScale) >= 0.1) buildMap();
+      }, 150);
+    }).observe($("map"));
+  }
   eventCatalog = await getAdmin("/api/admin/events").catch(() => []);
   connect("admin", (msg) => { pushDiary(msg); scheduleRefresh(); }, (status, info) => {
     setLink(status);
@@ -563,7 +589,7 @@ function describe(msg) {
     case "telegram": return { tag: "telegrama", text: `${x.title || "telegrama"}${x.section ? ` (${x.section})` : ""}` };
     case "broadcast": return { tag: "aviso", tone: "red", text: x.text || "" };
     case "news": return { tag: "manchete", text: x.headline || "" };
-    case "resolution": return { tag: "resolução", tone: "red", text: `turno ${x.turn} resolvido: ${(x.battles || []).length} batalha(s), ${(x.moves || []).length} movimento(s)` };
+    case "resolution": return { tag: "resolução", tone: "red", text: `turno ${x.turn} resolvido: ${plural((x.battles || []).length, "batalha", "batalhas")}, ${plural((x.moves || []).length, "movimento", "movimentos")}` };
     case "message": return { tag: "diplomacia", text: `${x.from || "?"} → ${x.to || "?"}: ${x.text || ""}` };
     default: return { tag: type, text: JSON.stringify(x).slice(0, 200) };
   }
@@ -597,11 +623,12 @@ function showCaption(id) {
   const dono = t.owner ? factionShort(t.owner) : "neutro";
   const capOf = sortedFactions().find((f) => f.capital === t.id);
   cap.innerHTML = `<strong>${esc(t.id)}</strong> ${esc(t.name)} · ${esc(TERRAIN[t.terrain] || t.terrain)} · dono: ${esc(dono)} · ` +
-    `${t.troops} batalhão(ões)${capOf ? ` · capital de ${esc(factionShort(capOf.id))}` : ""}`;
+    `${plural(t.troops, "batalhão", "batalhões")}${capOf ? ` · capital de ${esc(factionShort(capOf.id))}` : ""}`;
 }
 
 function pickTerritory(id) {
   selectedTerritory = id;
+  territoryPicked = true;
   if (mapCtrl) mapCtrl.setSelection([id]);
   $("adj-territory").value = id;
   dirty.territory = false;
@@ -654,7 +681,7 @@ async function submitNewGame() {
   const first = await ask({
     title: "Criar nova partida?",
     body: `Isto apaga a partida atual (turno ${cur.turn} de ${cur.max_turns}, ${cur.n_factions} nações).\n` +
-      `A nova partida começa em espera: ${n} nações, ${turnos} turno(s) de ${minutos} min.`,
+      `A nova partida começa em espera: ${n} nações, ${plural(turnos, "turno", "turnos")} de ${minutos} min.`,
     ok: "SIM, APAGAR A PARTIDA", danger: true,
   });
   if (!first) return;
@@ -670,7 +697,7 @@ async function submitNewGame() {
     });
     $("dlg-new").close();
     sfx.stamp();
-    flash(`Nova partida criada: ${n} nações, ${turnos} turno(s) de ${minutos} min. Aguardando o início.`, "ok");
+    flash(`Nova partida criada: ${n} nações, ${plural(turnos, "turno", "turnos")} de ${minutos} min. Aguardando o início.`, "ok");
     await loadState();          // primeiro o estado (nações novas), depois as senhas novas
     await loadCreds();
     renderAll();
@@ -713,6 +740,10 @@ async function openCreds() {
       <p class="cred-card__foot">Guarde esta folha. A senha identifica a sua sala.</p>
     </article>`;
   }).join("") || `<p class="typed">Não há nações nesta partida.</p>`;
+  $("cred-addr").value = origin;
+  $("cred-addr").oninput = () => {
+    for (const el of document.querySelectorAll("#cred-grid .cred-card__addr")) el.textContent = $("cred-addr").value.trim() || origin;
+  };
   $("cred-sheet").hidden = false;
   $("cred-print").focus();
 }
@@ -751,7 +782,7 @@ async function submitNation(e) {
   try {
     await api.post("/api/admin/edit_faction", { faction_id: fid, patch });
     dirty.nation = false;
-    flash(`Ajuste aplicado a ${factionName(fid)}: ${changes.length} campo(s).`, "ok");
+    flash(`Ajuste aplicado a ${factionName(fid)}: ${plural(changes.length, "campo", "campos")}.`, "ok");
     sfx.stamp();
     scheduleRefresh(0);
   } catch (err) {
@@ -788,7 +819,7 @@ async function submitTerritory(e) {
   try {
     await api.post("/api/admin/edit_faction", { faction_id: refFaction, patch });
     dirty.territory = false;
-    flash(`Ajuste aplicado a ${tid}: ${changes.length} campo(s).`, "ok");
+    flash(`Ajuste aplicado a ${tid}: ${plural(changes.length, "campo", "campos")}.`, "ok");
     sfx.stamp();
     scheduleRefresh(0);
   } catch (err) {
@@ -922,7 +953,7 @@ function wire() {
   $("form-nation").addEventListener("submit", submitNation);
   $("form-territory").addEventListener("submit", submitTerritory);
   $("adj-faction").addEventListener("change", () => { dirty.nation = false; adjErr(""); fillNationForm(); });
-  $("adj-territory").addEventListener("change", () => { selectedTerritory = $("adj-territory").value; if (mapCtrl) mapCtrl.setSelection([selectedTerritory]); dirty.territory = false; adjErr(""); fillTerritoryForm(); showCaption(selectedTerritory); });
+  $("adj-territory").addEventListener("change", () => { selectedTerritory = $("adj-territory").value; territoryPicked = true; if (mapCtrl) mapCtrl.setSelection([selectedTerritory]); dirty.territory = false; adjErr(""); fillTerritoryForm(); showCaption(selectedTerritory); });
   $("form-nation").addEventListener("input", () => { dirty.nation = true; });
   $("form-territory").addEventListener("input", () => { dirty.territory = true; });
 

@@ -81,6 +81,8 @@ function phaseInfo(g) {
   if (g.status === "finished") return { text: "FIM", lamp: "fim" };
   if (g.status === "paused") return { text: "PAUSA", lamp: "pausa" };
   if (g.phase === "resolucao" || g.phase === "resolução") return { text: "RESOLUÇÃO", lamp: "resolucao" };
+  // prazo vencido (ou animação em curso): o servidor ainda resolve, mas o telão já não é "planejamento"
+  if (animating || (clock && g.deadline_ms - clock.now() <= 0)) return { text: "RESOLUÇÃO", lamp: "resolucao" };
   return { text: "PLANEJAMENTO", lamp: "plan" };
 }
 function remainingMs(g) {
@@ -347,7 +349,7 @@ function slipShow(info) {
     const b = info.battle;
     $("slip-kicker").textContent = `COMUNICADO DE CAMPANHA · BATALHA ${info.index + 1} DE ${info.total}`;
     $("slip-line").textContent = `${info.attackerName} ataca ${info.toName}`;
-    $("slip-sub").innerHTML = `${b.att_before} contra ${b.def_before} · <b>${info.captured ? "TERRITÓRIO TOMADO" : "ATAQUE REPELIDO"}</b>`;
+    $("slip-sub").innerHTML = `${b.att_before} contra ${b.def_before} · <b>${info.captured ? "TERRITÓRIO TOMADO" : b.result === "stalemate" ? "IMPASSE: O ATACANTE RECUA" : "ATAQUE REPELIDO"}</b>`;
   } else {
     $("slip-kicker").textContent = "COMUNICADO DE CAMPANHA · MOVIMENTAÇÕES";
     $("slip-line").textContent = "Tropas em marcha";

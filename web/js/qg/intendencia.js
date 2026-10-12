@@ -4,7 +4,7 @@
    A prévia é ESTIMATIVA local: (I−A)x com A = Z·diag(X)⁻¹ calculada aqui;
    a resolução usa a matriz oculta do turno e pode diferir um pouco.
    ===================================================================== */
-import { h, fmt, parseNum, RES, RES_NAMES, dossierPaper, challengeBox, orderSheet, stampEl } from "./common.js";
+import { h, fmt, parseNum, RES, RES_NAMES, plural, dossierPaper, challengeBox, orderSheet, stampEl } from "./common.js";
 
 const LABOR_DEFAULT = { ALI: 1.0, ACO: 1.5, COM: 1.2 };
 const RECRUIT_DEFAULT = { ALI: 2, ACO: 2, COM: 1 };
@@ -35,6 +35,7 @@ export function mountIntendencia(root, ctx) {
   let touched = false;
   let lastOrderKey = "";
   let curTurn = null;
+  let dossierShown;
   let A = null;                       // matriz A estimada (botão "usar A da tabela")
   const aBtn = h("button", { class: "btn btn--small", type: "button" }, "Usar A da tabela");
   const aNote = h("p", { class: "hint" }, "Calcula A = Z·diag(X)⁻¹ com a tabela de transações. Sem ela, a prévia mostra só a mão de obra e a capacidade.");
@@ -178,7 +179,10 @@ export function mountIntendencia(root, ctx) {
   function update() {
     const d = ctx.dossier("intendencia");
     const st = ctx.state();
-    dossierSlot.replaceChildren(dossierPaper(d, { ctx, section: "intendencia" }));
+    if (d !== dossierShown) {      // refaz a folha só quando chega dossiê novo (não perde a rolagem das tabelas)
+      dossierShown = d;
+      dossierSlot.replaceChildren(dossierPaper(d, { ctx, section: "intendencia" }));
+    }
     chal.update(d ? d.challenges : []);
     if (d && d.turn !== curTurn) { curTurn = d.turn; A = null; aNote.textContent = "Calcula A = Z·diag(X)⁻¹ com a tabela de transações. Sem ela, a prévia mostra só a mão de obra e a capacidade."; }
     if (st) {
@@ -186,7 +190,7 @@ export function mountIntendencia(root, ctx) {
       sheet.setTurn(st.game.turn);
       sheet.setLast(o ? [
         `Produção bruta: Alimento ${fmt(o.production.ALI)} · Aço ${fmt(o.production.ACO)} · Combustível ${fmt(o.production.COM)}`,
-        `Recrutas: ${o.recruit} batalhão(ões)`,
+        `Recrutas: ${plural(o.recruit, "batalhão", "batalhões")}`,
       ] : null);
       prefill(o);
     }

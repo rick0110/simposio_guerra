@@ -6,10 +6,10 @@
    1 COM por batalhão em terra, 2 COM por rota marítima, pacto bloqueia ataque.
    ===================================================================== */
 import {
-  h, fmt, parseNum, svgEl, stampEl, kids, WEATHER_NAMES, WEATHER_ATK, TERRAIN_DEF, TERRAIN_NAMES,
+  h, fmt, parseNum, svgEl, stampEl, kids, plural, WEATHER_NAMES, WEATHER_ATK, TERRAIN_DEF, TERRAIN_NAMES,
   REGIONS, REGION_NAMES, dossierPaper, challengeBox, orderSheet,
 } from "./common.js";
-import { renderMap } from "../map.js";
+import { renderMap, autoLabelScale, zoomControls } from "../map.js";
 
 const NS = "http://www.w3.org/2000/svg";
 const T_BATTLE = 0.9;
@@ -145,7 +145,7 @@ export function mountOperacoes(root, ctx) {
     if (!t) return "";
     const v = vis[tid];
     let info = "tropas desconhecidas";
-    if (v === "own" || v === "revealed") info = `${troops[tid]} batalhão(ões)`;
+    if (v === "own" || v === "revealed") info = plural(troops[tid], "batalhão", "batalhões");
     else if (v === "adjacent" && ranges[tid]) info = `tropas: ${ranges[tid]}`;
     return `${tname(tid)} (${tid}) · ${ownerName(owners[tid])} · ${info}`;
   }
@@ -160,13 +160,41 @@ export function mountOperacoes(root, ctx) {
     }
   }
 
+  let labelScale = 1;
+
+  /** Desenha a carta com fichas e nomes proporcionais à largura que ela tem na tela (legível em 1366×768). */
+  function buildMap() {
+    const st = ctx.state();
+    const md = ctx.map();
+    labelScale = autoLabelScale(svg.getBoundingClientRect().width);
+    if (ctrl) ctrl.destroy();
+    ctrl = renderMap(svg, md, {
+      mode: "faction", interactive: true, myFaction: fid, factions: st.factions || [], labelScale, zoom: true,
+    });
+    ctrl.onTerritoryClick(onClick);
+    ctrl.update(st);
+    ctrl.setOrders(draft);
+    ctrl.setSelection(pick ? [pick, ...pickValid] : []);
+  }
+
   function ensureMap() {
     const st = ctx.state();
     const md = ctx.map();
     if (ctrl || !st || !md) return;
     for (const t of md.territories) terr[t.id] = t;
-    ctrl = renderMap(svg, md, { mode: "faction", interactive: true, myFaction: fid, factions: st.factions || [] });
-    ctrl.onTerritoryClick(onClick);
+    buildMap();
+    mapWrap.append(zoomControls({ zoomBy: (f) => ctrl && ctrl.zoomBy(f), resetView: () => ctrl && ctrl.resetView() }));
+    // a largura da carta muda ao trocar de aba, redimensionar a janela ou abrir a Mesa: refaz só se a escala mudou
+    if (typeof ResizeObserver === "function") {
+      let timer = null;
+      new ResizeObserver(() => {
+        clearTimeout(timer);
+        timer = setTimeout(() => {
+          const want = autoLabelScale(svg.getBoundingClientRect().width);
+          if (ctrl && Math.abs(want - labelScale) >= 0.1) buildMap();
+        }, 150);
+      }).observe(svg);
+    }
   }
 
   /* ================================================================ interação */
@@ -179,7 +207,7 @@ export function mountOperacoes(root, ctx) {
     pickValid = cand.filter((b) => !pactBlocked(owners[b]));
     if (ctrl) ctrl.setSelection([tid, ...pickValid]);
     pop.classList.add("hidden");
-    setHint(`Origem ${tid} (${t.name}): ${available(tid)} batalhão(ões) disponível(is). Clique num território destacado para dar a ordem (Esc cancela).`);
+    setHint(`Origem ${tid} (${t.name}): ${plural(available(tid), "batalhão disponível", "batalhões disponíveis")}. Clique num território destacado para dar a ordem (Esc cancela).`);
   }
 
   function cancelPick() {
@@ -218,7 +246,7 @@ export function mountOperacoes(root, ctx) {
     const readN = () => Math.min(max, Math.max(1, Math.floor(parseNum(num.value) || 1)));
     const updCost = () => {
       const n = readN();
-      cost.textContent = `${n} batalhão(ões) · custo ${n * (sea ? 2 : 1)} COM (${sea ? "rota marítima" : "terrestre"})`;
+      cost.textContent = `${plural(n, "batalhão", "batalhões")} · custo ${n * (sea ? 2 : 1)} COM (${sea ? "rota marítima" : "terrestre"})`;
     };
     range.addEventListener("input", () => { num.value = range.value; updCost(); });
     num.addEventListener("input", () => { range.value = String(readN()); updCost(); });
@@ -237,13 +265,20 @@ export function mountOperacoes(root, ctx) {
       h("div", { class: "row" }, ok, cancel));
     updCost();
     pop.classList.remove("hidden");
+    // posição: junto ao clique, dentro da carta e dentro da parte visível da janela (acima da alça da Mesa)
     const wrap = mapWrap.getBoundingClientRect();
     const hasPoint = ev && typeof ev.clientX === "number" && ev.clientX > 0;
-    const x = hasPoint ? ev.clientX - wrap.left + 14 : 16;
-    const y = hasPoint ? ev.clientY - wrap.top + 14 : 16;
-    pop.style.left = `${Math.max(8, Math.min(x, wrap.width - 290))}px`;
-    pop.style.top = `${Math.max(8, Math.min(y, wrap.height - 200))}px`;
-    num.focus();
+    const popW = pop.offsetWidth || 280;
+    const popH = pop.offsetHeight || 200;
+    let x = hasPoint ? ev.clientX - wrap.left + 14 : 16;
+    let y = hasPoint ? ev.clientY - wrap.top + 14 : 16;
+    x = Math.max(8, Math.min(x, wrap.width - popW - 8));
+    y = Math.max(8, Math.min(y, wrap.height - popH - 8));
+    const visibleBottom = window.innerHeight - 64 - wrap.top;      // 64 px: alça da Mesa de Cálculo
+    if (y + popH > visibleBottom) y = Math.max(8, visibleBottom - popH);
+    pop.style.left = `${x}px`;
+    pop.style.top = `${y}px`;
+    num.focus({ preventScroll: true });
   }
 
   function addMove(m) {
@@ -327,12 +362,12 @@ export function mountOperacoes(root, ctx) {
 
   function outcomeRow(c, A0, r) {
     let tone = "draw", text;
-    if (r.winner === "attacker") { tone = "won"; text = `território tomado; sobram ${fmt(r.a_final)} batalhão(ões)`; }
+    if (r.winner === "attacker") { tone = "won"; text = `território tomado; sobram ${plural(r.a_final, "batalhão", "batalhões")}`; }
     else if (r.winner === "defender") { tone = "lost"; text = `ataque repelido; defesa com ${fmt(r.b_final)}`; }
     else text = `impasse ao fim de T = 0,9: ${fmt(r.a_final)} × ${fmt(r.b_final)}`;
     return h("div", { class: `bcase bcase--${tone}` },
       h("b", { class: "caps" }, `${c.name} · defensor ${c.B0}`),
-      h("span", null, `${A0} atacantes contra ${c.B0} defensores → ${text}`));
+      h("span", null, `${plural(A0, "atacante", "atacantes")} contra ${plural(c.B0, "defensor", "defensores")} → ${text}`));
   }
 
   /* ================================================================ clima */
@@ -397,7 +432,7 @@ export function mountOperacoes(root, ctx) {
     sheet.setTurn(st.game.turn);
     const o = st.orders && st.orders.operacoes;
     sheet.setLast(o && Array.isArray(o.moves)
-      ? (o.moves.length ? o.moves.map((m) => `${m.from} → ${m.to}: ${m.troops} batalhão(ões)`) : ["Sem movimentos: a nação ficou parada."])
+      ? (o.moves.length ? o.moves.map((m) => `${m.from} → ${m.to}: ${plural(m.troops, "batalhão", "batalhões")}`) : ["Sem movimentos: a nação ficou parada."])
       : null);
     prefill(o);
     renderDraft();

@@ -45,6 +45,11 @@ export function parseNum(v) {
   const n = Number(s);
   return Number.isFinite(n) ? n : null;
 }
+/** plural(1, "batalhão", "batalhões") -> "1 batalhão"; plural(3, ...) -> "3 batalhões" (0 também vai ao plural). */
+export function plural(n, um, varios) {
+  const v = Number(n);
+  return `${fmt(v, 1)} ${v === 1 ? um : varios}`;
+}
 export const pad2 = (n) => String(Math.max(0, Math.floor(n))).padStart(2, "0");
 /** ms -> "11:42" (arredonda para cima: o último segundo ainda aparece) */
 export function clockText(ms) {
@@ -140,7 +145,9 @@ function calcSpec(section, ds, d) {
       label: "Abrir na Mesa (Markov)", tool: "markov", regions: true,
       payload: (reg) => {
         const idx = cols.indexOf(REGION_NAMES[reg] || "Centro");
-        return { sequence: rows.map((r) => r[idx]) };
+        const sequence = rows.map((r) => r[idx]);
+        // o estado atual é a última observação do diário: já vem escolhido na Mesa
+        return { sequence, state: sequence[sequence.length - 1] };
       },
     };
   }
@@ -258,7 +265,7 @@ export function challengeBox({ ctx, section, title = "Questionário reservado" }
     const used = solved ? CHALLENGE_ATTEMPTS - left : CHALLENGE_ATTEMPTS - left;
     holes.replaceChildren(...Array.from({ length: CHALLENGE_ATTEMPTS }, (_, i) =>
       h("i", { class: `furo${i < used ? " is-used" : ""}` })));
-    holes.setAttribute("aria-label", `${left} tentativa(s) restante(s) de ${CHALLENGE_ATTEMPTS}`);
+    holes.setAttribute("aria-label", `${left === 1 ? "1 tentativa restante" : `${left} tentativas restantes`} de ${CHALLENGE_ATTEMPTS}`);
     holesTxt.textContent = solved ? "Resolvido neste turno" : `Tentativas restantes: ${left} de ${CHALLENGE_ATTEMPTS}`;
   }
 

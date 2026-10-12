@@ -17,6 +17,9 @@
        showIds:     mostra "T07" sob o nome (padrão: mode === "faction")
        factions:    [{id,color,short,name}] — cores/nomes (senão vêm de update() ou do padrão)
        myFaction:   "GAU" — destaca o contorno da própria nação (modo faction)
+       labelScale:  1 (padrão) — amplia nomes, capitais, fichas de tropa e etiquetas de ordem, para
+                    mapas desenhados pequenos (ver autoLabelScale). A carta é redesenhada com o novo valor.
+       zoom:        true — roda do mouse aproxima, arrastar move, duplo clique enquadra (ver zoomControls)
      }
 
    Controlador devolvido:
@@ -40,7 +43,10 @@
      ctrl.setOwner(id, fid)     troca o dono (com transição de cor)
      ctrl.getOwner(id)  ctrl.centroid(id)  ctrl.territory(id)  ctrl.gridLabel(x,y)
      ctrl.isAnimating
+     ctrl.zoomBy(f)  ctrl.resetView()  ctrl.zoomLevel     (com a opção zoom)
      ctrl.destroy()
+   autoLabelScale(larguraEmPx, {alvo, base, max})  escala de rótulos que mantém a ficha legível
+   zoomControls(ctrl)  botões +, − e "Enquadrar" para colocar sobre o mapa
    updateMap(state) atualiza o último mapa criado (atalho do CONTRATO §6).
    Convenções: viewBox "-52 -52 1304 1010"; coordenadas do mapa 0..1200 × 0..800.
    ===================================================================== */
@@ -70,6 +76,38 @@ const C = {
 
 let lastCtrl = null;
 export function updateMap(state) { if (lastCtrl) lastCtrl.update(state); }
+
+/**
+ * Escala de rótulos para uma carta desenhada com `width` px de largura: a ficha de tropa mede ~16 unidades
+ * do viewBox (1304 de largura); com a carta pequena na tela o número fica ilegível. Devolve o fator
+ * (entre 1 e `max`) que leva o número da ficha a `target` px. Em tela grande (Teatro) devolve 1.
+ */
+export function autoLabelScale(width, { target = 11.5, base = 16, max = 1.6 } = {}) {
+  if (!(width > 50)) return 1;
+  const px = (base * width) / VIEWBOX.w;
+  return Math.max(1, Math.min(max, Math.round((target / px) * 20) / 20));
+}
+
+/** Botões de zoom (+, −, enquadrar) para pôr sobre o mapa; precisa de ctrl criado com { zoom: true }. */
+export function zoomControls(ctrl) {
+  const box = document.createElement("div");
+  box.className = "map-zoom";
+  box.setAttribute("role", "group");
+  box.setAttribute("aria-label", "Zoom da carta");
+  const mk = (txt, label, fn) => {
+    const b = document.createElement("button");
+    b.type = "button"; b.className = "map-zoom__btn"; b.textContent = txt;
+    b.title = label; b.setAttribute("aria-label", label);
+    b.addEventListener("click", fn);
+    return b;
+  };
+  box.append(
+    mk("+", "Aproximar a carta", () => ctrl.zoomBy(1.4)),
+    mk("−", "Afastar a carta", () => ctrl.zoomBy(1 / 1.4)),
+    mk("Enquadrar", "Enquadrar a carta inteira", () => ctrl.resetView()));
+  box.lastChild.classList.add("map-zoom__btn--wide");
+  return box;
+}
 
 /* ----------------------------------------------------------- utilitários */
 function el(tag, attrs, parent) {
@@ -189,6 +227,7 @@ const reduceMotion = () => window.matchMedia && window.matchMedia("(prefers-redu
    ======================================================================== */
 export function renderMap(svg, map, options = {}) {
   const mode = options.mode || "public";
+  const LS = Math.max(0.6, Math.min(2.2, Number(options.labelScale) || 1));
   const interactive = options.interactive !== false;
   const showIds = options.showIds !== undefined ? options.showIds : mode === "faction";
   const W = map.width || 1200, H = map.height || 800;
@@ -470,7 +509,9 @@ export function renderMap(svg, map, options = {}) {
   const capMarks = [];
   for (const t of map.territories) {
     const li = labelInfo[t.id];
-    const tx = el("text", { x: li.lp[0], class: "t-name", "text-anchor": "middle", "data-id": t.id }, gLabel);
+    const lcy0 = (li.top + li.bottom) / 2;
+    const tx = el("text", { x: li.lp[0], class: "t-name", "text-anchor": "middle", "data-id": t.id,
+      transform: LS !== 1 ? `translate(${f1(li.lp[0])} ${f1(lcy0)}) scale(${LS}) translate(${f1(-li.lp[0])} ${f1(-lcy0)})` : null }, gLabel);
     li.lines.forEach((line, i) => {
       const isId = showIds && i === li.lines.length - 1;
       const ts = el("tspan", { x: li.lp[0], y: li.top + li.lh * i + 11.5, class: isId ? "t-id" : null }, tx);
@@ -484,30 +525,35 @@ export function renderMap(svg, map, options = {}) {
       return n;
     };
     const maxLen = Math.max(...li.lines.map((l) => l.length));
-    const halfW = maxLen * 4.4 + 5;
-    const clearOfLabel = (p, hw, hh) => Math.abs(p[0] - li.lp[0]) > halfW + hw - 2 || p[1] + hh < li.top + 2 || p[1] - hh > li.bottom - 2;
+    const halfW = (maxLen * 4.4 + 5) * LS;
     const lcx = li.lp[0], lcy = (li.top + li.bottom) / 2;
+    const lTop = lcy - (lcy - li.top) * LS, lBottom = lcy + (li.bottom - lcy) * LS;   // extensão do nome já ampliado
+    // a estrela da capital fica acima do nome (ou abaixo, se não couber): a ficha de tropa não pode cobri-la
+    const candsCap = [[li.lp[0], lTop - 13 * LS], [li.lp[0], lBottom + 14 * LS]];
+    markerPos[t.id] = candsCap.find((p) => inside(p, 10 * LS, 10 * LS)) || candsCap[0];
+    const capP = t.capital ? markerPos[t.id] : null;
+    const clearOfCap = (p, hw, hh) => !capP || Math.abs(p[0] - capP[0]) > hw + 12 * LS || Math.abs(p[1] - capP[1]) > hh + 12 * LS;
+    const clearOfLabel = (p, hw, hh) => clearOfCap(p, hw, hh)
+      && (Math.abs(p[0] - li.lp[0]) > halfW + hw - 2 || p[1] + hh < lTop + 2 || p[1] - hh > lBottom - 2);
     const candsTok = [
-      [lcx, li.bottom + 14], [lcx, li.top - 14],
-      [lcx - 36, li.bottom + 14], [lcx + 36, li.bottom + 14], [lcx - 36, li.top - 14], [lcx + 36, li.top - 14],
-      [lcx - halfW - 32, lcy], [lcx + halfW + 32, lcy], [t.centroid[0], t.centroid[1]],
+      [lcx, lBottom + 14 * LS], [lcx, lTop - 14 * LS],
+      [lcx - 36 * LS, lBottom + 14 * LS], [lcx + 36 * LS, lBottom + 14 * LS], [lcx - 36 * LS, lTop - 14 * LS], [lcx + 36 * LS, lTop - 14 * LS],
+      [lcx - halfW - 32 * LS, lcy], [lcx + halfW + 32 * LS, lcy], [t.centroid[0], t.centroid[1]],
     ];
     let bestTok = null, bestScore = -1;
     for (const p of candsTok) {
-      if (!clearOfLabel(p, 26, 13)) continue;
-      const sc = fitScore(p, 26, 13);
+      if (!clearOfLabel(p, 26 * LS, 13 * LS)) continue;
+      const sc = fitScore(p, 26 * LS, 13 * LS);
       if (sc > bestScore) { bestScore = sc; bestTok = p; }
       if (sc === 9) break;
     }
     tokenPos[t.id] = bestTok || candsTok[0];
-    const candsCap = [[li.lp[0], li.top - 13], [li.lp[0], li.bottom + 14]];
-    markerPos[t.id] = candsCap.find((p) => inside(p, 10, 10)) || candsCap[0];
     if (t.capital) capMarks.push(t);
   }
   const capEl = {};
   for (const t of capMarks) {
     const p = markerPos[t.id];
-    const g = el("g", { transform: `translate(${f1(p[0])} ${f1(p[1])})`, class: "capital" }, gLabel);
+    const g = el("g", { transform: `translate(${f1(p[0])} ${f1(p[1])})${LS !== 1 ? ` scale(${Math.min(LS, 1.5)})` : ""}`, class: "capital" }, gLabel);
     el("circle", { r: 11.5, class: "cap-bg" }, g);
     el("circle", { r: 11.5, class: "cap-ring", fill: "none" }, g);
     const pts = [];
@@ -595,7 +641,7 @@ export function renderMap(svg, map, options = {}) {
     const exact = v === "own" || v === "revealed";
     const w = Math.max(40, 31 + label.length * 9.2);
     const h = 27;
-    const g = el("g", { class: `token token--${v}`, transform: `translate(${f1(pos[0])} ${f1(pos[1])})`, "data-id": tid });
+    const g = el("g", { class: `token token--${v}`, transform: `translate(${f1(pos[0])} ${f1(pos[1])})${LS !== 1 ? ` scale(${LS})` : ""}`, "data-id": tid });
     el("rect", { x: -w / 2 + 2.5, y: -h / 2 + 3, width: w, height: h, class: "tok-shadow" }, g);
     const body = el("rect", { x: -w / 2, y: -h / 2, width: w, height: h, class: "tok-body" }, g);
     if (exact) { body.style.fill = col; body.style.stroke = mix(col, "#000000", 0.35); }
@@ -737,7 +783,7 @@ export function renderMap(svg, map, options = {}) {
       const grp = el("g", { class: "order" }, gOrd);
       el("path", { d: g.shaft, class: "order-shaft" }, grp);
       el("path", { d: g.headFill, class: "order-head" }, grp);
-      const tag = el("g", { transform: `translate(${f1(g.start[0])} ${f1(g.start[1])})`, class: "order-tag" }, grp);
+      const tag = el("g", { transform: `translate(${f1(g.start[0])} ${f1(g.start[1])})${LS !== 1 ? ` scale(${LS})` : ""}`, class: "order-tag" }, grp);
       el("circle", { r: 14 }, tag);
       const tx = el("text", { y: 5.5, "text-anchor": "middle" }, tag);
       tx.textContent = m.troops != null ? m.troops : "";
@@ -880,7 +926,8 @@ export function renderMap(svg, map, options = {}) {
         { transform: "scale(1)", opacity: 0.9 },
       ], { duration: 340, easing: "cubic-bezier(.3,.2,.2,1)" });
     } else {
-      st = stampNode(b.to, "REPELIDO", nameOf(defId).toUpperCase(), colorOf(defId), 0.78);
+      // impasse: ninguém zerou até o fim do combate e o atacante recuou; repelido: o atacante foi destruído
+      st = stampNode(b.to, b.result === "stalemate" ? "IMPASSE" : "REPELIDO", nameOf(defId).toUpperCase(), colorOf(defId), 0.78);
       stamps.appendChild(st.outer);
       await anim(st.inner, [
         { transform: "scale(2.2) rotate(8deg)", opacity: 0 },
@@ -995,6 +1042,7 @@ export function renderMap(svg, map, options = {}) {
   };
   const onLeave = (ev) => { hoverLine.setAttribute("opacity", 0); if (hoverCb) hoverCb(null, ev); };
   const onClick = (ev) => {
+    if (dragMoved) return;      // soltar o botão depois de arrastar o mapa não é um clique no território
     const tid = ev.target && ev.target.getAttribute && ev.target.getAttribute("data-id");
     if (tid && ev.target.classList.contains("hit") && clickCb) clickCb(tid, ev);
   };
@@ -1012,7 +1060,83 @@ export function renderMap(svg, map, options = {}) {
     gHit.classList.add("is-interactive");
   }
 
+  /* ---- zoom e arraste (opção zoom): só mexe no viewBox ---------------------------------- */
+  let view = { ...VIEWBOX };
+  let dragMoved = false;
+  const zoomListeners = [];
+  const MAX_ZOOM = 4;
+  const applyView = () => {
+    svg.setAttribute("viewBox", `${f1(view.x)} ${f1(view.y)} ${f1(view.w)} ${f1(view.h)}`);
+    svg.classList.toggle("is-zoomed", view.w < VIEWBOX.w - 0.5);
+  };
+  const clampView = () => {
+    view.w = Math.max(VIEWBOX.w / MAX_ZOOM, Math.min(VIEWBOX.w, view.w));
+    view.h = (view.w * VIEWBOX.h) / VIEWBOX.w;
+    view.x = Math.max(VIEWBOX.x, Math.min(VIEWBOX.x + VIEWBOX.w - view.w, view.x));
+    view.y = Math.max(VIEWBOX.y, Math.min(VIEWBOX.y + VIEWBOX.h - view.h, view.y));
+  };
+  const toUser = (cx, cy) => {
+    const m = svg.getScreenCTM();
+    if (!m) return { x: view.x + view.w / 2, y: view.y + view.h / 2 };
+    const pt = svg.createSVGPoint();
+    pt.x = cx; pt.y = cy;
+    return pt.matrixTransform(m.inverse());
+  };
+  function zoomAt(factor, clientX, clientY) {
+    const before = clientX === undefined
+      ? { x: view.x + view.w / 2, y: view.y + view.h / 2 }
+      : toUser(clientX, clientY);
+    const oldW = view.w;
+    view.w = oldW / factor;
+    clampView();
+    const k = view.w / oldW;
+    view.x = before.x - (before.x - view.x) * k;
+    view.y = before.y - (before.y - view.y) * k;
+    clampView();
+    applyView();
+  }
+  function resetView() { view = { ...VIEWBOX }; applyView(); }
+  if (options.zoom) {
+    const listen = (target, type, fn, opts) => { target.addEventListener(type, fn, opts); zoomListeners.push([target, type, fn, opts]); };
+    listen(svg, "wheel", (ev) => {
+      ev.preventDefault();
+      zoomAt(Math.exp(-Math.max(-120, Math.min(120, ev.deltaY)) * 0.0018), ev.clientX, ev.clientY);
+    }, { passive: false });
+    listen(svg, "dblclick", () => resetView());
+    let drag = null;
+    listen(svg, "pointerdown", (ev) => {
+      if (ev.button !== 0 || ev.pointerType === "touch" || view.w >= VIEWBOX.w - 0.5) return;
+      drag = { x: ev.clientX, y: ev.clientY, vx: view.x, vy: view.y, id: ev.pointerId, active: false };
+    });
+    listen(svg, "pointermove", (ev) => {
+      if (!drag || ev.pointerId !== drag.id) return;
+      const dx = ev.clientX - drag.x, dy = ev.clientY - drag.y;
+      if (!drag.active) {
+        if (Math.hypot(dx, dy) < 6) return;
+        drag.active = true; dragMoved = true;
+        try { svg.setPointerCapture(ev.pointerId); } catch { /* nada */ }
+      }
+      const m = svg.getScreenCTM();
+      const a = m ? m.a : 1;
+      view.x = drag.vx - dx / a;
+      view.y = drag.vy - dy / a;
+      clampView();
+      applyView();
+    });
+    const endDrag = (ev) => {
+      if (!drag || (ev && ev.pointerId !== drag.id)) return;
+      const was = drag.active;
+      drag = null;
+      if (was) setTimeout(() => { dragMoved = false; }, 0);
+    };
+    listen(svg, "pointerup", endDrag);
+    listen(svg, "pointercancel", endDrag);
+  }
+
   const ctrl = {
+    zoomBy(f) { zoomAt(f); },
+    resetView,
+    get zoomLevel() { return VIEWBOX.w / view.w; },
     update(state) {
       if (animating) { pending = state; return; }
       applyState(state);
@@ -1030,7 +1154,14 @@ export function renderMap(svg, map, options = {}) {
     gridLabel: (x, y) => `${cols[Math.max(0, Math.min(cols.length - 1, Math.floor(x / cell)))]}${Math.max(1, Math.min(rows, Math.floor(y / cell) + 1))}`,
     get isAnimating() { return animating; },
     factions,
-    destroy() { cancelAll(); svg.replaceChildren(); if (lastCtrl === ctrl) lastCtrl = null; },
+    destroy() {
+      cancelAll();
+      for (const [target, type, fn, opts] of zoomListeners) target.removeEventListener(type, fn, opts);
+      zoomListeners.length = 0;
+      svg.classList.remove("is-zoomed");
+      svg.replaceChildren();
+      if (lastCtrl === ctrl) lastCtrl = null;
+    },
   };
   refreshAll();
   lastCtrl = ctrl;

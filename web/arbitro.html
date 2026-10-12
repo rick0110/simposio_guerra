@@ -293,6 +293,10 @@
   <section class="cred-sheet" id="cred-sheet" aria-label="Credenciais para impressão" hidden>
     <div class="cred-toolbar no-print">
       <p class="typed">Pré-visualização das credenciais. Imprima em papel comum e recorte pelas linhas tracejadas, uma por sala.</p>
+      <div class="field cred-addr">
+        <label for="cred-addr">Endereço impresso nas folhas (troque <span class="mono">localhost</span> pelo IP do PC servidor, se for o caso)</label>
+        <input id="cred-addr" type="text" spellcheck="false" autocomplete="off">
+      </div>
       <div class="cred-toolbar__keys">
         <button class="btn btn--brass" type="button" id="cred-print">IMPRIMIR</button>
         <button class="btn" type="button" id="cred-close">FECHAR</button>

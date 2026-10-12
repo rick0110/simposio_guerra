@@ -476,6 +476,18 @@ def test_desafio_tentativas_e_mensagens():
         g.answer_challenge("GAU", "c1-governo", "1", T0 + 2)
 
 
+def test_mensagens_de_resposta_no_singular_e_no_plural():
+    # resposta única: pede "um número", sem o "número(s)" genérico
+    g = started(seed=34)
+    r = g.answer_challenge("GAU", "c1-governo", "1 2 3", T0)
+    assert not r["correct"] and "um número" in r["message"] and "(s)" not in r["message"]
+    # erro de formato não gasta tentativa; erro de valor gasta e a mensagem concorda com o número restante
+    r = g.answer_challenge("GAU", "c1-governo", "99", T0)
+    assert r["attempts_left"] == 2 and "Restam 2 tentativas." in r["message"]
+    r = g.answer_challenge("GAU", "c1-governo", "99", T0)
+    assert r["attempts_left"] == 1 and "Resta 1 tentativa." in r["message"]
+
+
 def test_tolerancias_dos_desafios():
     g = started(seed=33)
     key = g.keys["GAU"]["c1-intendencia"]
