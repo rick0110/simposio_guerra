@@ -38,6 +38,7 @@ function renderNations(list) {
     art.classList.remove("is-set"); void art.offsetWidth;
     if (f) { art.innerHTML = emblemSVG(f.id); art.style.color = f.color; art.classList.add("is-set"); sfx.stamp(); }
     $("error").textContent = "";
+    $("username").value = f ? f.id : "";
     $("password").focus({ preventScroll: true });
   });
 }

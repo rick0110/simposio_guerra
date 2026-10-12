@@ -476,10 +476,30 @@ export function renderMap(svg, map, options = {}) {
       const ts = el("tspan", { x: li.lp[0], y: li.top + li.lh * i + 11.5, class: isId ? "t-id" : null }, tx);
       ts.textContent = line;
     });
-    // posição dos símbolos: capital acima do nome; ficha de tropa abaixo
+    // posição dos símbolos: capital acima do nome; ficha de tropa abaixo (ou onde couber melhor)
     const inside = (p, hw, hh) => pip(p, t.polygon) && pip([p[0] + hw, p[1] + hh], t.polygon) && pip([p[0] - hw, p[1] + hh], t.polygon) && pip([p[0] + hw, p[1] - hh], t.polygon) && pip([p[0] - hw, p[1] - hh], t.polygon);
-    const candsTok = [[li.lp[0], li.bottom + 14], [li.lp[0], li.top - 14], [t.centroid[0], t.centroid[1]]];
-    tokenPos[t.id] = candsTok.find((p) => inside(p, 26, 13)) || candsTok.find((p) => inside(p, 10, 6)) || candsTok[0];
+    const fitScore = (p, hw, hh) => {
+      let n = 0;
+      for (const [ox, oy] of [[0, 0], [hw, hh], [-hw, hh], [hw, -hh], [-hw, -hh], [hw, 0], [-hw, 0], [0, hh], [0, -hh]]) if (pip([p[0] + ox, p[1] + oy], t.polygon)) n++;
+      return n;
+    };
+    const maxLen = Math.max(...li.lines.map((l) => l.length));
+    const halfW = maxLen * 4.4 + 5;
+    const clearOfLabel = (p, hw, hh) => Math.abs(p[0] - li.lp[0]) > halfW + hw - 2 || p[1] + hh < li.top + 2 || p[1] - hh > li.bottom - 2;
+    const lcx = li.lp[0], lcy = (li.top + li.bottom) / 2;
+    const candsTok = [
+      [lcx, li.bottom + 14], [lcx, li.top - 14],
+      [lcx - 36, li.bottom + 14], [lcx + 36, li.bottom + 14], [lcx - 36, li.top - 14], [lcx + 36, li.top - 14],
+      [lcx - halfW - 32, lcy], [lcx + halfW + 32, lcy], [t.centroid[0], t.centroid[1]],
+    ];
+    let bestTok = null, bestScore = -1;
+    for (const p of candsTok) {
+      if (!clearOfLabel(p, 26, 13)) continue;
+      const sc = fitScore(p, 26, 13);
+      if (sc > bestScore) { bestScore = sc; bestTok = p; }
+      if (sc === 9) break;
+    }
+    tokenPos[t.id] = bestTok || candsTok[0];
     const candsCap = [[li.lp[0], li.top - 13], [li.lp[0], li.bottom + 14]];
     markerPos[t.id] = candsCap.find((p) => inside(p, 10, 10)) || candsCap[0];
     if (t.capital) capMarks.push(t);
