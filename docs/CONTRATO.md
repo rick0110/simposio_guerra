@@ -167,6 +167,7 @@ class Game:
     def tick(self, now_ms) -> list[Event]          # chamado a cada ~1 s: telegrama-relâmpago na metade, resolução no prazo
     def resolve_turn(self, now_ms) -> list[Event]
     # visões (já filtradas pela névoa de guerra; nunca expõem segredos)
+    def public_map(self) -> dict                    # map.json com nomes das capitais trocados pelos das nações
     def public_view(self, now_ms) -> dict
     def faction_view(self, fid, now_ms) -> dict
     def dossier_view(self, fid, section) -> dict
