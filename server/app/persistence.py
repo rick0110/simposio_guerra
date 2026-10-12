@@ -86,3 +86,11 @@ def list_turn_archives() -> list[int]:
         if match:
             turns.append(int(match.group(1)))
     return sorted(turns)
+
+
+def clear_turn_archives() -> None:
+    """Apaga os arquivos de turno (usado ao criar uma nova partida)."""
+    d = _turn_path(0).parent
+    if d.exists():
+        for f in d.glob("turn_*.json"):
+            f.unlink()

@@ -139,6 +139,15 @@ A partir do turno 2, com probabilidade 0,6, um evento global: greve na siderurgi
 epidemia de gripe, descoberta de petróleo, inverno precoce, sabotagem ferroviária, ajuda
 estrangeira, motim. O árbitro também pode disparar eventos manualmente.
 
+## 8.1 Detalhes fixados na implementação
+- Mão de obra W = 18 × nº de territórios × multiplicador da jornada × (0,6 + 0,4·moral/100).
+- A tabela Z/X do dossiê vem da matriz e da produção reais do turno anterior; a matriz do turno atual difere pouco.
+- Rotas marítimas fecham se houver tempestade na região da origem ou do destino. O ataque usa o clima da região de partida.
+- Pacto se firma com propostas simultâneas ou em turnos consecutivos; vale por 3 turnos.
+- Bônus de produtividade é aplicado depois dos limites de capacidade e mão de obra.
+- Resultados de batalha: `captured`, `repelled` ou `stalemate` (atacante recua).
+- Valores exatos: `server/app/game/balance.py`.
+
 ## 9. Telas
 
 ### Direção de arte — "Sala de Guerra, 1943: papel, tinta e lâmpada"

@@ -115,7 +115,11 @@ def _state_index(v: Any, n: int = 3) -> int:
     return idx
 
 
+ID_COLUMNS = {"obs", "id", "observacao", "observação", "linha", "provincia", "província"}
+
+
 def _parse_csv(text: str) -> tuple[list[dict], list[str]]:
+    text = text.lstrip("\ufeff")  # CSV baixado do jogo vem com BOM UTF-8
     lines = [ln for ln in text.splitlines() if ln.strip()]
     if len(lines) < 2:
         raise ValueError("O CSV precisa de cabeçalho e ao menos uma linha de dados")
@@ -327,7 +331,8 @@ def _tool_regression(body: dict) -> dict:
         raise ValueError("Informe 'rows' (lista de objetos) ou 'csv' (texto com cabeçalho)")
 
     if feats_in is None:
-        features = [c for c in columns if c != target]
+        # colunas de identificação (ex.: "obs") não são variáveis explicativas
+        features = [c for c in columns if c != target and c.lower() not in ID_COLUMNS]
     else:
         if not isinstance(feats_in, list) or not all(isinstance(f, str) for f in feats_in):
             raise ValueError("'features' deve ser uma lista de nomes de colunas")

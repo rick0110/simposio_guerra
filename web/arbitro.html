@@ -1,0 +1,306 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Mesa do Árbitro</title>
+  <link rel="icon" href="data:,">
+  <link rel="stylesheet" href="css/fonts.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/map.css">
+  <link rel="stylesheet" href="css/arbitro.css">
+</head>
+<body class="desk arbitro" data-view="loading">
+
+  <!-- ================================================= acesso restrito -->
+  <main class="gate" id="gate" hidden>
+    <section class="gate__card paper tilt-l" aria-labelledby="gate-title">
+      <div class="gate__stamp stamp stamp--double" aria-hidden="true">RESTRITO</div>
+      <p class="typed caps faint">Estado-Maior · Sala do Árbitro</p>
+      <h1 class="stencil" id="gate-title">Mesa do Árbitro</h1>
+      <p class="typed">Acesso exclusivo da equipe de arbitragem. Digite a senha do árbitro para abrir a mesa.</p>
+      <form id="gate-form" class="gate__form" autocomplete="off">
+        <div class="field">
+          <label for="gate-pass">Senha do árbitro</label>
+          <input id="gate-pass" name="password" type="password" required autocomplete="current-password">
+        </div>
+        <p class="errors typed" id="gate-error" role="alert"></p>
+        <button class="btn btn--brass key-wide" type="submit" id="gate-submit">ENTRAR</button>
+      </form>
+    </section>
+  </main>
+
+  <!-- ================================================= a mesa -->
+  <div class="console" id="console" hidden>
+
+    <header class="console__head">
+      <div>
+        <p class="typed caps faint">Estado-Maior · painel de controle</p>
+        <h1 class="stencil">Mesa do Árbitro</h1>
+      </div>
+      <p class="link" id="link-state" role="status"><i class="link__dot" aria-hidden="true"></i><span id="link-text">conectando</span></p>
+    </header>
+
+    <div class="telex" id="telex" role="status" aria-live="polite">
+      <span class="telex__time mono" id="telex-time"></span>
+      <span class="telex__text typed" id="telex-text">Mesa pronta. Nenhuma ação enviada ainda.</span>
+    </div>
+
+    <div class="layout">
+
+      <!-- ---------- painel de controle (placa de latão) ---------- -->
+      <aside class="plate control" aria-label="Controle da partida">
+        <div class="lamps" aria-label="Lâmpadas de estado">
+          <div class="lamp lamp--green" id="lamp-run"><i aria-hidden="true"></i><span>rodando</span></div>
+          <div class="lamp lamp--amber" id="lamp-pause"><i aria-hidden="true"></i><span>pausada</span></div>
+          <div class="lamp lamp--red" id="lamp-end"><i aria-hidden="true"></i><span>resolvendo / fim</span></div>
+        </div>
+
+        <p class="status stencil" id="status-text">aguardando</p>
+
+        <div class="clock-window">
+          <span class="clock mono" id="clock" aria-label="Tempo restante do turno">--:--</span>
+          <span class="clock-label typed">tempo do turno</span>
+        </div>
+
+        <div class="turn-row">
+          <span class="typed caps">turno</span>
+          <strong class="mono turn-num" id="turn-num">— / —</strong>
+          <span class="typed faint" id="phase-name">espera</span>
+        </div>
+
+        <div class="keys" role="group" aria-label="Teclas da partida">
+          <button class="btn btn--brass key key--wide" id="btn-start" type="button">INICIAR GUERRA</button>
+          <button class="btn btn--brass key" id="btn-pause" type="button">PAUSAR</button>
+          <button class="btn btn--brass key" id="btn-resume" type="button">RETOMAR</button>
+          <button class="btn btn--brass key" id="btn-plus1" type="button">+1 MIN</button>
+          <button class="btn btn--brass key" id="btn-plus5" type="button">+5 MIN</button>
+          <button class="btn btn--brass key key--wide key--danger" id="btn-resolve" type="button">RESOLVER AGORA</button>
+        </div>
+
+        <div class="plate-foot">
+          <button class="btn btn--stamp" id="btn-new" type="button">NOVO JOGO</button>
+          <button class="btn" id="btn-cred-top" type="button">IMPRIMIR CREDENCIAIS</button>
+        </div>
+      </aside>
+
+      <!-- ---------- carta (mapa com tropas exatas) e o que o público lê ---------- -->
+      <div class="map-col">
+        <section class="paper map-sheet" aria-label="Carta do continente, com tropas de todas as nações">
+          <div class="map-wrap">
+            <svg id="map" xmlns="http://www.w3.org/2000/svg"></svg>
+          </div>
+          <p class="map-caption typed" id="map-caption" aria-live="polite">Passe o cursor sobre um território. Clique para selecioná-lo no ajuste de emergência.</p>
+        </section>
+
+        <section class="paper arauto" aria-labelledby="arauto-title">
+          <div class="arauto__head">
+            <h2 class="stencil side__title" id="arauto-title">O Arauto do Front</h2>
+            <span class="typed faint">o que o projetor mostra</span>
+          </div>
+          <div class="arauto__body" id="arauto"></div>
+        </section>
+      </div>
+
+      <!-- ---------- nações e diário ---------- -->
+      <div class="side">
+        <section class="side__block" aria-labelledby="nations-title">
+          <h2 class="stencil side__title" id="nations-title">Nações</h2>
+          <div class="nations" id="nations"></div>
+        </section>
+
+        <section class="paper side__block diary" aria-labelledby="diary-title">
+          <div class="diary__head">
+            <h2 class="stencil side__title" id="diary-title">Diário</h2>
+            <div class="mini-tabs" role="tablist" aria-label="Diário">
+              <button class="btn btn--small is-active" type="button" role="tab" id="dtab-live" aria-selected="true" data-dtab="live">ao vivo</button>
+              <button class="btn btn--small" type="button" role="tab" id="dtab-records" aria-selected="false" data-dtab="records">manchetes e registros</button>
+            </div>
+          </div>
+          <div class="diary__body" id="diary-live" role="log" aria-live="off"></div>
+          <div class="diary__body" id="diary-records" hidden></div>
+        </section>
+      </div>
+    </div>
+
+    <!-- ---------- gaveta de ferramentas ---------- -->
+    <section class="drawer folder" aria-label="Ferramentas do árbitro">
+      <div class="folder__tabs" role="tablist">
+        <button class="folder__tab is-active" type="button" role="tab" aria-selected="true" data-tab="avisos">Avisos</button>
+        <button class="folder__tab" type="button" role="tab" aria-selected="false" data-tab="eventos">Eventos</button>
+        <button class="folder__tab" type="button" role="tab" aria-selected="false" data-tab="ajuste">Ajuste de emergência</button>
+        <button class="folder__tab" type="button" role="tab" aria-selected="false" data-tab="ordens">Ordens do turno</button>
+        <button class="folder__tab" type="button" role="tab" aria-selected="false" data-tab="segredos">Segredos</button>
+        <button class="folder__tab" type="button" role="tab" aria-selected="false" data-tab="rollback">Rollback</button>
+        <button class="folder__tab" type="button" role="tab" aria-selected="false" data-tab="credenciais">Credenciais</button>
+      </div>
+
+      <div class="folder__body drawer__body">
+
+        <!-- avisos -->
+        <div class="tab-panel" data-panel="avisos">
+          <form id="form-aviso" class="grid-2 form-aviso" autocomplete="off">
+            <div>
+              <div class="field">
+                <label for="aviso-to">Destino</label>
+                <select id="aviso-to"></select>
+              </div>
+              <p class="hint typed faint">O aviso chega à tela de cada sala como telegrama do árbitro e aparece no diário.</p>
+            </div>
+            <div>
+              <div class="field">
+                <label for="aviso-text">Texto do aviso</label>
+                <textarea id="aviso-text" maxlength="600" rows="3" placeholder="Ex.: Restam dois minutos. Enviem as ordens."></textarea>
+              </div>
+              <button class="btn btn--brass" type="submit" id="aviso-send">ENVIAR AVISO</button>
+            </div>
+          </form>
+        </div>
+
+        <!-- eventos -->
+        <div class="tab-panel" data-panel="eventos" hidden>
+          <p class="hint typed faint" id="eventos-hint">Eventos valem para o turno em curso. Só podem ser disparados com a partida rodando ou pausada.</p>
+          <ul class="event-list" id="event-list"></ul>
+        </div>
+
+        <!-- ajuste de emergência -->
+        <div class="tab-panel" data-panel="ajuste" hidden>
+          <div class="grid-2">
+            <form id="form-nation" class="adjust" autocomplete="off">
+              <h3 class="stencil">Nação: recursos e moral</h3>
+              <div class="field">
+                <label for="adj-faction">Nação</label>
+                <select id="adj-faction"></select>
+              </div>
+              <div class="adjust__row">
+                <div class="field"><label for="adj-ali">Alimento</label><input id="adj-ali" type="number" min="0" step="0.5" inputmode="decimal"></div>
+                <div class="field"><label for="adj-aco">Aço</label><input id="adj-aco" type="number" min="0" step="0.5" inputmode="decimal"></div>
+                <div class="field"><label for="adj-com">Combustível</label><input id="adj-com" type="number" min="0" step="0.5" inputmode="decimal"></div>
+                <div class="field"><label for="adj-morale">Moral (0–100)</label><input id="adj-morale" type="number" min="0" max="100" step="0.5" inputmode="decimal"></div>
+              </div>
+              <button class="btn btn--brass" type="submit">APLICAR À NAÇÃO</button>
+            </form>
+
+            <form id="form-territory" class="adjust" autocomplete="off">
+              <h3 class="stencil">Território: tropas e dono</h3>
+              <div class="field">
+                <label for="adj-territory">Território</label>
+                <select id="adj-territory"></select>
+              </div>
+              <div class="adjust__row adjust__row--2">
+                <div class="field"><label for="adj-troops">Batalhões</label><input id="adj-troops" type="number" min="0" step="1" inputmode="numeric"></div>
+                <div class="field"><label for="adj-owner">Dono</label><select id="adj-owner"></select></div>
+              </div>
+              <p class="hint typed faint">Clique num território no mapa para selecioná-lo. Só entram no ajuste os campos alterados.</p>
+              <button class="btn btn--brass" type="submit">APLICAR AO TERRITÓRIO</button>
+            </form>
+          </div>
+          <p class="errors typed" id="adj-error" role="alert"></p>
+        </div>
+
+        <!-- ordens do turno -->
+        <div class="tab-panel" data-panel="ordens" hidden>
+          <p class="hint typed faint">Última ordem recebida de cada seção neste turno. Abra cada uma para ver o conteúdo.</p>
+          <div class="orders" id="orders"></div>
+        </div>
+
+        <!-- segredos -->
+        <div class="tab-panel" data-panel="segredos" hidden>
+          <div class="secrets-bar">
+            <p class="hint typed faint" id="secrets-hint">Oculto. Telegramas em claro, gabaritos, depósitos e clima pré-sorteado. Não projete esta aba.</p>
+            <button class="btn btn--stamp" type="button" id="btn-secrets" aria-pressed="false">MOSTRAR SEGREDOS</button>
+          </div>
+          <div class="secrets" id="secrets" hidden></div>
+        </div>
+
+        <!-- rollback -->
+        <div class="tab-panel" data-panel="rollback" hidden>
+          <form id="form-rollback" class="rollback" autocomplete="off">
+            <div class="field">
+              <label for="rb-turn">Voltar ao fim do turno</label>
+              <select id="rb-turn"></select>
+            </div>
+            <div>
+              <p class="typed">O estado atual é substituído pelo estado salvo ao fim do turno escolhido. Tudo o que veio depois (ordens, resoluções e avisos) é descartado.</p>
+              <button class="btn btn--stamp" type="submit" id="rb-send">VOLTAR AO TURNO</button>
+            </div>
+          </form>
+          <p class="errors typed" id="rb-error" role="alert"></p>
+        </div>
+
+        <!-- credenciais -->
+        <div class="tab-panel" data-panel="credenciais" hidden>
+          <div class="grid-2">
+            <div>
+              <table class="ledger creds-table">
+                <thead><tr><th>Nação</th><th>Senha</th></tr></thead>
+                <tbody id="creds-body"></tbody>
+              </table>
+            </div>
+            <div class="creds-help">
+              <p class="typed">Uma credencial por sala. A senha identifica a nação; não há cadastro de jogadores.</p>
+              <p class="typed">Endereço da partida: <span class="mono" id="cred-origin"></span></p>
+              <button class="btn btn--brass" type="button" id="btn-cred">IMPRIMIR CREDENCIAIS</button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+  </div>
+
+  <!-- ================================================= diálogos -->
+  <dialog class="dlg" id="dlg-ask" aria-labelledby="ask-title">
+    <div class="dlg__card paper">
+      <div class="stamp stamp--double dlg__stamp" id="ask-stamp">confirmar</div>
+      <h2 class="stencil" id="ask-title"></h2>
+      <p class="typed dlg__body" id="ask-body"></p>
+      <div class="field" id="ask-word-wrap" hidden>
+        <label for="ask-word">Digite <strong id="ask-word"></strong> para confirmar</label>
+        <input id="ask-word-input" autocomplete="off" spellcheck="false">
+      </div>
+      <div class="dlg__actions">
+        <button class="btn" type="button" id="ask-cancel">CANCELAR</button>
+        <button class="btn btn--brass" type="button" id="ask-ok">CONFIRMAR</button>
+      </div>
+    </div>
+  </dialog>
+
+  <dialog class="dlg" id="dlg-new" aria-labelledby="new-title">
+    <form class="dlg__card paper" id="form-new" autocomplete="off" novalidate>
+      <div class="stamp stamp--double stamp--blue dlg__stamp">nova partida</div>
+      <h2 class="stencil" id="new-title">Nova partida</h2>
+      <p class="typed dlg__body">Isto apaga a partida atual. Depois, a partida fica em espera até o sinal de início.</p>
+      <div class="grid-2 new-grid">
+        <div class="field"><label for="ng-n">Nações (2 a 6)</label>
+          <select id="ng-n"><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option></select></div>
+        <div class="field"><label for="ng-min">Minutos por turno</label>
+          <input id="ng-min" type="number" min="0.5" max="120" step="0.5" value="12"></div>
+        <div class="field"><label for="ng-turns">Número de turnos</label>
+          <input id="ng-turns" type="number" min="1" max="30" step="1" value="8"></div>
+        <div class="field"><label for="ng-seed">Semente (opcional)</label>
+          <input id="ng-seed" type="text" inputmode="numeric" placeholder="vazio = sorteio"></div>
+      </div>
+      <p class="errors typed" id="ng-error" role="alert"></p>
+      <div class="dlg__actions">
+        <button class="btn" type="button" id="ng-cancel">CANCELAR</button>
+        <button class="btn btn--brass" type="button" id="ng-submit">REVISAR E CRIAR</button>
+      </div>
+    </form>
+  </dialog>
+
+  <!-- ================================================= credenciais impressas -->
+  <section class="cred-sheet" id="cred-sheet" aria-label="Credenciais para impressão" hidden>
+    <div class="cred-toolbar no-print">
+      <p class="typed">Pré-visualização das credenciais. Imprima em papel comum e recorte pelas linhas tracejadas, uma por sala.</p>
+      <div class="cred-toolbar__keys">
+        <button class="btn btn--brass" type="button" id="cred-print">IMPRIMIR</button>
+        <button class="btn" type="button" id="cred-close">FECHAR</button>
+      </div>
+    </div>
+    <div class="cred-grid" id="cred-grid"></div>
+  </section>
+
+  <script type="module" src="js/arbitro.js"></script>
+</body>
+</html>
