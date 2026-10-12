@@ -35,5 +35,3 @@ PACT_TURNS=3  CHALLENGE_ATTEMPTS=3  CIPHER_KEY_TURNS=2  NEUTRAL_MILITIA=3..6 (mo
 A_SCALE=0.65 (matriz A sorteada × 0,65)  A_PERTURB_SCALE=0.010  BETA0_RANGE=(-1.0, 0.5)
 ```
 Os valores finais estão em `server/app/game/balance.py` (fonte da verdade).
-```
-```
