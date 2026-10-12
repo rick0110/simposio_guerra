@@ -85,8 +85,8 @@ def resample_ring(pts, step):
     return out
 
 
-def fractal_ring(pts, rng, r=0.22, passes=3):
-    for _ in range(passes):
+def fractal_ring(pts, rng, rs=(0.28, 0.2, 0.15)):
+    for r in rs:
         out = []
         for i in range(len(pts)):
             a, b = np.array(pts[i]), np.array(pts[(i + 1) % len(pts)])
@@ -100,12 +100,12 @@ def fractal_ring(pts, rng, r=0.22, passes=3):
     return pts
 
 
-def make_coast(coarse, rng_seed, step=40, r=0.22, passes=3, tries=400):
+def make_coast(coarse, rng_seed, step=50, rs=(0.28, 0.2, 0.15), tries=400):
     for k in range(tries):
         rng = np.random.RandomState(rng_seed + k)
-        sm = chaikin(coarse, 3)
-        rs = resample_ring(sm, step)
-        fr = fractal_ring(rs, rng, r, passes)
+        sm = chaikin(coarse, 2)
+        res = resample_ring(sm, step)
+        fr = fractal_ring(res, rng, rs)
         poly = Polygon(fr)
         if poly.is_valid and poly.area > 0:
             return poly
@@ -117,64 +117,40 @@ def make_coast(coarse, rng_seed, step=40, r=0.22, passes=3, tries=400):
 # --------------------------------------------------------------------------------------
 
 CONTINENT = [
-    (95, 170), (150, 112), (235, 90), (320, 104), (385, 84), (455, 98), (500, 126),
-    (540, 165), (588, 182), (632, 152), (664, 110), (740, 92), (820, 102), (880, 80),
-    (950, 66), (1030, 74), (1085, 118), (1100, 178), (1070, 220), (1092, 268),
-    (1128, 322), (1118, 396), (1090, 452), (1112, 512), (1078, 578), (1012, 626),
-    (944, 652), (872, 662), (806, 646), (738, 634), (694, 604), (676, 556), (662, 518),
-    (628, 508), (598, 530), (588, 582), (574, 628), (548, 662), (480, 662), (410, 668),
-    (340, 652), (282, 672), (226, 642), (180, 600), (120, 560), (85, 500), (100, 440),
-    (70, 385), (95, 320), (75, 265), (108, 215),
+    (78, 128), (120, 92), (190, 84), (238, 112), (236, 150), (282, 160), (318, 118), (372, 82),
+    (430, 70), (480, 98), (488, 140), (528, 172), (556, 214), (600, 222), (640, 190), (646, 140),
+    (690, 105), (760, 86), (812, 112), (850, 92), (915, 60), (990, 56), (1062, 84), (1108, 134),
+    (1090, 180), (1052, 196), (1060, 240), (1092, 262), (1108, 320), (1090, 372), (1086, 430),
+    (1108, 480), (1080, 540), (1040, 566), (1062, 622), (1020, 664), (940, 648), (900, 612),
+    (860, 650), (800, 662), (748, 640), (716, 610), (700, 590), (690, 548), (676, 520), (660, 492),
+    (630, 486), (604, 505), (596, 548), (588, 600), (560, 640), (520, 668), (470, 650), (430, 676),
+    (380, 650), (352, 692), (326, 660), (290, 628), (250, 640), (205, 610), (150, 590), (110, 540), (106, 480),
+    (100, 440), (100, 400), (96, 350), (98, 300), (84, 266), (140, 266), (198, 246), (150, 222), (96, 208),
 ]
-ISLAND_SYLVESTER = [(555, 728), (590, 700), (650, 690), (715, 698), (752, 728), (730, 760),
-                    (665, 770), (600, 766)]
-ISLAND_TRACO = [(150, 728), (190, 696), (245, 702), (272, 735), (240, 768), (185, 770)]
+ISLAND_SYLVESTER = [(535, 726), (580, 696), (650, 688), (722, 694), (778, 724), (752, 758),
+                    (670, 768), (590, 764)]
+ISLAND_TRACO = [(78, 690), (130, 656), (196, 668), (224, 716), (188, 760), (112, 756)]
 
-# Sementes: (x, y) por território. Pátrias definidas por centro de slot + papéis.
-RING_A, RING_B = 400.0, 213.0
-CENTER = (600.0, 372.0)
-HOME_R = 84.0
-
-
-def ring_slots():
-    """Seis centros de pátria em anel elíptico, espaçados por comprimento de arco igual
-    (slot 2 em 0°, slot 5 em 180°, 0 e 1 no norte, 3 e 4 no sul)."""
-    th = np.linspace(0, 2 * math.pi, 20001)
-    x = RING_A * np.cos(th)
-    y = RING_B * np.sin(th)
-    s = np.concatenate([[0], np.cumsum(np.hypot(np.diff(x), np.diff(y)))])
-    per = s[-1]
-    out = {}
-    # percorre sentido horário na tela (y para baixo): slot2 -> slot3 -> slot4 -> slot5 -> slot0 -> slot1
-    for k, slot in enumerate([2, 3, 4, 5, 0, 1]):
-        t = np.interp(per * k / 6.0, s, th)
-        out[slot] = (CENTER[0] + RING_A * math.cos(t), CENTER[1] + RING_B * math.sin(t))
-    return out
-
-
-NEUTRAL_SEEDS = {
-    # id: (x, y)
-    "T25": (600, 150), "T26": (605, 300), "T27": (508, 392), "T28": (700, 392),
-    "T29": (612, 462), "T30": (1035, 130), "T31": (150, 170),
-    "T32": (572, 732), "T33": (700, 732), "T34": (205, 735),
+# Sementes (x, y) por território, posicionadas à mão. IDs: slot k -> T(4k+1)..T(4k+4); em cada
+# pátria a 3ª semente (T03, T07, ...) é a capital. Neutros T25..T34.
+SEEDS = {
+    # slot 0 (noroeste)
+    "T01": (345, 128), "T02": (452, 272), "T03": (425, 188), "T04": (318, 250),
+    # slot 1 (nordeste)
+    "T05": (880, 172), "T06": (748, 268), "T07": (772, 172), "T08": (738, 112),
+    # slot 2 (leste)
+    "T09": (1020, 470), "T10": (900, 372), "T11": (1005, 372), "T12": (1012, 285),
+    # slot 3 (sudeste)
+    "T13": (812, 622), "T14": (748, 498), "T15": (790, 562), "T16": (925, 548),
+    # slot 4 (sudoeste)
+    "T17": (330, 560), "T18": (490, 490), "T19": (420, 575), "T20": (505, 628),
+    # slot 5 (oeste)
+    "T21": (180, 305), "T22": (292, 380), "T23": (200, 385), "T24": (190, 470),
+    # neutros
+    "T25": (600, 262), "T26": (525, 360), "T27": (680, 360), "T28": (610, 440),
+    "T29": (1012, 612), "T30": (1035, 115), "T31": (150, 150),
+    "T32": (580, 730), "T33": (715, 730), "T34": (150, 710),
 }
-
-
-def home_seeds():
-    """Para cada slot, 4 sementes: [A(+70°), interior, capital, B(-70°)] -> IDs 4k+1..4k+4."""
-    slots = ring_slots()
-    res = {}
-    for k, (cx, cy) in slots.items():
-        phi = math.atan2(cy - CENTER[1], cx - CENTER[0])
-        # direção do centro para fora (elíptica -> usa normal aproximada)
-        def at(ang, r):
-            return (cx + r * math.cos(ang), cy + r * math.sin(ang))
-        inner = at(phi + math.pi, HOME_R * 0.95)
-        a = at(phi + math.radians(75), HOME_R * 1.05)
-        b = at(phi - math.radians(75), HOME_R * 1.05)
-        cap = (cx + 0.15 * HOME_R * math.cos(phi), cy + 0.15 * HOME_R * math.sin(phi))
-        res[k] = [a, inner, cap, b]
-    return res
 
 
 # --------------------------------------------------------------------------------------
@@ -183,10 +159,10 @@ def home_seeds():
 
 ENV = box(-400, -400, 1600, 1200)
 WARP = [  # (comprimento de onda, amplitude)
-    (140.0, 9.0),
-    (70.0, 4.5),
-    (33.0, 2.2),
-    (16.0, 1.0),
+    (150.0, 17.0),
+    (72.0, 8.0),
+    (34.0, 3.6),
+    (17.0, 1.6),
 ]
 EDGE_STEP = 11.0
 
@@ -268,18 +244,12 @@ def round_poly(poly, nd=1):
 
 def build_geometry(verbose=False):
     rng_seed = SEED
-    cont = make_coast(CONTINENT, rng_seed, step=40, r=0.22, passes=3)
-    isl1 = make_coast(ISLAND_SYLVESTER, rng_seed + 1000, step=24, r=0.22, passes=3)
-    isl2 = make_coast(ISLAND_TRACO, rng_seed + 2000, step=24, r=0.22, passes=3)
+    cont = make_coast(CONTINENT, rng_seed, step=50)
+    isl1 = make_coast(ISLAND_SYLVESTER, rng_seed + 1000, step=30)
+    isl2 = make_coast(ISLAND_TRACO, rng_seed + 2000, step=30)
     lands = [cont, isl1, isl2]
 
-    slots = home_seeds()
-    seeds = {}
-    for k in range(6):
-        for j, p in enumerate(slots[k]):
-            seeds[f"T{4 * k + j + 1:02d}"] = p
-    for tid, p in NEUTRAL_SEEDS.items():
-        seeds[tid] = p
+    seeds = dict(SEEDS)
     ids = sorted(seeds)
 
     noises = [(Noise(SEED + 11 * i), Noise(SEED + 11 * i + 5)) for i in range(len(WARP))]
