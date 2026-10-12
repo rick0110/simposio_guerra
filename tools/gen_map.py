@@ -25,7 +25,7 @@ import pathlib
 import sys
 
 import numpy as np
-from shapely.geometry import LineString, MultiLineString, MultiPoint, MultiPolygon, Point, Polygon, box
+from shapely.geometry import LineString, MultiPoint, MultiPolygon, Point, Polygon, box
 from shapely.ops import polylabel, unary_union, voronoi_diagram
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
@@ -75,7 +75,6 @@ def resample_ring(pts, step):
     for i in range(len(ring) - 1):
         a, b = np.array(ring[i]), np.array(ring[i + 1])
         L = float(np.linalg.norm(b - a))
-        d = -carry if carry else 0.0
         d = step - carry if carry else 0.0
         while d < L:
             t = d / L if L else 0
