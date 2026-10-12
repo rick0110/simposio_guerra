@@ -1,0 +1,439 @@
+{
+ "section": "operacoes",
+ "turn": 2,
+ "title": "DOSSIÊ DAS OPERAÇÕES — TURNO 2",
+ "briefing": "CONFIDENCIAL. Senhores, anexo o diário meteorológico das três regiões e os avistamentos de fronteira. O tempo de cada região segue uma cadeia de Markov: contando as transições do diário estima-se a matriz P, e a linha do estado atual dá a previsão do próximo turno (ferramenta Markov da Mesa de Cálculo). Tempestade fecha as rotas marítimas e enfraquece o ataque; para avaliar um combate use a ferramenta Lanchester.\n\nEstado atual do tempo: Norte tempestade; Centro chuva; Sul tempestade. Cada batalhão movido custa 1 COM (rota marítima 2).",
+ "datasets": [
+  {
+   "id": "diario_clima",
+   "title": "Diário meteorológico (45 observações por região)",
+   "description": "Estado do tempo observado a cada turno em cada região (limpo, chuva, tempestade). A última linha é o estado atual. Conte as transições de uma linha para a seguinte para estimar P.",
+   "columns": [
+    "Obs",
+    "Norte",
+    "Centro",
+    "Sul"
+   ],
+   "rows": [
+    [
+     1,
+     "chuva",
+     "chuva",
+     "limpo"
+    ],
+    [
+     2,
+     "chuva",
+     "tempestade",
+     "chuva"
+    ],
+    [
+     3,
+     "tempestade",
+     "tempestade",
+     "limpo"
+    ],
+    [
+     4,
+     "tempestade",
+     "tempestade",
+     "chuva"
+    ],
+    [
+     5,
+     "tempestade",
+     "chuva",
+     "chuva"
+    ],
+    [
+     6,
+     "chuva",
+     "limpo",
+     "chuva"
+    ],
+    [
+     7,
+     "tempestade",
+     "limpo",
+     "chuva"
+    ],
+    [
+     8,
+     "tempestade",
+     "limpo",
+     "chuva"
+    ],
+    [
+     9,
+     "tempestade",
+     "limpo",
+     "chuva"
+    ],
+    [
+     10,
+     "tempestade",
+     "limpo",
+     "limpo"
+    ],
+    [
+     11,
+     "tempestade",
+     "limpo",
+     "limpo"
+    ],
+    [
+     12,
+     "tempestade",
+     "limpo",
+     "limpo"
+    ],
+    [
+     13,
+     "tempestade",
+     "limpo",
+     "chuva"
+    ],
+    [
+     14,
+     "tempestade",
+     "limpo",
+     "chuva"
+    ],
+    [
+     15,
+     "tempestade",
+     "chuva",
+     "chuva"
+    ],
+    [
+     16,
+     "tempestade",
+     "limpo",
+     "chuva"
+    ],
+    [
+     17,
+     "tempestade",
+     "limpo",
+     "chuva"
+    ],
+    [
+     18,
+     "tempestade",
+     "chuva",
+     "limpo"
+    ],
+    [
+     19,
+     "limpo",
+     "chuva",
+     "limpo"
+    ],
+    [
+     20,
+     "limpo",
+     "chuva",
+     "limpo"
+    ],
+    [
+     21,
+     "limpo",
+     "chuva",
+     "limpo"
+    ],
+    [
+     22,
+     "chuva",
+     "chuva",
+     "limpo"
+    ],
+    [
+     23,
+     "chuva",
+     "limpo",
+     "tempestade"
+    ],
+    [
+     24,
+     "chuva",
+     "limpo",
+     "tempestade"
+    ],
+    [
+     25,
+     "chuva",
+     "limpo",
+     "tempestade"
+    ],
+    [
+     26,
+     "chuva",
+     "chuva",
+     "limpo"
+    ],
+    [
+     27,
+     "chuva",
+     "tempestade",
+     "tempestade"
+    ],
+    [
+     28,
+     "tempestade",
+     "tempestade",
+     "limpo"
+    ],
+    [
+     29,
+     "tempestade",
+     "chuva",
+     "limpo"
+    ],
+    [
+     30,
+     "tempestade",
+     "chuva",
+     "limpo"
+    ],
+    [
+     31,
+     "chuva",
+     "chuva",
+     "limpo"
+    ],
+    [
+     32,
+     "limpo",
+     "limpo",
+     "tempestade"
+    ],
+    [
+     33,
+     "limpo",
+     "limpo",
+     "chuva"
+    ],
+    [
+     34,
+     "chuva",
+     "chuva",
+     "chuva"
+    ],
+    [
+     35,
+     "tempestade",
+     "chuva",
+     "chuva"
+    ],
+    [
+     36,
+     "limpo",
+     "tempestade",
+     "chuva"
+    ],
+    [
+     37,
+     "chuva",
+     "tempestade",
+     "limpo"
+    ],
+    [
+     38,
+     "chuva",
+     "chuva",
+     "limpo"
+    ],
+    [
+     39,
+     "chuva",
+     "chuva",
+     "tempestade"
+    ],
+    [
+     40,
+     "chuva",
+     "tempestade",
+     "tempestade"
+    ],
+    [
+     41,
+     "chuva",
+     "chuva",
+     "tempestade"
+    ],
+    [
+     42,
+     "tempestade",
+     "chuva",
+     "limpo"
+    ],
+    [
+     43,
+     "tempestade",
+     "chuva",
+     "tempestade"
+    ],
+    [
+     44,
+     "tempestade",
+     "chuva",
+     "tempestade"
+    ],
+    [
+     45,
+     "tempestade",
+     "chuva",
+     "tempestade"
+    ]
+   ],
+   "csv_url": "/api/faction/dossier/operacoes/diario_clima.csv"
+  },
+  {
+   "id": "avistamentos",
+   "title": "Avistamentos de fronteira",
+   "description": "Territórios vizinhos aos seus (por terra ou por mar) e a faixa estimada de batalhões. Tropas exatas só nos seus territórios (ou onde a Inteligência localizar um depósito).",
+   "columns": [
+    "Território",
+    "Nome",
+    "Dono",
+    "Faixa de tropas",
+    "Terreno",
+    "Defesa do terreno"
+   ],
+   "rows": [
+    [
+     "T08",
+     "Floresta de Frobenius",
+     "Eulerândia",
+     "1–5",
+     "floresta",
+     1.25
+    ],
+    [
+     "T21",
+     "Brejo Arnoldi",
+     "Neutro",
+     "1–5",
+     "pantano",
+     1.2
+    ],
+    [
+     "T22",
+     "Vale de Cramer",
+     "Neutro",
+     "6–10",
+     "planicie",
+     1.0
+    ],
+    [
+     "T25",
+     "Delta de Laplace",
+     "Neutro",
+     "1–5",
+     "pantano",
+     1.2
+    ],
+    [
+     "T26",
+     "Montes do Núcleo",
+     "Neutro",
+     "1–5",
+     "montanha",
+     1.5
+    ],
+    [
+     "T31",
+     "Ponta Penrose",
+     "Neutro",
+     "1–5",
+     "floresta",
+     1.25
+    ]
+   ],
+   "csv_url": "/api/faction/dossier/operacoes/avistamentos.csv"
+  },
+  {
+   "id": "modificadores",
+   "title": "Tabela de modificadores de combate",
+   "description": "Lanchester: A' = −β·B, B' = −α·A. α é a eficácia do atacante (moral × clima) e β a do defensor (moral × terreno). Use a ferramenta Lanchester da Mesa de Cálculo.",
+   "columns": [
+    "Fator",
+    "Valor"
+   ],
+   "rows": [
+    [
+     "Terreno: planície (defensor)",
+     1.0
+    ],
+    [
+     "Terreno: urbano (defensor)",
+     1.3
+    ],
+    [
+     "Terreno: floresta (defensor)",
+     1.25
+    ],
+    [
+     "Terreno: pântano (defensor)",
+     1.2
+    ],
+    [
+     "Terreno: montanha (defensor)",
+     1.5
+    ],
+    [
+     "Clima: limpo (atacante)",
+     1.0
+    ],
+    [
+     "Clima: chuva (atacante)",
+     0.85
+    ],
+    [
+     "Clima: tempestade (atacante)",
+     0.65
+    ],
+    [
+     "Moral (qualquer lado)",
+     "0,5 + moral/100"
+    ],
+    [
+     "Duração do combate T",
+     0.9
+    ]
+   ],
+   "csv_url": "/api/faction/dossier/operacoes/modificadores.csv"
+  }
+ ],
+ "challenges": [
+  {
+   "id": "c2-operacoes",
+   "prompt": "Na região Centro o tempo está agora em «chuva». Estime a matriz de transição P dessa região por contagem de transições no diário e informe a probabilidade de TEMPESTADE no próximo turno.",
+   "answer_format": "um número entre 0 e 1 (ex.: 0,25) ou em porcentagem (ex.: 25%)",
+   "attempts_left": 3,
+   "solved": false,
+   "reward_text": "O servidor revela o clima exato de todas as regiões na resolução deste turno"
+  }
+ ],
+ "tools": [
+  "markov",
+  "lanchester"
+ ],
+ "extras": {
+  "weather_now": {
+   "norte": 2,
+   "centro": 1,
+   "sul": 2
+  },
+  "weather_names": [
+   "limpo",
+   "chuva",
+   "tempestade"
+  ],
+  "challenge_region": "centro",
+  "move_cost": {
+   "land": 1,
+   "sea": 2
+  }
+ }
+}

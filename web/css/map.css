@@ -1,0 +1,135 @@
+/* =====================================================================
+   map.css — estilos da carta (js/map.js). Depende de fonts.css e base.css.
+   Tudo aqui é "tinta sobre papel": sem gradientes chamativos.
+   ===================================================================== */
+.carta {
+  display: block; width: 100%; height: auto;
+  -webkit-user-select: none; user-select: none;
+  --c-ink: #2a241a; --c-ink-soft: #4b402c; --c-paper: #e9dfc5; --c-grease: #b3261e; --c-blue: #24406b;
+  text-rendering: geometricPrecision;
+}
+.carta text { font-kerning: normal; }
+
+/* aquarela das nações */
+.carta .wash-fill, .carta .wash-edge { transition: fill .9s ease, stroke .9s ease; }
+.carta .wash-fill { stroke: none; }
+
+/* fronteiras e costa */
+.carta .border { stroke-linejoin: round; stroke-linecap: butt; }
+.carta .border--prov   { stroke: #4b3f2b; stroke-width: 1; stroke-dasharray: 6 2.4 1.3 2.4; opacity: .82; }
+.carta .border--nation { stroke: #231d13; stroke-width: 2.9; stroke-dasharray: 13 3.2 2.8 3.2; }
+.carta .border--mine   { stroke-width: 5.5; opacity: .5; stroke-linecap: round; }
+.carta .coast { stroke: var(--c-ink); stroke-width: 1.9; stroke-linejoin: round; }
+.carta .grid-line { stroke: rgba(66, 48, 30, .23); stroke-width: .7; }
+
+/* rios, rotas, símbolos */
+.carta .river { stroke: #3d6f89; stroke-width: 2.3; stroke-linecap: round; stroke-linejoin: round; }
+.carta .river-bank { stroke: #3d6f89; stroke-width: 6; opacity: .17; stroke-linecap: round; stroke-linejoin: round; }
+.carta .sea-route { stroke: #1f3a52; stroke-width: 2.1; stroke-dasharray: 7 5; stroke-linecap: round; }
+.carta .anchor-bg { fill: rgba(240, 232, 208, .92); stroke: #1f3a52; stroke-width: 1.1; }
+.carta .anchor-ink { stroke: #1f3a52; stroke-width: 1.5; stroke-linecap: round; fill: none; }
+.carta .sym-tree { stroke: #34502c; stroke-width: 1.3; opacity: .95; }
+.carta .sym-reed { stroke: #34626c; stroke-width: 1.15; opacity: .9; stroke-linecap: round; }
+.carta .sym-relief { stroke: #5f4429; stroke-width: 1.05; stroke-linejoin: round; stroke-linecap: round; opacity: .85; }
+.carta .sym-contour { stroke: #7a5c3c; stroke-width: .95; opacity: .6; }
+
+/* nomes */
+.carta .t-name {
+  font-family: var(--f-news, "Old Standard TT", Georgia, serif);
+  font-weight: 700; font-size: 14px; letter-spacing: .03em;
+  font-variant-caps: small-caps; font-variant: small-caps;
+  fill: var(--c-ink);
+  paint-order: stroke fill; stroke: rgba(241, 232, 208, .82); stroke-width: 3.4px; stroke-linejoin: round;
+  pointer-events: none;
+}
+.carta .t-name .t-id {
+  font-family: var(--f-mono, "IBM Plex Mono", monospace); font-weight: 400; font-size: 10px;
+  font-variant: normal; letter-spacing: .04em; fill: var(--c-ink-soft);
+}
+.carta .t-sea {
+  font-family: var(--f-news, "Old Standard TT", Georgia, serif); font-style: italic; font-weight: 400;
+  font-size: 19px; letter-spacing: .26em; fill: #2f536a; pointer-events: none;
+  paint-order: stroke fill; stroke: rgba(180, 198, 200, .8); stroke-width: 4px; stroke-linejoin: round;
+}
+.carta .cap-bg { fill: rgba(241, 232, 208, .94); }
+.carta .cap-ring { stroke: var(--c-ink); stroke-width: 2.6; transition: stroke .8s; }
+.carta .cap-star { fill: var(--c-ink); }
+
+/* fichas de tropa (wargame) */
+.carta .tok-shadow { fill: rgba(30, 20, 8, .38); }
+.carta .tok-body { fill: #d9c698; stroke: #3a2c18; stroke-width: 1.8; }
+.carta .token--adjacent .tok-body { fill: #eadfc3; stroke-width: 2.2; stroke-dasharray: 5 2.5; }
+.carta .token--revealed .tok-body { stroke-width: 2.4; }
+.carta .tok-sym { stroke-width: 1.4; fill: none; }
+.carta .tok-num { font-family: var(--f-mono, "IBM Plex Mono", monospace); font-weight: 600; font-size: 16px; }
+.carta .token--adjacent .tok-num { font-size: 14.5px; }
+.carta .tok-pin { fill: #b08d3c; stroke: #5a4518; stroke-width: 1; }
+
+/* seleção, ordens, hover */
+.carta .sel-wash { fill: rgba(255, 214, 80, .34); stroke: none; }
+.carta .sel-line { fill: none; stroke: var(--c-ink); stroke-width: 3.4; stroke-dasharray: 10 4; stroke-linejoin: round; }
+.carta .hover-line { stroke: var(--c-ink); stroke-width: 2.4; stroke-dasharray: 5 3; fill: rgba(255, 248, 220, .16); pointer-events: none; }
+.carta .hit { fill: transparent; stroke: none; pointer-events: none; outline: none; }
+.carta .l-hit.is-interactive .hit { pointer-events: all; cursor: pointer; }
+.carta .hit:focus-visible { stroke: var(--c-ink); stroke-width: 4; stroke-dasharray: 8 4; fill: rgba(255, 224, 120, .18); }
+.carta .order-shaft { fill: none; stroke: var(--c-blue); stroke-width: 3.4; stroke-dasharray: 10 4.5; stroke-linecap: round; stroke-linejoin: round; opacity: .92; }
+.carta .order-head { fill: var(--c-blue); stroke: var(--c-blue); stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; }
+.carta .order-tag circle { fill: #f1e8d0; stroke: var(--c-blue); stroke-width: 2.4; }
+.carta .order-tag text { font-family: var(--f-mono, monospace); font-weight: 700; font-size: 14.5px; fill: var(--c-blue); }
+
+/* animação da resolução */
+.carta .arrow-shaft, .carta .arrow-head { fill: none; stroke: var(--c-grease); stroke-width: 9; stroke-linecap: round; stroke-linejoin: round; opacity: .9; }
+.carta .arrow-head { fill: var(--c-grease); stroke-width: 4; }
+.carta .arrow-shaft--2 { stroke: #d6473b; stroke-width: 4.2; opacity: .7; }
+.carta .arrow-tag { fill: #f1e8d0; stroke-width: 3.2; }
+.carta .arrow-tag-num { font-family: var(--f-mono, monospace); font-weight: 700; font-size: 18px; fill: var(--c-ink); }
+.carta .burst-outer { fill: #2b1813; opacity: .92; stroke-linejoin: miter; }
+.carta .burst-inner { fill: var(--c-grease); }
+.carta .burst-dot { fill: #2b1813; opacity: .85; }
+.carta .loss-num {
+  font-family: var(--f-stencil, Impact, sans-serif); font-weight: 800; font-size: 38px; letter-spacing: .02em;
+  fill: var(--c-grease); paint-order: stroke fill; stroke: #f4ecd4; stroke-width: 6px; stroke-linejoin: round; text-anchor: middle;
+}
+.carta .loss-num--att { fill: #5d1812; font-size: 32px; }
+.carta .stamp-box { fill: none; stroke: currentColor; stroke-width: 5.5; }
+.carta .stamp-box--bg { fill: rgba(243, 235, 212, .62); stroke: none; }
+.carta .stamp-box--thin { stroke-width: 1.6; }
+.carta .stamp-text { font-family: var(--f-stencil, Impact, sans-serif); font-weight: 800; letter-spacing: .12em; fill: currentColor; }
+.carta .stamp-sub { font-family: var(--f-sans, Arial, sans-serif); font-weight: 700; letter-spacing: .3em; fill: currentColor; }
+.carta .move-shaft, .carta .move-head { fill: none; stroke: var(--c-pencil, #36342f); stroke-width: 5; stroke-linecap: round; stroke-linejoin: round; opacity: .88; }
+.carta .move-head { fill: #36342f; stroke-width: 3; }
+.carta .move-tag { fill: #f1e8d0; stroke-width: 2.8; }
+.carta .move-tag-num { font-family: var(--f-mono, monospace); font-weight: 700; font-size: 14.5px; fill: var(--c-ink); }
+
+/* papel envelhecido */
+.carta .fold { stroke: rgba(70, 48, 22, .16); stroke-width: 1.3; }
+.carta .fold--hi { stroke: rgba(255, 252, 235, .4); stroke-width: 1.2; }
+
+/* moldura e cartucho */
+.carta .ruler-dark { fill: var(--c-ink); }
+.carta .ruler-frame { stroke: var(--c-ink); stroke-width: 1.3; }
+.carta .neatline { stroke: var(--c-ink); stroke-width: 2.2; }
+.carta .ruler-text { font-family: var(--f-mono, monospace); font-weight: 600; font-size: 15px; fill: var(--c-ink-soft); }
+.carta .outer-frame { stroke: var(--c-ink); stroke-width: 3.6; }
+.carta .outer-frame--thin { stroke-width: 1.1; }
+.carta .cart-title { font-family: var(--f-news, serif); font-weight: 700; font-size: 21px; letter-spacing: .06em; fill: var(--c-ink); }
+.carta .cart-sub { font-family: var(--f-sans, sans-serif); font-weight: 700; font-size: 12.5px; letter-spacing: .26em; fill: var(--c-ink-soft); }
+.carta .cart-note { font-family: var(--f-typed, monospace); font-size: 10.5px; fill: #6b5f45; }
+.carta .cart-rule { stroke: var(--c-ink); stroke-width: 2.2; }
+.carta .cart-rule--thin { stroke-width: 1; }
+.carta .cart-stamp { opacity: .82; }
+.carta .cart-stamp-box { stroke: #a3271c; stroke-width: 3; }
+.carta .cart-stamp-text { font-family: var(--f-stencil, Impact, sans-serif); font-weight: 800; font-size: 25px; letter-spacing: .12em; fill: #a3271c; }
+.carta .leg-head { font-family: var(--f-sans, sans-serif); font-weight: 700; font-size: 10.5px; letter-spacing: .22em; fill: #6b5f45; }
+.carta .leg-text { font-family: var(--f-news, serif); font-size: 13.5px; fill: var(--c-ink); }
+.carta .scale-b { fill: var(--c-ink); }
+.carta .scale-w { fill: #f1e8d0; stroke: var(--c-ink); stroke-width: 1; }
+.carta .scale-b, .carta .scale-w { stroke: var(--c-ink); stroke-width: 1; }
+.carta .scale-text { font-family: var(--f-mono, monospace); font-size: 11px; fill: var(--c-ink); }
+.carta .scale-text--unit { font-weight: 600; }
+.carta .rose-ring { stroke: var(--c-ink); stroke-width: 1.6; }
+.carta .rose-ring--thin { stroke-width: .8; }
+.carta .rose-tick { stroke: var(--c-ink); stroke-width: 1; }
+.carta .rose-dark { fill: var(--c-ink); }
+.carta .rose-light { fill: #f1e8d0; stroke: var(--c-ink); stroke-width: .8; }
+.carta .rose-n { font-family: var(--f-news, serif); font-weight: 700; font-size: 20px; fill: var(--c-ink); }

@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Teatro de Operações</title>
+  <link rel="icon" href="data:,">
+  <link rel="stylesheet" href="css/fonts.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/map.css">
+  <link rel="stylesheet" href="css/teatro.css">
+</head>
+<body class="desk teatro" data-status="loading">
+
+  <main class="stage">
+
+    <!-- ===================== a mesa: o mapa ===================== -->
+    <section class="table" aria-label="Mapa do teatro de operações">
+      <div class="sheet" id="sheet">
+        <svg id="map" xmlns="http://www.w3.org/2000/svg"></svg>
+        <i class="tape tape--tl"></i><i class="tape tape--tr"></i><i class="tape tape--bl"></i><i class="tape tape--br"></i>
+
+        <div class="overlay hidden" id="overlay" aria-live="polite">
+          <div class="overlay__veil"></div>
+          <div class="overlay__stamp stamp stamp--double" id="overlay-stamp">
+            <span id="overlay-line1">AGUARDANDO</span>
+            <span id="overlay-line2">ORDENS DO ÁRBITRO</span>
+          </div>
+          <p class="overlay__note typed" id="overlay-note">O Teatro de Operações será aberto quando o Árbitro iniciar a guerra.</p>
+        </div>
+
+        <div class="slip hidden" id="slip" aria-live="polite">
+          <div class="slip__kicker" id="slip-kicker">COMUNICADO DE CAMPANHA</div>
+          <div class="slip__line" id="slip-line"></div>
+          <div class="slip__sub" id="slip-sub"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== a coluna da direita ===================== -->
+    <aside class="rail" id="rail">
+
+      <!-- jornal -->
+      <article class="news-sheet" id="news" aria-label="Jornal O Arauto do Front">
+        <i class="tape tape--news"></i>
+        <header class="masthead">
+          <div class="masthead__dateline"><span id="np-date">LEBESGUE, 11 DE JUNHO DE 1943</span><span id="np-no">Nº 3</span></div>
+          <h1 class="masthead__name">O ARAUTO DO FRONT</h1>
+          <div class="masthead__edition" id="np-edition">EDIÇÃO EXTRA · TURNO 3 · PREÇO 20 RÉIS</div>
+        </header>
+        <div class="news-body" id="news-body"></div>
+      </article>
+
+      <!-- relógio split-flap -->
+      <section class="clock" id="clock" aria-label="Relógio do turno">
+        <div class="clock__plate">
+          <span class="lamp" id="lamp"></span>
+          <b id="phase-text">AGUARDANDO</b>
+          <span class="clock__alarm" id="alarm-text">ÚLTIMO MINUTO</span>
+        </div>
+        <div class="clock__row">
+          <div class="clock__group">
+            <small>Turno</small>
+            <div class="flaps" id="fl-turn" role="text" aria-label="Turno"></div>
+          </div>
+          <div class="clock__group clock__group--time">
+            <small>Tempo restante</small>
+            <div class="flaps" id="fl-time" role="timer" aria-label="Tempo restante"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- quadro de situação -->
+      <section class="plaque" id="board" aria-label="Quadro de Situação">
+        <header class="plaque__head"><span>Quadro de Situação</span><small>pontos de vitória</small></header>
+        <ol class="plaque__list" id="board-list"></ol>
+      </section>
+
+      <!-- clima -->
+      <section class="weather" id="weather" aria-label="Boletim meteorológico">
+        <div class="weather__head">BOLETIM DO TEMPO</div>
+        <div class="weather__cells" id="weather-cells"></div>
+      </section>
+
+      <div class="curtain" id="curtain" aria-hidden="true"></div>
+    </aside>
+  </main>
+
+  <!-- telegrama do árbitro -->
+  <div class="drop" id="drop" aria-live="assertive"></div>
+
+  <div class="tags">
+    <span class="tag" id="conn-tag">LINHA</span>
+    <button class="tag tag--btn" id="sound-tag" type="button">SOM: TOQUE PARA ATIVAR</button>
+  </div>
+
+  <script type="module" src="js/teatro.js"></script>
+</body>
+</html>
