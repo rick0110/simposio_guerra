@@ -1,0 +1,25 @@
+# Não copiar para a imagem: controle de versão, caches, dados locais e material de apoio.
+.git
+.gitignore
+.dockerignore
+Dockerfile
+docker-compose.yml
+
+**/__pycache__
+**/*.pyc
+**/.pytest_cache
+**/*.egg-info
+.venv
+**/node_modules
+
+# Dados locais de desenvolvimento (raiz do repositório). Não confundir com server/app/data/.
+/data
+
+# Ferramentas e capturas de tela de desenvolvimento
+tools/preview
+screenshots
+
+# Testes e documentação não são necessários para rodar o servidor
+server/tests
+server/requirements-dev.txt
+docs

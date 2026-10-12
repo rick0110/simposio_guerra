@@ -1,0 +1,18 @@
+# Sobe o servidor do ESTADO-MAIOR. Uso: docker compose up -d --build
+# Configurações podem ser passadas por variáveis de ambiente ou por um arquivo .env ao lado deste.
+services:
+  estado-maior:
+    build: .
+    ports:
+      - "8000:8000"
+    volumes:
+      - estado-maior-dados:/data
+    environment:
+      ADMIN_PASSWORD: ${ADMIN_PASSWORD:-arbitro}
+      N_FACTIONS: ${N_FACTIONS:-4}
+      TURN_MINUTES: ${TURN_MINUTES:-12}
+      MAX_TURNS: ${MAX_TURNS:-8}
+    restart: unless-stopped
+
+volumes:
+  estado-maior-dados:
