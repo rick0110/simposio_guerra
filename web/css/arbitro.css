@@ -90,7 +90,7 @@ body.arbitro {
 /* ------------------------------------------------------------- layout */
 .layout {
   display: grid;
-  grid-template-columns: 300px minmax(0, 1fr) 390px;
+  grid-template-columns: 330px minmax(0, 1fr) 430px;
   gap: 12px;
   align-items: stretch;
 }
