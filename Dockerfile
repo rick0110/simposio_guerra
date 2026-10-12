@@ -18,8 +18,8 @@ ENV DATA_DIR=/data \
 
 # Usuário sem privilégios. O diretório /data pertence a ele; um volume nomeado
 # herda essa posse na primeira criação.
-RUN groupadd --system --gid 10001 estado \
-    && useradd --system --uid 10001 --gid estado --home-dir /app --shell /usr/sbin/nologin estado \
+RUN groupadd --gid 10001 estado \
+    && useradd --uid 10001 --gid estado --home-dir /app --no-create-home --shell /usr/sbin/nologin estado \
     && mkdir -p /data \
     && chown -R estado:estado /data
 
