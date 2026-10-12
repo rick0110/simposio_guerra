@@ -1,0 +1,454 @@
+{
+ "faction": {
+  "id": "GAU",
+  "name": "República de Gáussia",
+  "short": "Gáussia",
+  "color": "#2b4a74",
+  "emblem": "∇",
+  "capital": "T03",
+  "capital_name": "Eliminópolis",
+  "stock": {
+   "ALI": 21.5,
+   "ACO": 30.0,
+   "COM": 30.0
+  },
+  "morale": 69.3,
+  "troops_total": 25,
+  "workforce": 63.1,
+  "labor": {
+   "ALI": 1.0,
+   "ACO": 1.5,
+   "COM": 1.2
+  },
+  "capacity": {
+   "ALI": 29.0,
+   "ACO": 25.0,
+   "COM": 16.0
+  },
+  "vp": 6.0,
+  "policy": {
+   "racao": 0,
+   "propaganda": 0,
+   "horas": 8
+  },
+  "pacts": [],
+  "pact_proposals_received": [],
+  "capitulated": false,
+  "bonuses": {
+   "productivity": false,
+   "weather_revealed": false,
+   "depot_located": null
+  },
+  "challenges_solved": 0,
+  "territories": 4
+ },
+ "territories": [
+  {
+   "id": "T01",
+   "owner": "GAU",
+   "troops": 5,
+   "troops_range": null,
+   "visibility": "own"
+  },
+  {
+   "id": "T02",
+   "owner": "GAU",
+   "troops": 5,
+   "troops_range": null,
+   "visibility": "own"
+  },
+  {
+   "id": "T03",
+   "owner": "GAU",
+   "troops": 10,
+   "troops_range": null,
+   "visibility": "own"
+  },
+  {
+   "id": "T04",
+   "owner": "GAU",
+   "troops": 5,
+   "troops_range": null,
+   "visibility": "own"
+  },
+  {
+   "id": "T05",
+   "owner": "EUL",
+   "troops": null,
+   "troops_range": null,
+   "visibility": "hidden"
+  },
+  {
+   "id": "T06",
+   "owner": "EUL",
+   "troops": null,
+   "troops_range": null,
+   "visibility": "hidden"
+  },
+  {
+   "id": "T07",
+   "owner": "EUL",
+   "troops": null,
+   "troops_range": null,
+   "visibility": "hidden"
+  },
+  {
+   "id": "T08",
+   "owner": "EUL",
+   "troops": null,
+   "troops_range": "1–5",
+   "visibility": "adjacent"
+  },
+  {
+   "id": "T09",
+   "owner": null,
+   "troops": null,
+   "troops_range": null,
+   "visibility": "hidden"
+  },
+  {
+   "id": "T10",
+   "owner": null,
+   "troops": null,
+   "troops_range": null,
+   "visibility": "hidden"
+  },
+  {
+   "id": "T11",
+   "owner": null,
+   "troops": null,
+   "troops_range": null,
+   "visibility": "hidden"
+  },
+  {
+   "id": "T12",
+   "owner": null,
+   "troops": null,
+   "troops_range": null,
+   "visibility": "hidden"
+  },
+  {
+   "id": "T13",
+   "owner": "HIL",
+   "troops": null,
+   "troops_range": null,
+   "visibility": "hidden"
+  },
+  {
+   "id": "T14",
+   "owner": "HIL",
+   "troops": null,
+   "troops_range": null,
+   "visibility": "hidden"
+  },
+  {
+   "id": "T15",
+   "owner": "HIL",
+   "troops": null,
+   "troops_range": null,
+   "visibility": "hidden"
+  },
+  {
+   "id": "T16",
+   "owner": "HIL",
+   "troops": null,
+   "troops_range": null,
+   "visibility": "hidden"
+  },
+  {
+   "id": "T17",
+   "owner": "NOE",
+   "troops": null,
+   "troops_range": null,
+   "visibility": "hidden"
+  },
+  {
+   "id": "T18",
+   "owner": "NOE",
+   "troops": null,
+   "troops_range": null,
+   "visibility": "hidden"
+  },
+  {
+   "id": "T19",
+   "owner": "NOE",
+   "troops": null,
+   "troops_range": null,
+   "visibility": "hidden"
+  },
+  {
+   "id": "T20",
+   "owner": "NOE",
+   "troops": null,
+   "troops_range": null,
+   "visibility": "hidden"
+  },
+  {
+   "id": "T21",
+   "owner": null,
+   "troops": null,
+   "troops_range": "1–5",
+   "visibility": "adjacent"
+  },
+  {
+   "id": "T22",
+   "owner": null,
+   "troops": null,
+   "troops_range": "6–10",
+   "visibility": "adjacent"
+  },
+  {
+   "id": "T23",
+   "owner": null,
+   "troops": null,
+   "troops_range": null,
+   "visibility": "hidden"
+  },
+  {
+   "id": "T24",
+   "owner": null,
+   "troops": null,
+   "troops_range": null,
+   "visibility": "hidden"
+  },
+  {
+   "id": "T25",
+   "owner": null,
+   "troops": null,
+   "troops_range": "1–5",
+   "visibility": "adjacent"
+  },
+  {
+   "id": "T26",
+   "owner": null,
+   "troops": null,
+   "troops_range": "1–5",
+   "visibility": "adjacent"
+  },
+  {
+   "id": "T27",
+   "owner": null,
+   "troops": null,
+   "troops_range": null,
+   "visibility": "hidden"
+  },
+  {
+   "id": "T28",
+   "owner": null,
+   "troops": null,
+   "troops_range": null,
+   "visibility": "hidden"
+  },
+  {
+   "id": "T29",
+   "owner": null,
+   "troops": null,
+   "troops_range": null,
+   "visibility": "hidden"
+  },
+  {
+   "id": "T30",
+   "owner": null,
+   "troops": null,
+   "troops_range": null,
+   "visibility": "hidden"
+  },
+  {
+   "id": "T31",
+   "owner": null,
+   "troops": null,
+   "troops_range": "1–5",
+   "visibility": "adjacent"
+  },
+  {
+   "id": "T32",
+   "owner": null,
+   "troops": null,
+   "troops_range": null,
+   "visibility": "hidden"
+  },
+  {
+   "id": "T33",
+   "owner": null,
+   "troops": null,
+   "troops_range": null,
+   "visibility": "hidden"
+  },
+  {
+   "id": "T34",
+   "owner": null,
+   "troops": null,
+   "troops_range": null,
+   "visibility": "hidden"
+  }
+ ],
+ "orders": {
+  "intendencia": null,
+  "operacoes": null,
+  "inteligencia": null,
+  "governo": null
+ },
+ "telegrams": [
+  {
+   "id": "tg-1-1",
+   "turn": 1,
+   "at_ms": 1760000000000,
+   "kind": "intercept",
+   "from": "EUL",
+   "title": "INTERCEPTAÇÃO — EULERÂNDIA",
+   "body": "R NQ7G92M7 9T9KLWXNMTRT401M0GNBE9CSW926S1R926WJVTRDTTZG07K",
+   "section": "inteligencia"
+  },
+  {
+   "id": "tg-1-2",
+   "turn": 1,
+   "at_ms": 1760000000000,
+   "kind": "intercept",
+   "from": "HIL",
+   "title": "INTERCEPTAÇÃO — HILBERTÂNIA",
+   "body": "CJNUVMN8XS76WUER8ASJVY166 S64W0NS1YM ZQA0021WB6N 7H1XQDKHSL52OYM0BEL",
+   "section": "inteligencia"
+  },
+  {
+   "id": "tg-1-3",
+   "turn": 1,
+   "at_ms": 1760000000000,
+   "kind": "report",
+   "from": null,
+   "title": "BRIEFING — TURNO 1",
+   "body": "Dossiês do turno 1 disponíveis para as quatro seções. Prazo de 12 min. Telegramas interceptados seguem para a Inteligência.",
+   "section": null
+  },
+  {
+   "id": "tg-1-4",
+   "turn": 1,
+   "at_ms": 1760000360000,
+   "kind": "flash",
+   "from": "NOE",
+   "title": "TELEGRAMA-RELÂMPAGO — NOETHÉRIA",
+   "body": "QUXWFFC5H850Q6LU421JFFTALL734KPFJZE2PXTA3NT4H1LSVO4RQ8PXCUPF11VEH1Q86B73K9UAQG",
+   "section": "inteligencia"
+  },
+  {
+   "id": "tg-2-1",
+   "turn": 2,
+   "at_ms": 1760000720000,
+   "kind": "intercept",
+   "from": "HIL",
+   "title": "INTERCEPTAÇÃO — HILBERTÂNIA",
+   "body": "CJNUVMN8XS76WUER8ASJVY166 S64W0NS1YM ZQA0021WB6N 7H1XQDKHSL52OYM0BEL",
+   "section": "inteligencia"
+  },
+  {
+   "id": "tg-2-2",
+   "turn": 2,
+   "at_ms": 1760000720000,
+   "kind": "intercept",
+   "from": "NOE",
+   "title": "INTERCEPTAÇÃO — NOETHÉRIA",
+   "body": "QUXWFFC5H850Q6LU42OY3W11O8906B3NRILUCULU2GWEUBVI49XKQRC5",
+   "section": "inteligencia"
+  },
+  {
+   "id": "tg-2-3",
+   "turn": 2,
+   "at_ms": 1760000720000,
+   "kind": "report",
+   "from": null,
+   "title": "BRIEFING — TURNO 2",
+   "body": "Dossiês do turno 2 disponíveis para as quatro seções. Prazo de 12 min. Telegramas interceptados seguem para a Inteligência.",
+   "section": null
+  },
+  {
+   "id": "tg-2-4",
+   "turn": 2,
+   "at_ms": 1760001081000,
+   "kind": "flash",
+   "from": "HIL",
+   "title": "TELEGRAMA-RELÂMPAGO — HILBERTÂNIA",
+   "body": "CJNUVMN8XS76WUER8ASJWBVMB2YTEFI8ER PD7O3B2UR2K ZQA0021WB6NLCER6N H3DSGGKU XQDKXM",
+   "section": "inteligencia"
+  }
+ ],
+ "messages": [],
+ "last_report": {
+  "turn": 1,
+  "lines": [
+   "Clima: Norte tempestade, Centro chuva, Sul tempestade.",
+   "Nenhuma ordem do Governo: ração e jornada mantidas, sem propaganda.",
+   "Nenhuma ordem da Intendência: nada foi produzido.",
+   "Manutenção: −12,5 ALI (tropas) −6 ALI (civil).",
+   "Moral: 70 → 69,3 (-0,7).",
+   "Estoque: ALI 21,5, ACO 30, COM 30. Tropas: 25 batalhões em 4 territórios."
+  ]
+ },
+ "game": {
+  "status": "running",
+  "turn": 2,
+  "max_turns": 8,
+  "phase": "planejamento",
+  "deadline_ms": 1760001440000,
+  "remaining_ms": 359000,
+  "turn_ms": 720000,
+  "now_ms": 1760001081000,
+  "n_factions": 4,
+  "winner": null,
+  "end_reason": null
+ },
+ "weather_forecast": null,
+ "weather": {
+  "norte": 2,
+  "centro": 1,
+  "sul": 2
+ },
+ "factions": [
+  {
+   "id": "GAU",
+   "name": "República de Gáussia",
+   "short": "Gáussia",
+   "color": "#2b4a74",
+   "emblem": "∇",
+   "capital": "T03",
+   "capital_name": "Eliminópolis",
+   "capitulated": false,
+   "vp": 6.0,
+   "territories": 4
+  },
+  {
+   "id": "EUL",
+   "name": "Império de Eulerândia",
+   "short": "Eulerândia",
+   "color": "#8c2f23",
+   "emblem": "e",
+   "capital": "T07",
+   "capital_name": "Totiente",
+   "capitulated": false,
+   "vp": 6.0,
+   "territories": 4
+  },
+  {
+   "id": "HIL",
+   "name": "Federação de Hilbertânia",
+   "short": "Hilbertânia",
+   "color": "#4d5b24",
+   "emblem": "⊥",
+   "capital": "T15",
+   "capital_name": "Ortonormal",
+   "capitulated": false,
+   "vp": 6.0,
+   "territories": 4
+  },
+  {
+   "id": "NOE",
+   "name": "Reino de Noethéria",
+   "short": "Noethéria",
+   "color": "#a87a1c",
+   "emblem": "ℛ",
+   "capital": "T19",
+   "capital_name": "Anelópolis",
+   "capitulated": false,
+   "vp": 6.0,
+   "territories": 4
+  }
+ ]
+}

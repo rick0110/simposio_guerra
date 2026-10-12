@@ -15,7 +15,7 @@
      /api/public/state          -> mock/public_state.json   (relógio é "vivo": o prazo é recalculado)
      /api/faction/state         -> mock/faction_state.json
      /api/faction/dossier/X     -> mock/dossier_X.json
-     /api/me                    -> {faction_id:null, admin:false}
+     /api/me                    -> {faction_id:null, admin:false}  (use ?me=GAU para simular sessão)
      /api/server_time           -> hora local
    POSTs em mock retornam {ok:true}.
 
@@ -67,7 +67,7 @@ async function readJSON(res) {
 }
 
 async function mockGet(path) {
-  if (/^\/api\/me/.test(path)) return { faction_id: null, admin: false };
+  if (/^\/api\/me/.test(path)) return { faction_id: new URLSearchParams(location.search).get("me") || null, admin: false };
   if (/^\/api\/server_time/.test(path)) return { now_ms: Date.now() };
   const url = mockUrl(path);
   if (!url) throw makeError(`Mock indisponível para ${path}`, 404);
@@ -102,7 +102,11 @@ export const api = {
     return MOCK ? mockGet(path) : request("GET", path);
   },
   post(path, body = {}) {
-    if (MOCK) return Promise.resolve({ ok: true });
+    if (MOCK) {
+      // no mock, a senha "errada" simula uma recusa do servidor
+      if (path === "/api/login" && body && body.password === "errada") return Promise.reject(makeError("Facção ou senha incorretos.", 401));
+      return Promise.resolve({ ok: true });
+    }
     return request("POST", path, body);
   },
   tool(name, body = {}) {

@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Portão do Quartel-General</title>
+  <link rel="icon" href="data:,">
+  <link rel="stylesheet" href="css/fonts.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/portao.css">
+</head>
+<body class="desk portao">
+
+  <!-- objetos soltos sobre a mesa -->
+  <svg class="obj obj--pencil" viewBox="0 0 420 36" aria-hidden="true">
+    <path d="M6 18 L58 2 H402 a8 8 0 0 1 8 8 V26 a8 8 0 0 1 -8 8 H58 Z" fill="#b98a2c"/>
+    <path d="M58 2 H402 a8 8 0 0 1 8 8 V13 H58 Z" fill="#d6a940"/>
+    <path d="M6 18 L58 2 V34 Z" fill="#e8d3a6"/>
+    <path d="M6 18 L24 12.4 V23.6 Z" fill="#26231b"/>
+    <path d="M380 2 V34" stroke="#7d5a14" stroke-width="3"/>
+    <path d="M388 2 H410 V34 H388 Z" fill="#a3271c"/>
+    <path d="M64 18 H378" stroke="#7d5a14" stroke-width="1.2" opacity=".5"/>
+  </svg>
+  <div class="obj obj--pad" aria-hidden="true"><i></i><b>CARIMBO · TINTA VERMELHA</b></div>
+  <div class="obj obj--ring" aria-hidden="true"></div>
+
+  <main class="gate">
+    <!-- a ficha de credencial -->
+    <section class="card paper clip" id="card" aria-labelledby="card-title">
+      <i class="hole" aria-hidden="true"></i>
+      <header class="card__head">
+        <div class="seal" id="seal" aria-hidden="true"><span class="seal__art" id="seal-art"></span><span class="seal__cap">Selo</span></div>
+        <div class="card__title">
+          <h1 class="stencil" id="card-title">Salvo-Conduto</h1>
+          <div class="card__sub stencil">Quartel-General · Estado-Maior</div>
+        </div>
+        <div class="card__serial typed" id="serial">Nº 0143<small>Emissão: 11 JUN 1943</small></div>
+        <div class="card__rules" aria-hidden="true"></div>
+      </header>
+
+      <div class="card__resume hidden" id="resume" role="status">
+        <div class="resume__who">
+          <span class="emblem emblem--lg" id="resume-emblem" aria-hidden="true"></span>
+          <div class="typed">
+            <div class="resume__lead">Credenciais já apresentadas</div>
+            <strong id="resume-name">Gáussia</strong>
+          </div>
+        </div>
+        <div class="row">
+          <button class="btn btn--blue btn--solid" id="resume-go" type="button">Continuar</button>
+          <button class="btn" id="resume-out" type="button">Sair</button>
+        </div>
+      </div>
+
+      <form id="form" autocomplete="on" novalidate>
+        <fieldset class="nations" id="nations">
+          <legend class="label">1 · Nação (assinale com o carimbo)</legend>
+          <div class="nations__grid" id="nations-grid" role="radiogroup" aria-label="Nação"></div>
+        </fieldset>
+
+        <div class="field pass">
+          <label for="password">2 · Senha (datilografe)</label>
+          <input id="password" name="password" type="password" autocomplete="current-password" spellcheck="false" autocapitalize="off" placeholder="········">
+          <button class="peek" id="peek" type="button" aria-pressed="false">mostrar</button>
+        </div>
+
+        <p class="errors typed" id="error" role="alert" aria-live="assertive"></p>
+
+        <div class="card__actions">
+          <button class="btn btn--stamp btn--solid go" id="go" type="submit">Apresentar credenciais</button>
+          <span class="card__fine typed">Válido até o fim da guerra.<br>Sem rasuras.</span>
+        </div>
+      </form>
+
+      <!-- carimbos que batem sobre a ficha -->
+      <div class="verdict hidden" id="verdict" aria-hidden="true"><span class="stamp stamp--double" id="verdict-stamp">NEGADO</span></div>
+    </section>
+
+    <footer class="tags" aria-label="Outras telas">
+      <a class="tag" id="link-teatro" href="/teatro">Teatro de Operações</a>
+      <a class="tag" id="link-arbitro" href="/arbitro">Árbitro</a>
+    </footer>
+  </main>
+
+  <script type="module" src="js/login.js"></script>
+</body>
+</html>

@@ -1,0 +1,331 @@
+{
+ "game": {
+  "status": "running",
+  "turn": 3,
+  "max_turns": 8,
+  "phase": "planejamento",
+  "deadline_ms": 0,
+  "remaining_ms": 412000,
+  "turn_ms": 720000,
+  "now_ms": 0
+ },
+ "factions": [
+  {
+   "id": "GAU",
+   "name": "República de Gáussia",
+   "short": "Gáussia",
+   "color": "#2b4a74",
+   "emblem": "∇",
+   "capital": "T03",
+   "capitulated": false,
+   "vp": 9.5,
+   "territories": 7
+  },
+  {
+   "id": "EUL",
+   "name": "Império de Eulerândia",
+   "short": "Eulerândia",
+   "color": "#8c2f23",
+   "emblem": "e",
+   "capital": "T07",
+   "capitulated": false,
+   "vp": 8.0,
+   "territories": 6
+  },
+  {
+   "id": "NOE",
+   "name": "Reino de Noethéria",
+   "short": "Noethéria",
+   "color": "#a87a1c",
+   "emblem": "ℛ",
+   "capital": "T15",
+   "capitulated": false,
+   "vp": 8.75,
+   "territories": 7
+  },
+  {
+   "id": "CAU",
+   "name": "Principado de Cauchýria",
+   "short": "Cauchýria",
+   "color": "#5b3a6b",
+   "emblem": "ε",
+   "capital": "T19",
+   "capitulated": false,
+   "vp": 10.25,
+   "territories": 8
+  }
+ ],
+ "territories": [
+  {
+   "id": "T01",
+   "owner": "GAU"
+  },
+  {
+   "id": "T02",
+   "owner": "GAU"
+  },
+  {
+   "id": "T03",
+   "owner": "GAU"
+  },
+  {
+   "id": "T04",
+   "owner": "GAU"
+  },
+  {
+   "id": "T05",
+   "owner": "EUL"
+  },
+  {
+   "id": "T06",
+   "owner": "EUL"
+  },
+  {
+   "id": "T07",
+   "owner": "EUL"
+  },
+  {
+   "id": "T08",
+   "owner": "EUL"
+  },
+  {
+   "id": "T09",
+   "owner": "NOE"
+  },
+  {
+   "id": "T10",
+   "owner": "EUL"
+  },
+  {
+   "id": "T11",
+   "owner": null
+  },
+  {
+   "id": "T12",
+   "owner": "NOE"
+  },
+  {
+   "id": "T13",
+   "owner": "NOE"
+  },
+  {
+   "id": "T14",
+   "owner": "NOE"
+  },
+  {
+   "id": "T15",
+   "owner": "NOE"
+  },
+  {
+   "id": "T16",
+   "owner": "NOE"
+  },
+  {
+   "id": "T17",
+   "owner": "CAU"
+  },
+  {
+   "id": "T18",
+   "owner": "CAU"
+  },
+  {
+   "id": "T19",
+   "owner": "CAU"
+  },
+  {
+   "id": "T20",
+   "owner": "CAU"
+  },
+  {
+   "id": "T21",
+   "owner": null
+  },
+  {
+   "id": "T22",
+   "owner": "GAU"
+  },
+  {
+   "id": "T23",
+   "owner": null
+  },
+  {
+   "id": "T24",
+   "owner": "CAU"
+  },
+  {
+   "id": "T25",
+   "owner": "GAU"
+  },
+  {
+   "id": "T26",
+   "owner": "CAU"
+  },
+  {
+   "id": "T27",
+   "owner": "EUL"
+  },
+  {
+   "id": "T28",
+   "owner": "CAU"
+  },
+  {
+   "id": "T29",
+   "owner": "NOE"
+  },
+  {
+   "id": "T30",
+   "owner": null
+  },
+  {
+   "id": "T31",
+   "owner": "GAU"
+  },
+  {
+   "id": "T32",
+   "owner": "CAU"
+  },
+  {
+   "id": "T33",
+   "owner": null
+  },
+  {
+   "id": "T34",
+   "owner": null
+  }
+ ],
+ "weather": {
+  "norte": 0,
+  "centro": 1,
+  "sul": 2
+ },
+ "news": [
+  {
+   "turn": 2,
+   "kind": "battle",
+   "headline": "EULERÂNDIA TOMA AS SERRAS DE SHERMAN",
+   "body": "Doze batalhões imperiais romperam as linhas noethérias ao amanhecer; o Reino contra-atacou sem êxito. Segundo o comunicado de Totiente, a Serra de Sherman \"já não é terra de ninguém\"."
+  },
+  {
+   "turn": 2,
+   "kind": "capture",
+   "headline": "GÁUSSIA AVANÇA SOBRE O DELTA DE LAPLACE",
+   "body": "Tropas republicanas ocuparam o Delta e a Várzea de Cramer, sem resistência organizada. O Ministério da Guerra fala em \"operação de limpeza\"."
+  },
+  {
+   "turn": 2,
+   "kind": "event",
+   "headline": "GREVE NA SIDERURGIA DE NOETHÉRIA",
+   "body": "Operários do aço cruzaram os braços em Anelópolis. A produção cai à metade até segunda ordem."
+  },
+  {
+   "turn": 2,
+   "kind": "weather",
+   "headline": "TEMPESTADE NO SUL FECHA O MAR",
+   "body": "A Marinha suspendeu as rotas por barca entre as ilhas; ventos de 90 km/h."
+  },
+  {
+   "turn": 2,
+   "kind": "politics",
+   "headline": "PACTO DE NÃO AGRESSÃO ENTRE CAUCHÝRIA E GÁUSSIA",
+   "body": "Os governos assinaram em segredo, segundo fontes diplomáticas, um acordo válido por três turnos."
+  },
+  {
+   "turn": 1,
+   "kind": "capture",
+   "headline": "CAUCHÝRIA OCUPA AS COLINAS DO NÚCLEO",
+   "body": "Primeiro choque da guerra: milícias locais foram dispersas."
+  }
+ ],
+ "last_resolution": {
+  "turn": 2,
+  "battles": [
+   {
+    "from": "T04",
+    "to": "T22",
+    "attacker": "GAU",
+    "defender": null,
+    "att_before": 11,
+    "def_before": 4,
+    "att_after": 8,
+    "def_after": 0,
+    "result": "captured"
+   },
+   {
+    "from": "T02",
+    "to": "T25",
+    "attacker": "GAU",
+    "defender": null,
+    "att_before": 7,
+    "def_before": 5,
+    "att_after": 3,
+    "def_after": 0,
+    "result": "captured"
+   },
+   {
+    "from": "T18",
+    "to": "T26",
+    "attacker": "CAU",
+    "defender": null,
+    "att_before": 9,
+    "def_before": 6,
+    "att_after": 5,
+    "def_after": 0,
+    "result": "captured"
+   },
+   {
+    "from": "T06",
+    "to": "T10",
+    "attacker": "EUL",
+    "defender": "NOE",
+    "att_before": 12,
+    "def_before": 8,
+    "att_after": 9,
+    "def_after": 0,
+    "result": "captured"
+   },
+   {
+    "from": "T16",
+    "to": "T10",
+    "attacker": "NOE",
+    "defender": "EUL",
+    "att_before": 6,
+    "def_before": 9,
+    "att_after": 0,
+    "def_after": 5,
+    "result": "repelled"
+   }
+  ],
+  "moves": [
+   {
+    "from": "T01",
+    "to": "T03",
+    "faction": "GAU",
+    "troops": 4
+   },
+   {
+    "from": "T08",
+    "to": "T07",
+    "faction": "EUL",
+    "troops": 3
+   },
+   {
+    "from": "T14",
+    "to": "T15",
+    "faction": "NOE",
+    "troops": 5
+   },
+   {
+    "from": "T20",
+    "to": "T32",
+    "faction": "CAU",
+    "troops": 2
+   },
+   {
+    "from": "T17",
+    "to": "T19",
+    "faction": "CAU",
+    "troops": 4
+   }
+  ]
+ }
+}

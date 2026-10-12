@@ -1,0 +1,1800 @@
+{
+ "game": {
+  "status": "running",
+  "turn": 2,
+  "max_turns": 8,
+  "phase": "planejamento",
+  "deadline_ms": 1760001440000,
+  "remaining_ms": 359000,
+  "turn_ms": 720000,
+  "now_ms": 1760001081000,
+  "n_factions": 4,
+  "winner": null,
+  "end_reason": null
+ },
+ "seed": 7,
+ "factions": {
+  "GAU": {
+   "id": "GAU",
+   "slot": 0,
+   "password": "cavalo-tambor-83",
+   "stock": {
+    "ALI": 21.5,
+    "ACO": 30.0,
+    "COM": 30.0
+   },
+   "morale": 69.27,
+   "policy": {
+    "racao": 0,
+    "propaganda": 0,
+    "horas": 8
+   },
+   "betas": [
+    0.18899287882062965,
+    -3.4902608246917506,
+    1.334091567059176,
+    -0.8468162187294327,
+    -2.1697539718882615,
+    3.4910005668687853
+   ],
+   "A_clean": [
+    [
+     0.07434789968965877,
+     0.05159119781038391,
+     0.09235613804832941
+    ],
+    [
+     0.12058241407925689,
+     0.08880804093444436,
+     0.0762339817076949
+    ],
+    [
+     0.05363757192582349,
+     0.11097463618082415,
+     0.0213317854482565
+    ]
+   ],
+   "A_prev": [
+    [
+     0.05847890519987311,
+     0.05358774527981878,
+     0.10768945395380797
+    ],
+    [
+     0.12814338264561367,
+     0.09800188318070707,
+     0.08841223329227739
+    ],
+    [
+     0.04928389997566908,
+     0.11742695956047655,
+     0.04110551361512658
+    ]
+   ],
+   "A_turn": [
+    [
+     0.07434789968965877,
+     0.05159119781038391,
+     0.09235613804832941
+    ],
+    [
+     0.12058241407925689,
+     0.08880804093444436,
+     0.0762339817076949
+    ],
+    [
+     0.05363757192582349,
+     0.11097463618082415,
+     0.0213317854482565
+    ]
+   ],
+   "a_damage_next": 0.0,
+   "cipher_key": [
+    [
+     19,
+     30
+    ],
+    [
+     31,
+     24
+    ]
+   ],
+   "cipher_gen": 0,
+   "capitulated": false,
+   "challenges_solved": 0,
+   "pacts": [],
+   "bonuses": {
+    "productivity": false,
+    "weather_revealed": false,
+    "depot_located": null
+   },
+   "last_x": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "last_report": {
+    "turn": 1,
+    "lines": [
+     "Clima: Norte tempestade, Centro chuva, Sul tempestade.",
+     "Nenhuma ordem do Governo: ração e jornada mantidas, sem propaganda.",
+     "Nenhuma ordem da Intendência: nada foi produzido.",
+     "Manutenção: −12,5 ALI (tropas) −6 ALI (civil).",
+     "Moral: 70 → 69,3 (-0,7).",
+     "Estoque: ALI 21,5, ACO 30, COM 30. Tropas: 25 batalhões em 4 territórios."
+    ]
+   },
+   "orders": {
+    "intendencia": null,
+    "operacoes": null,
+    "inteligencia": null,
+    "governo": null
+   },
+   "orders_at": {},
+   "messages": [],
+   "telegrams": [
+    {
+     "id": "tg-1-1",
+     "turn": 1,
+     "at_ms": 1760000000000,
+     "kind": "intercept",
+     "from": "EUL",
+     "title": "INTERCEPTAÇÃO — EULERÂNDIA",
+     "body": "R NQ7G92M7 9T9KLWXNMTRT401M0GNBE9CSW926S1R926WJVTRDTTZG07K",
+     "section": "inteligencia"
+    },
+    {
+     "id": "tg-1-2",
+     "turn": 1,
+     "at_ms": 1760000000000,
+     "kind": "intercept",
+     "from": "HIL",
+     "title": "INTERCEPTAÇÃO — HILBERTÂNIA",
+     "body": "CJNUVMN8XS76WUER8ASJVY166 S64W0NS1YM ZQA0021WB6N 7H1XQDKHSL52OYM0BEL",
+     "section": "inteligencia"
+    },
+    {
+     "id": "tg-1-3",
+     "turn": 1,
+     "at_ms": 1760000000000,
+     "kind": "report",
+     "from": null,
+     "title": "BRIEFING — TURNO 1",
+     "body": "Dossiês do turno 1 disponíveis para as quatro seções. Prazo de 12 min. Telegramas interceptados seguem para a Inteligência.",
+     "section": null
+    },
+    {
+     "id": "tg-1-4",
+     "turn": 1,
+     "at_ms": 1760000360000,
+     "kind": "flash",
+     "from": "NOE",
+     "title": "TELEGRAMA-RELÂMPAGO — NOETHÉRIA",
+     "body": "QUXWFFC5H850Q6LU421JFFTALL734KPFJZE2PXTA3NT4H1LSVO4RQ8PXCUPF11VEH1Q86B73K9UAQG",
+     "section": "inteligencia"
+    },
+    {
+     "id": "tg-2-1",
+     "turn": 2,
+     "at_ms": 1760000720000,
+     "kind": "intercept",
+     "from": "HIL",
+     "title": "INTERCEPTAÇÃO — HILBERTÂNIA",
+     "body": "CJNUVMN8XS76WUER8ASJVY166 S64W0NS1YM ZQA0021WB6N 7H1XQDKHSL52OYM0BEL",
+     "section": "inteligencia"
+    },
+    {
+     "id": "tg-2-2",
+     "turn": 2,
+     "at_ms": 1760000720000,
+     "kind": "intercept",
+     "from": "NOE",
+     "title": "INTERCEPTAÇÃO — NOETHÉRIA",
+     "body": "QUXWFFC5H850Q6LU42OY3W11O8906B3NRILUCULU2GWEUBVI49XKQRC5",
+     "section": "inteligencia"
+    },
+    {
+     "id": "tg-2-3",
+     "turn": 2,
+     "at_ms": 1760000720000,
+     "kind": "report",
+     "from": null,
+     "title": "BRIEFING — TURNO 2",
+     "body": "Dossiês do turno 2 disponíveis para as quatro seções. Prazo de 12 min. Telegramas interceptados seguem para a Inteligência.",
+     "section": null
+    },
+    {
+     "id": "tg-2-4",
+     "turn": 2,
+     "at_ms": 1760001081000,
+     "kind": "flash",
+     "from": "HIL",
+     "title": "TELEGRAMA-RELÂMPAGO — HILBERTÂNIA",
+     "body": "CJNUVMN8XS76WUER8ASJWBVMB2YTEFI8ER PD7O3B2UR2K ZQA0021WB6NLCER6N H3DSGGKU XQDKXM",
+     "section": "inteligencia"
+    }
+   ],
+   "name": "República de Gáussia",
+   "short": "Gáussia",
+   "vp": 6.0,
+   "territories": 4,
+   "troops_total": 25,
+   "capital": "T03",
+   "workforce": 63.1,
+   "capacity": {
+    "ALI": 29.0,
+    "ACO": 25.0,
+    "COM": 16.0
+   },
+   "orders_submitted": {
+    "intendencia": false,
+    "operacoes": false,
+    "inteligencia": false,
+    "governo": false
+   },
+   "telegrams_plain": {
+    "tg-1-1": "URGENTE EULERANDIA TEM 25 BATALHOES E 40 DE ALI EM ESTOQUE",
+    "tg-1-2": "URGENTE HILBERTANIA GUARNECE CAPITAL ORTONORMAL T15 COM 10 BATALHOES",
+    "tg-1-4": "URGENTE NOETHERIA MANTEM 10 BATALHOES EM T19 ANELOPOLIS TOTAL 25 ALI 40 COM 30",
+    "tg-2-1": "URGENTE HILBERTANIA GUARNECE CAPITAL ORTONORMAL T15 COM 10 BATALHOES",
+    "tg-2-2": "URGENTE NOETHERIA MORAL 68 E 4 TERRITORIOS SOB CONTROLE",
+    "tg-2-4": "URGENTE HILBERTANIA MANTEM 10 BATALHOES EM T15 ORTONORMAL TOTAL 25 ALI 22 COM 30"
+   }
+  },
+  "EUL": {
+   "id": "EUL",
+   "slot": 1,
+   "password": "aguia-farol-27",
+   "stock": {
+    "ALI": 21.5,
+    "ACO": 30.0,
+    "COM": 30.0
+   },
+   "morale": 55.31999999999999,
+   "policy": {
+    "racao": 0,
+    "propaganda": 0,
+    "horas": 8
+   },
+   "betas": [
+    -0.5986010431543218,
+    -3.5987865520260094,
+    1.243443572722648,
+    -1.1973860305635469,
+    -1.7549284052973817,
+    1.8089221621228797
+   ],
+   "A_clean": [
+    [
+     0.14452475353598918,
+     0.09224603329455681,
+     0.09653847456134572
+    ],
+    [
+     0.15205899013607216,
+     0.13656449437979282,
+     0.1004918888527517
+    ],
+    [
+     0.06528693967560782,
+     0.04579361852332798,
+     0.055034211703398506
+    ]
+   ],
+   "A_prev": [
+    [
+     0.13755552550479705,
+     0.09336029898162389,
+     0.09297010177782034
+    ],
+    [
+     0.15100177468907233,
+     0.13024794703830908,
+     0.10011170138259634
+    ],
+    [
+     0.05292491484082571,
+     0.041543790623555725,
+     0.05111353546951447
+    ]
+   ],
+   "A_turn": [
+    [
+     0.14452475353598918,
+     0.09224603329455681,
+     0.09653847456134572
+    ],
+    [
+     0.15205899013607216,
+     0.13656449437979282,
+     0.1004918888527517
+    ],
+    [
+     0.06528693967560782,
+     0.04579361852332798,
+     0.055034211703398506
+    ]
+   ],
+   "a_damage_next": 0.0,
+   "cipher_key": [
+    [
+     12,
+     13
+    ],
+    [
+     26,
+     2
+    ]
+   ],
+   "cipher_gen": 0,
+   "capitulated": false,
+   "challenges_solved": 0,
+   "pacts": [],
+   "bonuses": {
+    "productivity": false,
+    "weather_revealed": false,
+    "depot_located": null
+   },
+   "last_x": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "last_report": {
+    "turn": 1,
+    "lines": [
+     "Clima: Norte tempestade, Centro chuva, Sul tempestade.",
+     "Nenhuma ordem do Governo: ração e jornada mantidas, sem propaganda.",
+     "Nenhuma ordem da Intendência: nada foi produzido.",
+     "Manutenção: −12,5 ALI (tropas) −6 ALI (civil).",
+     "Moral: 70 → 67,3 (-2,7).",
+     "Estoque: ALI 21,5, ACO 30, COM 30. Tropas: 25 batalhões em 4 territórios."
+    ]
+   },
+   "orders": {
+    "intendencia": null,
+    "operacoes": null,
+    "inteligencia": null,
+    "governo": null
+   },
+   "orders_at": {},
+   "messages": [],
+   "telegrams": [
+    {
+     "id": "tg-1-1",
+     "turn": 1,
+     "at_ms": 1760000000000,
+     "kind": "intercept",
+     "from": "HIL",
+     "title": "INTERCEPTAÇÃO — HILBERTÂNIA",
+     "body": "CJNUVMN8XS76WUER8ASJVY166 S64W0NS1YM ZQA0021WB6N 7H1XQDKHSL52OYM0BEL",
+     "section": "inteligencia"
+    },
+    {
+     "id": "tg-1-2",
+     "turn": 1,
+     "at_ms": 1760000000000,
+     "kind": "intercept",
+     "from": "NOE",
+     "title": "INTERCEPTAÇÃO — NOETHÉRIA",
+     "body": "QUXWFFC5H850Q6LU42OY3W11ZJ906B3NRILUCULU2GWEUBVI49XKQRC5",
+     "section": "inteligencia"
+    },
+    {
+     "id": "tg-1-3",
+     "turn": 1,
+     "at_ms": 1760000000000,
+     "kind": "report",
+     "from": null,
+     "title": "BRIEFING — TURNO 1",
+     "body": "Dossiês do turno 1 disponíveis para as quatro seções. Prazo de 12 min. Telegramas interceptados seguem para a Inteligência.",
+     "section": null
+    },
+    {
+     "id": "tg-1-4",
+     "turn": 1,
+     "at_ms": 1760000360000,
+     "kind": "flash",
+     "from": "GAU",
+     "title": "TELEGRAMA-RELÂMPAGO — GÁUSSIA",
+     "body": "C3MXDIJ0DB6Q1KHNGCDI3FOZUFT528M2QMQQ3F7S6W12FPYJB CYFPQQEA285VTVSGFP4XUFO2NP G",
+     "section": "inteligencia"
+    },
+    {
+     "id": "tg-2-1",
+     "turn": 2,
+     "at_ms": 1760000720000,
+     "kind": "intercept",
+     "from": "NOE",
+     "title": "INTERCEPTAÇÃO — NOETHÉRIA",
+     "body": "QUXWFFC5H850Q6LU42OY3W11O8906B3NRILUCULU2GWEUBVI49XKQRC5",
+     "section": "inteligencia"
+    },
+    {
+     "id": "tg-2-2",
+     "turn": 2,
+     "at_ms": 1760000720000,
+     "kind": "intercept",
+     "from": "GAU",
+     "title": "INTERCEPTAÇÃO — GÁUSSIA",
+     "body": "C3MXDIJ0DB6Q1KHNO2LHW3U9HN9SL4PM8F99YB12NP53DY S5SYFNRE60O",
+     "section": "inteligencia"
+    },
+    {
+     "id": "tg-2-3",
+     "turn": 2,
+     "at_ms": 1760000720000,
+     "kind": "report",
+     "from": null,
+     "title": "BRIEFING — TURNO 2",
+     "body": "Dossiês do turno 2 disponíveis para as quatro seções. Prazo de 12 min. Telegramas interceptados seguem para a Inteligência.",
+     "section": null
+    },
+    {
+     "id": "tg-2-4",
+     "turn": 2,
+     "at_ms": 1760001081000,
+     "kind": "flash",
+     "from": "NOE",
+     "title": "TELEGRAMA-RELÂMPAGO — NOETHÉRIA",
+     "body": "QUXWFFC5H850Q6LU421JFFTALL734KPFJZE2PXTA3NT4H1LSVO4RQ8PXCUPF11VEH1Q8SUTMK9UAQG",
+     "section": "inteligencia"
+    }
+   ],
+   "name": "Império de Eulerândia",
+   "short": "Eulerândia",
+   "vp": 6.0,
+   "territories": 4,
+   "troops_total": 25,
+   "capital": "T07",
+   "workforce": 59.1,
+   "capacity": {
+    "ALI": 35.0,
+    "ACO": 19.0,
+    "COM": 16.0
+   },
+   "orders_submitted": {
+    "intendencia": false,
+    "operacoes": false,
+    "inteligencia": false,
+    "governo": false
+   },
+   "telegrams_plain": {
+    "tg-1-1": "URGENTE HILBERTANIA GUARNECE CAPITAL ORTONORMAL T15 COM 10 BATALHOES",
+    "tg-1-2": "URGENTE NOETHERIA MORAL 70 E 4 TERRITORIOS SOB CONTROLE",
+    "tg-1-4": "URGENTE GAUSSIA MANTEM 10 BATALHOES EM T03 ELIMINOPOLIS TOTAL 25 ALI 40 COM 30",
+    "tg-2-1": "URGENTE NOETHERIA MORAL 68 E 4 TERRITORIOS SOB CONTROLE",
+    "tg-2-2": "URGENTE GAUSSIA CONCENTRA 10 BATALHOES EM T03 ELIMINOPOLIS",
+    "tg-2-4": "URGENTE NOETHERIA MANTEM 10 BATALHOES EM T19 ANELOPOLIS TOTAL 25 ALI 22 COM 30"
+   }
+  },
+  "HIL": {
+   "id": "HIL",
+   "slot": 3,
+   "password": "ancora-bosque-46",
+   "stock": {
+    "ALI": 21.5,
+    "ACO": 30.0,
+    "COM": 30.0
+   },
+   "morale": 69.29,
+   "policy": {
+    "racao": 0,
+    "propaganda": 0,
+    "horas": 8
+   },
+   "betas": [
+    -0.33952979921771864,
+    -2.8200166139787797,
+    1.5260675045958214,
+    -0.7534023934481675,
+    -1.9853246342808175,
+    1.8015760383367374
+   ],
+   "A_clean": [
+    [
+     0.06917782810000651,
+     0.18084715076787583,
+     0.06719583345658785
+    ],
+    [
+     0.09598831412950859,
+     0.12369301031721018,
+     0.158607198011017
+    ],
+    [
+     0.06388694745813882,
+     0.0659177094724179,
+     0.10621450637104872
+    ]
+   ],
+   "A_prev": [
+    [
+     0.06507915892318095,
+     0.19541352819356303,
+     0.06884219097462504
+    ],
+    [
+     0.09858147902500357,
+     0.12161754310560534,
+     0.17219413965397992
+    ],
+    [
+     0.04754579968920971,
+     0.06487382283085263,
+     0.11832768177755545
+    ]
+   ],
+   "A_turn": [
+    [
+     0.06917782810000651,
+     0.18084715076787583,
+     0.06719583345658785
+    ],
+    [
+     0.09598831412950859,
+     0.12369301031721018,
+     0.158607198011017
+    ],
+    [
+     0.06388694745813882,
+     0.0659177094724179,
+     0.10621450637104872
+    ]
+   ],
+   "a_damage_next": 0.0,
+   "cipher_key": [
+    [
+     8,
+     19
+    ],
+    [
+     34,
+     28
+    ]
+   ],
+   "cipher_gen": 0,
+   "capitulated": false,
+   "challenges_solved": 0,
+   "pacts": [],
+   "bonuses": {
+    "productivity": false,
+    "weather_revealed": false,
+    "depot_located": null
+   },
+   "last_x": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "last_report": {
+    "turn": 1,
+    "lines": [
+     "Clima: Norte tempestade, Centro chuva, Sul tempestade.",
+     "Nenhuma ordem do Governo: ração e jornada mantidas, sem propaganda.",
+     "Nenhuma ordem da Intendência: nada foi produzido.",
+     "Manutenção: −12,5 ALI (tropas) −6 ALI (civil).",
+     "Moral: 70 → 69,3 (-0,7).",
+     "Estoque: ALI 21,5, ACO 30, COM 30. Tropas: 25 batalhões em 4 territórios."
+    ]
+   },
+   "orders": {
+    "intendencia": null,
+    "operacoes": null,
+    "inteligencia": null,
+    "governo": null
+   },
+   "orders_at": {},
+   "messages": [],
+   "telegrams": [
+    {
+     "id": "tg-1-1",
+     "turn": 1,
+     "at_ms": 1760000000000,
+     "kind": "intercept",
+     "from": "NOE",
+     "title": "INTERCEPTAÇÃO — NOETHÉRIA",
+     "body": "QUXWFFC5H850Q6LU42OY3W11ZJ906B3NRILUCULU2GWEUBVI49XKQRC5",
+     "section": "inteligencia"
+    },
+    {
+     "id": "tg-1-2",
+     "turn": 1,
+     "at_ms": 1760000000000,
+     "kind": "intercept",
+     "from": "GAU",
+     "title": "INTERCEPTAÇÃO — GÁUSSIA",
+     "body": "C3MXDIJ0DB6Q1KHNO2LHW3U9HN9SL4PM8F99YB12NP53DY S5SYFNRE60O",
+     "section": "inteligencia"
+    },
+    {
+     "id": "tg-1-3",
+     "turn": 1,
+     "at_ms": 1760000000000,
+     "kind": "report",
+     "from": null,
+     "title": "BRIEFING — TURNO 1",
+     "body": "Dossiês do turno 1 disponíveis para as quatro seções. Prazo de 12 min. Telegramas interceptados seguem para a Inteligência.",
+     "section": null
+    },
+    {
+     "id": "tg-1-4",
+     "turn": 1,
+     "at_ms": 1760000360000,
+     "kind": "flash",
+     "from": "EUL",
+     "title": "TELEGRAMA-RELÂMPAGO — EULERÂNDIA",
+     "body": "R NQ7G92M7 9T9KLWX79V0VVUO7OBNZB6WHZX3DTUOL2NFDE 36TVVNMI66WT4016WJV6SOP2S66DI",
+     "section": "inteligencia"
+    },
+    {
+     "id": "tg-2-1",
+     "turn": 2,
+     "at_ms": 1760000720000,
+     "kind": "intercept",
+     "from": "GAU",
+     "title": "INTERCEPTAÇÃO — GÁUSSIA",
+     "body": "C3MXDIJ0DB6Q1KHNO2LHW3U9HN9SL4PM8F99YB12NP53DY S5SYFNRE60O",
+     "section": "inteligencia"
+    },
+    {
+     "id": "tg-2-2",
+     "turn": 2,
+     "at_ms": 1760000720000,
+     "kind": "intercept",
+     "from": "EUL",
+     "title": "INTERCEPTAÇÃO — EULERÂNDIA",
+     "body": "R NQ7G92M7 9T9KLWXNMTRT401M0GNBE9CSW92U31R920EH3TRDTTZG07K",
+     "section": "inteligencia"
+    },
+    {
+     "id": "tg-2-3",
+     "turn": 2,
+     "at_ms": 1760000720000,
+     "kind": "report",
+     "from": null,
+     "title": "BRIEFING — TURNO 2",
+     "body": "Dossiês do turno 2 disponíveis para as quatro seções. Prazo de 12 min. Telegramas interceptados seguem para a Inteligência.",
+     "section": null
+    },
+    {
+     "id": "tg-2-4",
+     "turn": 2,
+     "at_ms": 1760001081000,
+     "kind": "flash",
+     "from": "GAU",
+     "title": "TELEGRAMA-RELÂMPAGO — GÁUSSIA",
+     "body": "C3MXDIJ0DB6Q1KHNGCDI3FOZUFT528M2QMQQ3F7S6W12FPYJB CYFPQQEA285VTVSGFPHMV4O2NP G",
+     "section": "inteligencia"
+    }
+   ],
+   "name": "Federação de Hilbertânia",
+   "short": "Hilbertânia",
+   "vp": 6.0,
+   "territories": 4,
+   "troops_total": 25,
+   "capital": "T15",
+   "workforce": 63.2,
+   "capacity": {
+    "ALI": 33.0,
+    "ACO": 16.0,
+    "COM": 22.0
+   },
+   "orders_submitted": {
+    "intendencia": false,
+    "operacoes": false,
+    "inteligencia": false,
+    "governo": false
+   },
+   "telegrams_plain": {
+    "tg-1-1": "URGENTE NOETHERIA MORAL 70 E 4 TERRITORIOS SOB CONTROLE",
+    "tg-1-2": "URGENTE GAUSSIA CONCENTRA 10 BATALHOES EM T03 ELIMINOPOLIS",
+    "tg-1-4": "URGENTE EULERANDIA MANTEM 10 BATALHOES EM T07 TOTIENTE TOTAL 25 ALI 40 COM 30",
+    "tg-2-1": "URGENTE GAUSSIA CONCENTRA 10 BATALHOES EM T03 ELIMINOPOLIS",
+    "tg-2-2": "URGENTE EULERANDIA TEM 25 BATALHOES E 30 DE ACO EM ESTOQUE",
+    "tg-2-4": "URGENTE GAUSSIA MANTEM 10 BATALHOES EM T03 ELIMINOPOLIS TOTAL 25 ALI 22 COM 30"
+   }
+  },
+  "NOE": {
+   "id": "NOE",
+   "slot": 4,
+   "password": "ancora-ferro-26",
+   "stock": {
+    "ALI": 21.5,
+    "ACO": 30.0,
+    "COM": 30.0
+   },
+   "morale": 67.56,
+   "policy": {
+    "racao": 0,
+    "propaganda": 0,
+    "horas": 8
+   },
+   "betas": [
+    -0.9429140699631413,
+    -2.7168565895550385,
+    1.4836331293685694,
+    -0.9365985147090559,
+    -2.3835670767643053,
+    1.9789784253636897
+   ],
+   "A_clean": [
+    [
+     0.06549024237349262,
+     0.08795689034024917,
+     0.11780695708617009
+    ],
+    [
+     0.13147726982922578,
+     0.03599907759700646,
+     0.15937578353783954
+    ],
+    [
+     0.05095692434797511,
+     0.03751856165877659,
+     0.09381969860881198
+    ]
+   ],
+   "A_prev": [
+    [
+     0.08257911200928099,
+     0.09076976327745585,
+     0.11870371121543474
+    ],
+    [
+     0.13866019068896968,
+     0.03507793931776723,
+     0.16578754121023515
+    ],
+    [
+     0.04544034183091212,
+     0.044763979842665426,
+     0.09420470085986123
+    ]
+   ],
+   "A_turn": [
+    [
+     0.06549024237349262,
+     0.08795689034024917,
+     0.11780695708617009
+    ],
+    [
+     0.13147726982922578,
+     0.03599907759700646,
+     0.15937578353783954
+    ],
+    [
+     0.05095692434797511,
+     0.03751856165877659,
+     0.09381969860881198
+    ]
+   ],
+   "a_damage_next": 0.0,
+   "cipher_key": [
+    [
+     30,
+     7
+    ],
+    [
+     10,
+     9
+    ]
+   ],
+   "cipher_gen": 0,
+   "capitulated": false,
+   "challenges_solved": 0,
+   "pacts": [],
+   "bonuses": {
+    "productivity": false,
+    "weather_revealed": false,
+    "depot_located": null
+   },
+   "last_x": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "last_report": {
+    "turn": 1,
+    "lines": [
+     "Clima: Norte tempestade, Centro chuva, Sul tempestade.",
+     "Nenhuma ordem do Governo: ração e jornada mantidas, sem propaganda.",
+     "Nenhuma ordem da Intendência: nada foi produzido.",
+     "Manutenção: −12,5 ALI (tropas) −6 ALI (civil).",
+     "Moral: 70 → 67,6 (-2,4).",
+     "Estoque: ALI 21,5, ACO 30, COM 30. Tropas: 25 batalhões em 4 territórios."
+    ]
+   },
+   "orders": {
+    "intendencia": null,
+    "operacoes": null,
+    "inteligencia": null,
+    "governo": null
+   },
+   "orders_at": {},
+   "messages": [],
+   "telegrams": [
+    {
+     "id": "tg-1-1",
+     "turn": 1,
+     "at_ms": 1760000000000,
+     "kind": "intercept",
+     "from": "GAU",
+     "title": "INTERCEPTAÇÃO — GÁUSSIA",
+     "body": "C3MXDIJ0DB6Q1KHNO2LHW3U9HN9SL4PM8F99YB12NP53DY S5SYFNRE60O",
+     "section": "inteligencia"
+    },
+    {
+     "id": "tg-1-2",
+     "turn": 1,
+     "at_ms": 1760000000000,
+     "kind": "intercept",
+     "from": "EUL",
+     "title": "INTERCEPTAÇÃO — EULERÂNDIA",
+     "body": "R NQ7G92M7 9T9KLWXNMTRT401M0GNBE9CSW926S1R926WJVTRDTTZG07K",
+     "section": "inteligencia"
+    },
+    {
+     "id": "tg-1-3",
+     "turn": 1,
+     "at_ms": 1760000000000,
+     "kind": "report",
+     "from": null,
+     "title": "BRIEFING — TURNO 1",
+     "body": "Dossiês do turno 1 disponíveis para as quatro seções. Prazo de 12 min. Telegramas interceptados seguem para a Inteligência.",
+     "section": null
+    },
+    {
+     "id": "tg-1-4",
+     "turn": 1,
+     "at_ms": 1760000360000,
+     "kind": "flash",
+     "from": "HIL",
+     "title": "TELEGRAMA-RELÂMPAGO — HILBERTÂNIA",
+     "body": "CJNUVMN8XS76WUER8ASJWBVMB2YTEFI8ER PD7O3B2UR2K ZQA0021WB6NLCER6N H3DSGH3EFXQDKXM",
+     "section": "inteligencia"
+    },
+    {
+     "id": "tg-2-1",
+     "turn": 2,
+     "at_ms": 1760000720000,
+     "kind": "intercept",
+     "from": "EUL",
+     "title": "INTERCEPTAÇÃO — EULERÂNDIA",
+     "body": "R NQ7G92M7 9T9KLWXNMTRT401M0GNBE9CSW92U31R920EH3TRDTTZG07K",
+     "section": "inteligencia"
+    },
+    {
+     "id": "tg-2-2",
+     "turn": 2,
+     "at_ms": 1760000720000,
+     "kind": "intercept",
+     "from": "HIL",
+     "title": "INTERCEPTAÇÃO — HILBERTÂNIA",
+     "body": "CJNUVMN8XS76WUER8ASJVY166 S64W0NS1YM ZQA0021WB6N 7H1XQDKHSL52OYM0BEL",
+     "section": "inteligencia"
+    },
+    {
+     "id": "tg-2-3",
+     "turn": 2,
+     "at_ms": 1760000720000,
+     "kind": "report",
+     "from": null,
+     "title": "BRIEFING — TURNO 2",
+     "body": "Dossiês do turno 2 disponíveis para as quatro seções. Prazo de 12 min. Telegramas interceptados seguem para a Inteligência.",
+     "section": null
+    },
+    {
+     "id": "tg-2-4",
+     "turn": 2,
+     "at_ms": 1760001081000,
+     "kind": "flash",
+     "from": "EUL",
+     "title": "TELEGRAMA-RELÂMPAGO — EULERÂNDIA",
+     "body": "R NQ7G92M7 9T9KLWX79V0VVUO7OBNZB6WHZX3DTUOL2NFDE 36TVVNMI66WT4016WJV8HOP2S66DI",
+     "section": "inteligencia"
+    }
+   ],
+   "name": "Reino de Noethéria",
+   "short": "Noethéria",
+   "vp": 6.0,
+   "territories": 4,
+   "troops_total": 25,
+   "capital": "T19",
+   "workforce": 62.7,
+   "capacity": {
+    "ALI": 27.0,
+    "ACO": 26.0,
+    "COM": 18.0
+   },
+   "orders_submitted": {
+    "intendencia": false,
+    "operacoes": false,
+    "inteligencia": false,
+    "governo": false
+   },
+   "telegrams_plain": {
+    "tg-1-1": "URGENTE GAUSSIA CONCENTRA 10 BATALHOES EM T03 ELIMINOPOLIS",
+    "tg-1-2": "URGENTE EULERANDIA TEM 25 BATALHOES E 40 DE ALI EM ESTOQUE",
+    "tg-1-4": "URGENTE HILBERTANIA MANTEM 10 BATALHOES EM T15 ORTONORMAL TOTAL 25 ALI 40 COM 30",
+    "tg-2-1": "URGENTE EULERANDIA TEM 25 BATALHOES E 30 DE ACO EM ESTOQUE",
+    "tg-2-2": "URGENTE HILBERTANIA GUARNECE CAPITAL ORTONORMAL T15 COM 10 BATALHOES",
+    "tg-2-4": "URGENTE EULERANDIA MANTEM 10 BATALHOES EM T07 TOTIENTE TOTAL 25 ALI 22 COM 30"
+   }
+  }
+ },
+ "credentials": {
+  "GAU": "cavalo-tambor-83",
+  "EUL": "aguia-farol-27",
+  "HIL": "ancora-bosque-46",
+  "NOE": "ancora-ferro-26"
+ },
+ "territories": [
+  {
+   "id": "T01",
+   "name": "Cabo Cholesky",
+   "owner": "GAU",
+   "troops": 5,
+   "terrain": "floresta"
+  },
+  {
+   "id": "T02",
+   "name": "Serra de Schmidt",
+   "owner": "GAU",
+   "troops": 5,
+   "terrain": "montanha"
+  },
+  {
+   "id": "T03",
+   "name": "Eliminópolis",
+   "owner": "GAU",
+   "troops": 10,
+   "terrain": "urbano"
+  },
+  {
+   "id": "T04",
+   "name": "Planície de Gram",
+   "owner": "GAU",
+   "troops": 5,
+   "terrain": "planicie"
+  },
+  {
+   "id": "T05",
+   "name": "Campos de Gershgorin",
+   "owner": "EUL",
+   "troops": 5,
+   "terrain": "planicie"
+  },
+  {
+   "id": "T06",
+   "name": "Pradaria Perron",
+   "owner": "EUL",
+   "troops": 5,
+   "terrain": "planicie"
+  },
+  {
+   "id": "T07",
+   "name": "Totiente",
+   "owner": "EUL",
+   "troops": 10,
+   "terrain": "urbano"
+  },
+  {
+   "id": "T08",
+   "name": "Floresta de Frobenius",
+   "owner": "EUL",
+   "troops": 5,
+   "terrain": "floresta"
+  },
+  {
+   "id": "T09",
+   "name": "Várzea de Gauss-Seidel",
+   "owner": null,
+   "troops": 6,
+   "terrain": "planicie"
+  },
+  {
+   "id": "T10",
+   "name": "Serra de Sherman",
+   "owner": null,
+   "troops": 5,
+   "terrain": "montanha"
+  },
+  {
+   "id": "T11",
+   "name": "Vila Hermite",
+   "owner": null,
+   "troops": 5,
+   "terrain": "urbano"
+  },
+  {
+   "id": "T12",
+   "name": "Charneca de Cayley",
+   "owner": null,
+   "troops": 6,
+   "terrain": "floresta"
+  },
+  {
+   "id": "T13",
+   "name": "Pântano de Householder",
+   "owner": "HIL",
+   "troops": 5,
+   "terrain": "pantano"
+  },
+  {
+   "id": "T14",
+   "name": "Planura Rayleigh",
+   "owner": "HIL",
+   "troops": 5,
+   "terrain": "planicie"
+  },
+  {
+   "id": "T15",
+   "name": "Ortonormal",
+   "owner": "HIL",
+   "troops": 10,
+   "terrain": "urbano"
+  },
+  {
+   "id": "T16",
+   "name": "Chapada Jacobi",
+   "owner": "HIL",
+   "troops": 5,
+   "terrain": "planicie"
+  },
+  {
+   "id": "T17",
+   "name": "Planalto de Lanczos",
+   "owner": "NOE",
+   "troops": 5,
+   "terrain": "planicie"
+  },
+  {
+   "id": "T18",
+   "name": "Colinas de Krylov",
+   "owner": "NOE",
+   "troops": 5,
+   "terrain": "montanha"
+  },
+  {
+   "id": "T19",
+   "name": "Anelópolis",
+   "owner": "NOE",
+   "troops": 10,
+   "terrain": "urbano"
+  },
+  {
+   "id": "T20",
+   "name": "Baía de Givens",
+   "owner": "NOE",
+   "troops": 5,
+   "terrain": "floresta"
+  },
+  {
+   "id": "T21",
+   "name": "Brejo Arnoldi",
+   "owner": null,
+   "troops": 5,
+   "terrain": "pantano"
+  },
+  {
+   "id": "T22",
+   "name": "Vale de Cramer",
+   "owner": null,
+   "troops": 6,
+   "terrain": "planicie"
+  },
+  {
+   "id": "T23",
+   "name": "Ribeira Vandermonde",
+   "owner": null,
+   "troops": 6,
+   "terrain": "urbano"
+  },
+  {
+   "id": "T24",
+   "name": "Campina do Pivô",
+   "owner": null,
+   "troops": 3,
+   "terrain": "planicie"
+  },
+  {
+   "id": "T25",
+   "name": "Delta de Laplace",
+   "owner": null,
+   "troops": 3,
+   "terrain": "pantano"
+  },
+  {
+   "id": "T26",
+   "name": "Montes do Núcleo",
+   "owner": null,
+   "troops": 4,
+   "terrain": "montanha"
+  },
+  {
+   "id": "T27",
+   "name": "Desfiladeiro de Schur",
+   "owner": null,
+   "troops": 4,
+   "terrain": "montanha"
+  },
+  {
+   "id": "T28",
+   "name": "Monte Posto",
+   "owner": null,
+   "troops": 6,
+   "terrain": "montanha"
+  },
+  {
+   "id": "T29",
+   "name": "Recife de Moore",
+   "owner": null,
+   "troops": 6,
+   "terrain": "floresta"
+  },
+  {
+   "id": "T30",
+   "name": "Monte Toeplitz",
+   "owner": null,
+   "troops": 3,
+   "terrain": "montanha"
+  },
+  {
+   "id": "T31",
+   "name": "Ponta Penrose",
+   "owner": null,
+   "troops": 4,
+   "terrain": "floresta"
+  },
+  {
+   "id": "T32",
+   "name": "Ilha de Sylvester",
+   "owner": null,
+   "troops": 6,
+   "terrain": "planicie"
+  },
+  {
+   "id": "T33",
+   "name": "Costa de Ritz",
+   "owner": null,
+   "troops": 3,
+   "terrain": "floresta"
+  },
+  {
+   "id": "T34",
+   "name": "Ilha do Traço",
+   "owner": null,
+   "troops": 6,
+   "terrain": "planicie"
+  }
+ ],
+ "climate": {
+  "norte": {
+   "P": [
+    [
+     0.5966162778196148,
+     0.38646447534918293,
+     0.0169192468312023
+    ],
+    [
+     0.1685804981443268,
+     0.6699616817532018,
+     0.1614578201024714
+    ],
+    [
+     0.13882003676078472,
+     0.15713266604633463,
+     0.7040472971928806
+    ]
+   ],
+   "diary": [
+    1,
+    1,
+    2,
+    2,
+    2,
+    1,
+    2,
+    2,
+    2,
+    2,
+    2,
+    2,
+    2,
+    2,
+    2,
+    2,
+    2,
+    2,
+    0,
+    0,
+    0,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    2,
+    2,
+    2,
+    1,
+    0,
+    0,
+    1,
+    2,
+    0,
+    1,
+    1,
+    1,
+    1,
+    1,
+    2,
+    2,
+    2,
+    2
+   ],
+   "next": 2
+  },
+  "centro": {
+   "P": [
+    [
+     0.6723291643648996,
+     0.31418572575497833,
+     0.013485109880122059
+    ],
+    [
+     0.23354138620798892,
+     0.5940308882242913,
+     0.17242772556771976
+    ],
+    [
+     0.0255933634416072,
+     0.2689103994076701,
+     0.7054962371507227
+    ]
+   ],
+   "diary": [
+    1,
+    2,
+    2,
+    2,
+    1,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    1,
+    0,
+    0,
+    1,
+    1,
+    1,
+    1,
+    1,
+    0,
+    0,
+    0,
+    1,
+    2,
+    2,
+    1,
+    1,
+    1,
+    0,
+    0,
+    1,
+    1,
+    2,
+    2,
+    1,
+    1,
+    2,
+    1,
+    1,
+    1,
+    1,
+    1
+   ],
+   "next": 1
+  },
+  "sul": {
+   "P": [
+    [
+     0.48368598716981526,
+     0.20399521085424027,
+     0.31231880197594447
+    ],
+    [
+     0.2267502289358091,
+     0.738359921150705,
+     0.03488984991348584
+    ],
+    [
+     0.19729608291858639,
+     0.0999873505571198,
+     0.7027165665242938
+    ]
+   ],
+   "diary": [
+    0,
+    1,
+    0,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    0,
+    0,
+    0,
+    1,
+    1,
+    1,
+    1,
+    1,
+    0,
+    0,
+    0,
+    0,
+    0,
+    2,
+    2,
+    2,
+    0,
+    2,
+    0,
+    0,
+    0,
+    0,
+    2,
+    1,
+    1,
+    1,
+    1,
+    0,
+    0,
+    2,
+    2,
+    2,
+    0,
+    2,
+    2,
+    2
+   ],
+   "next": 2
+  }
+ },
+ "depots": {
+  "GAU": {
+   "territory": "T03",
+   "point": [
+    475.2,
+    171.4
+   ]
+  },
+  "EUL": {
+   "territory": "T06",
+   "point": [
+    723.5,
+    256.4
+   ]
+  },
+  "HIL": {
+   "territory": "T16",
+   "point": [
+    916.8,
+    562.4
+   ]
+  },
+  "NOE": {
+   "territory": "T17",
+   "point": [
+    339.3,
+    521.0
+   ]
+  }
+ },
+ "challenge_keys": {
+  "GAU": {
+   "c2-intendencia": {
+    "kind": "leontief",
+    "x": [
+     22.69702012811925,
+     8.48332676832784,
+     8.460234334390433
+    ],
+    "d": [
+     20.0,
+     4.0,
+     6.0
+    ]
+   },
+   "c2-operacoes": {
+    "kind": "markov",
+    "p": 0.2,
+    "region": "centro",
+    "state": 1
+   },
+   "c2-inteligencia": {
+    "kind": "depot",
+    "est": [
+     919.0909228578817,
+     537.0890746153553
+    ],
+    "territory": "T16",
+    "target": "HIL",
+    "true": [
+     916.8,
+     562.4
+    ]
+   },
+   "c2-governo": {
+    "kind": "ols",
+    "beta": 1.1140668913905045
+   }
+  },
+  "EUL": {
+   "c2-intendencia": {
+    "kind": "leontief",
+    "x": [
+     25.28468479269254,
+     13.143225384732268,
+     6.189172887289283
+    ],
+    "d": [
+     20.0,
+     7.0,
+     4.0
+    ]
+   },
+   "c2-operacoes": {
+    "kind": "markov",
+    "p": 0.6,
+    "region": "sul",
+    "state": 2
+   },
+   "c2-inteligencia": {
+    "kind": "depot",
+    "est": [
+     331.37298067419897,
+     528.4608310552326
+    ],
+    "territory": "T17",
+    "target": "NOE",
+    "true": [
+     339.3,
+     521.0
+    ]
+   },
+   "c2-governo": {
+    "kind": "ols",
+    "beta": 1.4475318316427648
+   }
+  },
+  "HIL": {
+   "c2-intendencia": {
+    "kind": "leontief",
+    "x": [
+     24.673801216745186,
+     12.505115127891964,
+     9.051585529502184
+    ],
+    "d": [
+     20.0,
+     7.0,
+     6.0
+    ]
+   },
+   "c2-operacoes": {
+    "kind": "markov",
+    "p": 0.8181818181818182,
+    "region": "norte",
+    "state": 2
+   },
+   "c2-inteligencia": {
+    "kind": "depot",
+    "est": [
+     471.5555254957528,
+     170.32691945411202
+    ],
+    "territory": "T03",
+    "target": "GAU",
+    "true": [
+     475.2,
+     171.4
+    ]
+   },
+   "c2-governo": {
+    "kind": "ols",
+    "beta": 1.6865695987880338
+   }
+  },
+  "NOE": {
+   "c2-intendencia": {
+    "kind": "leontief",
+    "x": [
+     23.880348382062024,
+     10.047990618189516,
+     8.313518478820356
+    ],
+    "d": [
+     20.0,
+     5.0,
+     6.0
+    ]
+   },
+   "c2-operacoes": {
+    "kind": "markov",
+    "p": 0.2,
+    "region": "centro",
+    "state": 1
+   },
+   "c2-inteligencia": {
+    "kind": "depot",
+    "est": [
+     724.372793163668,
+     267.6640652899998
+    ],
+    "territory": "T06",
+    "target": "EUL",
+    "true": [
+     723.5,
+     256.4
+    ]
+   },
+   "c2-governo": {
+    "kind": "ols",
+    "beta": 1.3549556752006806
+   }
+  }
+ },
+ "challenge_state": {
+  "GAU": {
+   "c2-intendencia": {
+    "attempts_left": 3,
+    "solved": false
+   },
+   "c2-operacoes": {
+    "attempts_left": 3,
+    "solved": false
+   },
+   "c2-inteligencia": {
+    "attempts_left": 3,
+    "solved": false
+   },
+   "c2-governo": {
+    "attempts_left": 3,
+    "solved": false
+   }
+  },
+  "EUL": {
+   "c2-intendencia": {
+    "attempts_left": 3,
+    "solved": false
+   },
+   "c2-operacoes": {
+    "attempts_left": 3,
+    "solved": false
+   },
+   "c2-inteligencia": {
+    "attempts_left": 3,
+    "solved": false
+   },
+   "c2-governo": {
+    "attempts_left": 3,
+    "solved": false
+   }
+  },
+  "HIL": {
+   "c2-intendencia": {
+    "attempts_left": 3,
+    "solved": false
+   },
+   "c2-operacoes": {
+    "attempts_left": 3,
+    "solved": false
+   },
+   "c2-inteligencia": {
+    "attempts_left": 3,
+    "solved": false
+   },
+   "c2-governo": {
+    "attempts_left": 3,
+    "solved": false
+   }
+  },
+  "NOE": {
+   "c2-intendencia": {
+    "attempts_left": 3,
+    "solved": false
+   },
+   "c2-operacoes": {
+    "attempts_left": 3,
+    "solved": false
+   },
+   "c2-inteligencia": {
+    "attempts_left": 3,
+    "solved": false
+   },
+   "c2-governo": {
+    "attempts_left": 3,
+    "solved": false
+   }
+  }
+ },
+ "effects": [],
+ "event_log": [
+  {
+   "turn": 2,
+   "id": "motim",
+   "name": "Motim nas tropas"
+  }
+ ],
+ "proposals": [],
+ "history": [
+  {
+   "turn": 1,
+   "battles": 0,
+   "captures": 0,
+   "troops": {
+    "GAU": 25,
+    "EUL": 25,
+    "HIL": 25,
+    "NOE": 25
+   },
+   "stock": {
+    "GAU": {
+     "ALI": 21.5,
+     "ACO": 30.0,
+     "COM": 30.0
+    },
+    "EUL": {
+     "ALI": 21.5,
+     "ACO": 30.0,
+     "COM": 30.0
+    },
+    "HIL": {
+     "ALI": 21.5,
+     "ACO": 30.0,
+     "COM": 30.0
+    },
+    "NOE": {
+     "ALI": 21.5,
+     "ACO": 30.0,
+     "COM": 30.0
+    }
+   },
+   "morale": {
+    "GAU": 69.27,
+    "EUL": 67.32,
+    "HIL": 69.29,
+    "NOE": 67.56
+   },
+   "territories": {
+    "GAU": 4,
+    "EUL": 4,
+    "HIL": 4,
+    "NOE": 4
+   },
+   "starved": []
+  }
+ ],
+ "standings": [
+  {
+   "id": "GAU",
+   "vp": 6.0,
+   "territories": 4,
+   "troops": 25,
+   "rank": 1
+  },
+  {
+   "id": "EUL",
+   "vp": 6.0,
+   "territories": 4,
+   "troops": 25,
+   "rank": 2
+  },
+  {
+   "id": "HIL",
+   "vp": 6.0,
+   "territories": 4,
+   "troops": 25,
+   "rank": 3
+  },
+  {
+   "id": "NOE",
+   "vp": 6.0,
+   "territories": 4,
+   "troops": 25,
+   "rank": 4
+  }
+ ],
+ "news": [
+  {
+   "turn": 2,
+   "headline": "Motim abala as tropas de Eulerândia",
+   "body": "Descontentes com a situação, parte das tropas de Eulerândia se amotinou. A moral sofre um golpe severo.",
+   "kind": "event"
+  },
+  {
+   "turn": 1,
+   "headline": "Silêncio nas trincheiras",
+   "body": "Nenhum choque armado foi registrado no turno. Os estados-maiores aproveitam para reorganizar tropas e estoques.",
+   "kind": "politics"
+  },
+  {
+   "turn": 1,
+   "headline": "Mar fechado: temporal no Norte",
+   "body": "Tormentas assolam o Norte e o Sul. Travessias marítimas suspensas e ataques prejudicados pela chuva e pelo vento; a situação é geral.",
+   "kind": "weather"
+  },
+  {
+   "turn": 1,
+   "headline": "Eclode a guerra no Continente de Lebesgue",
+   "body": "4 nações entram em campanha pelo controle do continente. Os estados-maiores recebem os primeiros dossiês; o prazo corre contra todos.",
+   "kind": "politics"
+  }
+ ],
+ "last_resolution": {
+  "turn": 1,
+  "battles": [],
+  "moves": [],
+  "weather": {
+   "norte": 2,
+   "centro": 1,
+   "sul": 2
+  }
+ },
+ "events": [
+  {
+   "id": "greve_siderurgia",
+   "name": "Greve na siderurgia",
+   "description": "Parada nas usinas: a produção de Aço de todas as nações cai 30% neste turno."
+  },
+  {
+   "id": "colheita_recorde",
+   "name": "Colheita recorde",
+   "description": "Safra excepcional: a produção de Alimento de todas as nações sobe 30% neste turno."
+  },
+  {
+   "id": "epidemia_gripe",
+   "name": "Epidemia de gripe",
+   "description": "Surto de gripe: a mão de obra de todas as nações cai 15% por 2 turnos."
+  },
+  {
+   "id": "descoberta_petroleo",
+   "name": "Descoberta de petróleo",
+   "description": "Uma nação sorteada descobre jazidas e recebe 18 de Combustível de imediato."
+  },
+  {
+   "id": "inverno_precoce",
+   "name": "Inverno precoce",
+   "description": "Frio antecipado por 2 turnos: +2 de consumo civil de Alimento, movimentos custam 50% mais Combustível e os ataques perdem 10% de eficácia."
+  },
+  {
+   "id": "sabotagem_ferroviaria",
+   "name": "Sabotagem ferroviária",
+   "description": "Uma nação sorteada perde 25% do Combustível e seus movimentos custam o dobro neste turno."
+  },
+  {
+   "id": "ajuda_estrangeira",
+   "name": "Ajuda estrangeira",
+   "description": "A nação mais fraca (menos pontos) recebe 12 Alimento, 8 Aço e 8 Combustível."
+  },
+  {
+   "id": "motim",
+   "name": "Motim nas tropas",
+   "description": "A nação de moral mais baixa sofre um motim: moral −12."
+  }
+ ],
+ "status": "running",
+ "turn": 2
+}

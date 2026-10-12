@@ -1,0 +1,18 @@
+<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><title>prev</title>
+<link rel="stylesheet" href="css/fonts.css"><link rel="stylesheet" href="css/base.css"><link rel="stylesheet" href="css/map.css">
+<style>body{margin:0;background:#1c241e;padding:14px} svg{width:1304px;height:1010px;box-shadow:var(--shadow-sheet)}</style></head><body>
+<svg id="m"></svg>
+<script type="module">
+import {renderMap} from './js/map.js';
+const map=await (await fetch('mock/map.json')).json();
+const st=await (await fetch('mock/public_state.json')).json();
+const mode=new URLSearchParams(location.search).get('mode')||'public';
+window.ctrl=renderMap(document.getElementById('m'),map,{mode,myFaction:'GAU'});
+if(mode==='faction'){
+ st.territories.forEach(t=>{ t.visibility = t.owner==='GAU'?'own':['T05','T06','T25','T26','T27','T13','T30','T24','T08','T14'].includes(t.id)?'adjacent':t.id==='T10'?'revealed':'hidden'; t.troops=(t.visibility==='own'||t.visibility==='revealed')?5+(t.id.charCodeAt(2)%9):null; t.troops_range=t.visibility==='adjacent'?['1–5','6–10','11–20'][t.id.charCodeAt(2)%3]:null;});
+ ctrl.setSelection(['T04']);
+ ctrl.setOrders([{from:'T04',to:'T22',troops:5},{from:'T02',to:'T26',troops:4}]);
+}
+ctrl.update(st);
+document.title='ready';
+</script></body></html>

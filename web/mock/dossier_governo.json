@@ -1,0 +1,317 @@
+{
+ "section": "governo",
+ "turn": 2,
+ "title": "DOSSIÊ DO GOVERNO — TURNO 2",
+ "briefing": "CONFIDENCIAL. Senhores, a pesquisa de opinião anexa relaciona a variação da moral com ração, propaganda, jornada, baixas e saldo territorial. O modelo é linear: estime os coeficientes por regressão múltipla (ferramenta Regressão da Mesa de Cálculo) e decida a política do turno.\n\nMoral atual: 69,3. Política em vigor: ração 0, jornada de 8 h. Pacto de não agressão: proponha aos outros Governos por telegrama e confirme na ordem; denunciar um pacto custa 5 de moral.",
+ "datasets": [
+  {
+   "id": "pesquisa",
+   "title": "Pesquisa de opinião (25 observações)",
+   "description": "Variação de moral registrada em períodos anteriores: ração (0 normal, 1 reduzida, 2 severa), propaganda (0–5), horas_extra (jornada − 8), baixas (em dezenas de batalhões) e saldo_territorial (territórios ganhos − perdidos). Ajuste delta_moral = β0 + β1·racao + β2·propaganda + … por mínimos quadrados.",
+   "columns": [
+    "obs",
+    "racao",
+    "propaganda",
+    "horas_extra",
+    "baixas",
+    "saldo_territorial",
+    "delta_moral"
+   ],
+   "rows": [
+    [
+     1,
+     1,
+     3,
+     4,
+     1.91,
+     2,
+     1.97
+    ],
+    [
+     2,
+     0,
+     2,
+     0,
+     0.66,
+     2,
+     8.43
+    ],
+    [
+     3,
+     0,
+     4,
+     2,
+     0.3,
+     -1,
+     0.91
+    ],
+    [
+     4,
+     0,
+     2,
+     2,
+     1.0,
+     -2,
+     -6.83
+    ],
+    [
+     5,
+     0,
+     3,
+     4,
+     1.64,
+     1,
+     -0.65
+    ],
+    [
+     6,
+     1,
+     5,
+     0,
+     1.75,
+     1,
+     2.41
+    ],
+    [
+     7,
+     2,
+     5,
+     2,
+     1.56,
+     -1,
+     -8.89
+    ],
+    [
+     8,
+     0,
+     1,
+     0,
+     0.39,
+     -1,
+     -4.26
+    ],
+    [
+     9,
+     2,
+     5,
+     4,
+     1.36,
+     1,
+     -2.69
+    ],
+    [
+     10,
+     0,
+     1,
+     4,
+     2.93,
+     2,
+     1.79
+    ],
+    [
+     11,
+     0,
+     5,
+     2,
+     0.93,
+     -1,
+     -0.19
+    ],
+    [
+     12,
+     1,
+     4,
+     2,
+     0.6,
+     -1,
+     -4.52
+    ],
+    [
+     13,
+     2,
+     3,
+     4,
+     2.69,
+     2,
+     -4.62
+    ],
+    [
+     14,
+     0,
+     5,
+     4,
+     1.51,
+     -2,
+     -7.57
+    ],
+    [
+     15,
+     0,
+     2,
+     4,
+     1.74,
+     1,
+     -0.59
+    ],
+    [
+     16,
+     0,
+     0,
+     2,
+     1.31,
+     2,
+     1.58
+    ],
+    [
+     17,
+     2,
+     1,
+     0,
+     0.46,
+     -1,
+     -8.16
+    ],
+    [
+     18,
+     1,
+     5,
+     2,
+     2.19,
+     2,
+     2.25
+    ],
+    [
+     19,
+     1,
+     2,
+     4,
+     0.04,
+     0,
+     -4.65
+    ],
+    [
+     20,
+     2,
+     1,
+     2,
+     2.93,
+     -1,
+     -16.39
+    ],
+    [
+     21,
+     1,
+     2,
+     2,
+     1.98,
+     -1,
+     -10.16
+    ],
+    [
+     22,
+     0,
+     4,
+     0,
+     1.62,
+     1,
+     5.55
+    ],
+    [
+     23,
+     1,
+     5,
+     0,
+     1.97,
+     2,
+     6.4
+    ],
+    [
+     24,
+     0,
+     1,
+     4,
+     1.48,
+     1,
+     1.82
+    ],
+    [
+     25,
+     1,
+     4,
+     0,
+     2.41,
+     0,
+     -0.41
+    ]
+   ],
+   "csv_url": "/api/faction/dossier/governo/pesquisa.csv"
+  },
+  {
+   "id": "quadro",
+   "title": "Quadro das nações",
+   "description": "Pontos de vitória e territórios (informação pública), para orientar a diplomacia.",
+   "columns": [
+    "Nação",
+    "Territórios",
+    "PV",
+    "Situação"
+   ],
+   "rows": [
+    [
+     "Gáussia",
+     4,
+     6.0,
+     "em campanha"
+    ],
+    [
+     "Eulerândia",
+     4,
+     6.0,
+     "em campanha"
+    ],
+    [
+     "Hilbertânia",
+     4,
+     6.0,
+     "em campanha"
+    ],
+    [
+     "Noethéria",
+     4,
+     6.0,
+     "em campanha"
+    ]
+   ],
+   "csv_url": "/api/faction/dossier/governo/quadro.csv"
+  }
+ ],
+ "challenges": [
+  {
+   "id": "c2-governo",
+   "prompt": "Estime, por mínimos quadrados (equações normais, com intercepto), o efeito β da propaganda (pontos de moral por ponto de propaganda) na pesquisa de opinião.",
+   "answer_format": "um número (ex.: 1,35)",
+   "attempts_left": 3,
+   "solved": false,
+   "reward_text": "+5 de moral imediato"
+  }
+ ],
+ "tools": [
+  "regression",
+  "matrix"
+ ],
+ "extras": {
+  "morale": 69.3,
+  "policy": {
+   "racao": 0,
+   "propaganda": 0,
+   "horas": 8
+  },
+  "features": [
+   "racao",
+   "propaganda",
+   "horas_extra",
+   "baixas",
+   "saldo_territorial"
+  ]
+ }
+}

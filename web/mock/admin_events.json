@@ -1,0 +1,42 @@
+[
+ {
+  "id": "greve_siderurgia",
+  "name": "Greve na siderurgia",
+  "description": "Parada nas usinas: a produção de Aço de todas as nações cai 30% neste turno."
+ },
+ {
+  "id": "colheita_recorde",
+  "name": "Colheita recorde",
+  "description": "Safra excepcional: a produção de Alimento de todas as nações sobe 30% neste turno."
+ },
+ {
+  "id": "epidemia_gripe",
+  "name": "Epidemia de gripe",
+  "description": "Surto de gripe: a mão de obra de todas as nações cai 15% por 2 turnos."
+ },
+ {
+  "id": "descoberta_petroleo",
+  "name": "Descoberta de petróleo",
+  "description": "Uma nação sorteada descobre jazidas e recebe 18 de Combustível de imediato."
+ },
+ {
+  "id": "inverno_precoce",
+  "name": "Inverno precoce",
+  "description": "Frio antecipado por 2 turnos: +2 de consumo civil de Alimento, movimentos custam 50% mais Combustível e os ataques perdem 10% de eficácia."
+ },
+ {
+  "id": "sabotagem_ferroviaria",
+  "name": "Sabotagem ferroviária",
+  "description": "Uma nação sorteada perde 25% do Combustível e seus movimentos custam o dobro neste turno."
+ },
+ {
+  "id": "ajuda_estrangeira",
+  "name": "Ajuda estrangeira",
+  "description": "A nação mais fraca (menos pontos) recebe 12 Alimento, 8 Aço e 8 Combustível."
+ },
+ {
+  "id": "motim",
+  "name": "Motim nas tropas",
+  "description": "A nação de moral mais baixa sofre um motim: moral −12."
+ }
+]

@@ -1,0 +1,147 @@
+{
+ "section": "intendencia",
+ "turn": 2,
+ "title": "DOSSIÊ DA INTENDÊNCIA — TURNO 2",
+ "briefing": "CONFIDENCIAL. Senhores, segue o levantamento da produção do turno 1. A tabela Z registra o fluxo de insumos entre os setores e X a produção total de cada um; dividindo cada coluna de Z por X obtém-se a matriz técnica A. Para obter uma entrega líquida d, resolva (I − A)x = d na Mesa de Cálculo (ferramenta Leontief).\n\nEstoque: ALI 21,5, ACO 30, COM 30. Consumo previsto de Alimento: 12,5 das tropas + 6 civil = 18,5. Mão de obra: 63,1 (jornada de 8 h). A matriz muda levemente de turno a turno; bombardeios a pioram.",
+ "datasets": [
+  {
+   "id": "transacoes",
+   "title": "Tabela de transações intersetoriais (turno 1)",
+   "description": "Z[i][j] = insumo do setor i consumido pelo setor j; a última linha (X) é a produção total de cada setor. A matriz técnica é A = Z·diag(X)⁻¹ (divida cada coluna de Z pelo X do mesmo setor).",
+   "columns": [
+    "",
+    "ALI",
+    "ACO",
+    "COM"
+   ],
+   "rows": [
+    [
+     "ALI",
+     1.29,
+     0.48,
+     1.08
+    ],
+    [
+     "ACO",
+     2.82,
+     0.88,
+     0.88
+    ],
+    [
+     "COM",
+     1.08,
+     1.06,
+     0.41
+    ],
+    [
+     "X",
+     22.0,
+     9.0,
+     10.0
+    ]
+   ],
+   "csv_url": "/api/faction/dossier/intendencia/transacoes.csv"
+  },
+  {
+   "id": "mao_de_obra",
+   "title": "Mão de obra, capacidade e estoque",
+   "description": "L = mão de obra gasta por unidade bruta produzida; W = mão de obra disponível conforme a jornada (8, 10 ou 12 h); restrição: L·x ≤ W e x ≤ capacidade.",
+   "columns": [
+    "Setor",
+    "L (por unidade)",
+    "Capacidade máx.",
+    "Estoque atual"
+   ],
+   "rows": [
+    [
+     "ALI",
+     1.0,
+     29.0,
+     21.5
+    ],
+    [
+     "ACO",
+     1.5,
+     25.0,
+     30.0
+    ],
+    [
+     "COM",
+     1.2,
+     16.0,
+     30.0
+    ],
+    [
+     "W (8 h)",
+     63.1,
+     "",
+     ""
+    ],
+    [
+     "W (10 h)",
+     75.8,
+     "",
+     ""
+    ],
+    [
+     "W (12 h)",
+     88.4,
+     "",
+     ""
+    ]
+   ],
+   "csv_url": "/api/faction/dossier/intendencia/mao_de_obra.csv"
+  }
+ ],
+ "challenges": [
+  {
+   "id": "c2-intendencia",
+   "prompt": "O Gabinete exige entrega líquida d* = (20 ALI; 4 ACO; 6 COM). Com A = Z·diag(X)⁻¹ calculada da tabela, qual produção bruta x = (x_ALI; x_ACO; x_COM) entrega d*? Resolva (I − A)x = d*.",
+   "answer_format": "três números separados por ponto e vírgula: x_ALI; x_ACO; x_COM (ex.: 24,5; 11; 9,3)",
+   "attempts_left": 3,
+   "solved": false,
+   "reward_text": "+10% de produtividade neste turno"
+  }
+ ],
+ "tools": [
+  "leontief",
+  "matrix"
+ ],
+ "extras": {
+  "stock": {
+   "ALI": 21.5,
+   "ACO": 30.0,
+   "COM": 30.0
+  },
+  "labor": {
+   "ALI": 1.0,
+   "ACO": 1.5,
+   "COM": 1.2
+  },
+  "capacity": {
+   "ALI": 29.0,
+   "ACO": 25.0,
+   "COM": 16.0
+  },
+  "workforce": {
+   "8": 63.1,
+   "10": 75.8,
+   "12": 88.4
+  },
+  "upkeep_forecast": {
+   "troops": 12.5,
+   "civil": 6.0,
+   "total": 18.5
+  },
+  "recruit_cost": {
+   "ALI": 2,
+   "ACO": 2,
+   "COM": 1
+  },
+  "production_X": [
+   22.0,
+   9.0,
+   10.0
+  ]
+ }
+}
