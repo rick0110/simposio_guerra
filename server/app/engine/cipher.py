@@ -32,6 +32,13 @@ def normalize(text: str) -> str:
     return "".join(collapsed)
 
 
+def symbols(text: str) -> str:
+    """Como `normalize`, mas SEM colapsar espaços: usado para criptogramas, em que o espaço é símbolo."""
+    decomposed = unicodedata.normalize("NFKD", str(text).upper())
+    base = "".join(ch for ch in decomposed if not unicodedata.combining(ch))
+    return "".join(ch if ch in _INDEX else " " for ch in base)
+
+
 def to_nums(text: str) -> list[int]:
     return [_INDEX[ch] for ch in normalize(text)]
 
@@ -78,8 +85,8 @@ def encrypt(plain: str, K) -> str:
     text = normalize(plain)
     if not text:
         raise ValueError("Mensagem vazia")
-    text = text + " " * ((-len(text)) % n)  # completa com espaço
-    P = _blocks(to_nums(text), n)
+    text = text + " " * ((-len(text)) % n)  # completa com espaço (sem renormalizar: não colapsar)
+    P = _blocks([_INDEX[ch] for ch in text], n)
     C = (Km @ P) % M
     return to_text(C.T.reshape(-1))
 
@@ -89,12 +96,12 @@ def decrypt(cipher: str, K) -> str:
     Km = _key_matrix(K)
     n = Km.shape[0]
     Kinv = linalg.mod_inv_matrix(Km, M)
-    text = normalize(cipher)
+    text = symbols(cipher)
     if not text:
         raise ValueError("Criptograma vazio")
     if len(text) % n != 0:
         raise ValueError(f"O criptograma deve ter comprimento múltiplo de {n}")
-    C = _blocks(to_nums(text), n)
+    C = _blocks([_INDEX[ch] for ch in text], n)
     P = (Kinv @ C) % M
     return to_text(P.T.reshape(-1))
 
@@ -107,17 +114,16 @@ def recover_key(plain_crib: str, cipher_crib: str, n: int = 2) -> np.ndarray:
     """
     if n < 1:
         raise ValueError("O tamanho do bloco deve ser ≥ 1")
-    p_text = normalize(plain_crib)
-    c_text = normalize(cipher_crib)
+    p_text = normalize(plain_crib)      # texto claro: mesma normalização do encrypt
+    c_text = symbols(cipher_crib)       # criptograma: símbolos crus (espaço é símbolo)
     if len(p_text) != len(c_text):
         raise ValueError("Crib claro e cifrado devem ter o mesmo comprimento")
-    p_all = _blocks(to_nums(p_text[: (len(p_text) // n) * n]), n) if len(p_text) >= n else None
-    c_all = _blocks(to_nums(c_text[: (len(c_text) // n) * n]), n) if len(c_text) >= n else None
-    if p_all is None:
+    full = (len(p_text) // n) * n
+    if full < n:
         raise ValueError(f"O crib deve ter pelo menos {n} símbolos")
+    p_all = _blocks([_INDEX[ch] for ch in p_text[:full]], n)
+    c_all = _blocks([_INDEX[ch] for ch in c_text[:full]], n)
     n_blocks = p_all.shape[1]
-    if n_blocks < n:
-        raise ValueError(f"O crib deve ter pelo menos {n} blocos completos")
 
     for combo in itertools.combinations(range(n_blocks), n):
         idx = list(combo)
