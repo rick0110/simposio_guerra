@@ -1,22 +1,22 @@
 # Plano de ação
 
-Execução em ondas. Cada pacote tem dono (modelo), arquivos que pode tocar, critério de pronto.
-Agentes da mesma onda trabalham em paralelo em arquivos **disjuntos**; o coordenador integra,
-testa, faz commit/push e sincroniza o Google Drive ao fim de cada onda.
+Execução em ondas. Cada pacote tem os arquivos que pode tocar e um critério de pronto.
+Pacotes da mesma onda são desenvolvidos em paralelo em arquivos **disjuntos**; ao fim de cada onda
+o trabalho é integrado, testado, enviado ao repositório e sincronizado no Google Drive.
 
-| Onda | Pacote | Modelo | Arquivos | Pronto quando |
-|---|---|---|---|---|
-| 0 | Design, contrato, sistema visual base | coordenador | `docs/DESIGN.md`, `docs/CONTRATO.md`, `docs/PLANO.md`, `web/css/base.css` | publicado |
-| 1 | **A — Motor matemático** + rotas da Mesa de Cálculo | Haiku | `server/app/engine/*`, `server/app/routes_tools.py`, `server/tests/test_engine*.py`, `server/tests/test_tools.py` | `pytest` verde; todas as assinaturas do contrato §3 |
-| 1 | **B — Gerador do mapa** | Sonnet | `tools/gen_map.py`, `server/app/data/map.json`, `server/tests/test_map.py`, `web/mock/map.json` | 34 territórios válidos, grafo conexo, prévia SVG |
-| 1 | **C — Infra Docker, config, fontes** | Haiku | `Dockerfile`, `docker-compose.yml`, `.dockerignore`, `server/requirements.txt`, `server/app/config.py`, `web/fonts/*`, `web/css/fonts.css`, `README.md` | `docker build` ok; fontes locais |
-| 2 | **D1 — Núcleo do jogo** (`Game`) | Sonnet | `server/app/game/*`, `server/tests/test_game*.py` | partida simulada de 8 turnos sem erro; balanceamento verificado |
-| 2 | **D2 — Camada HTTP/WS** | Haiku | `server/app/main.py`, `auth.py`, `persistence.py`, `hub.py`, `routes_public.py`, `routes_faction.py`, `routes_admin.py`, `server/tests/test_api.py` | testes de API com `TestClient` |
-| 2 | **E — Mapa, Teatro e Portão** | Sonnet | `web/js/map.js`, `web/css/map.css`, `web/teatro.html`, `web/css/teatro.css`, `web/js/teatro.js`, `web/index.html`, `web/js/login.js`, `web/js/api.js`, `web/js/ws.js`, `web/js/sfx.js`, `web/mock/public_state.json` | telas funcionam com mocks e com servidor |
-| 3 | **F — Quartel-General + Mesa de Cálculo** | Haiku | `web/qg.html`, `web/css/qg.css`, `web/js/qg.js`, `web/js/calc.js`, `web/mock/faction_*.json`, `web/mock/dossier_*.json` | 4 seções completas |
-| 3 | **F2 — Painel do Árbitro** | Haiku | `web/arbitro.html`, `web/css/arbitro.css`, `web/js/arbitro.js` | todas as ações do árbitro |
-| 4 | **G — Manuais e toolkit** | Haiku | `docs/MANUAL_JOGADORES.md`, `docs/MANUAL_ARBITRO.md`, `tools/toolkit.py` | revisado |
-| 4 | Integração, testes E2E (Playwright), capturas de tela, ajustes | coordenador + Sonnet | — | partida completa jogada no navegador via Docker |
+| Onda | Pacote | Arquivos | Pronto quando |
+|---|---|---|---|
+| 0 | Design, contrato, sistema visual base | `docs/DESIGN.md`, `docs/CONTRATO.md`, `docs/PLANO.md`, `web/css/base.css` | publicado |
+| 1 | **A — Motor matemático** + rotas da Mesa de Cálculo | `server/app/engine/*`, `server/app/routes_tools.py`, `server/tests/test_engine*.py`, `server/tests/test_tools.py` | `pytest` verde; todas as assinaturas do contrato §3 |
+| 1 | **B — Gerador do mapa** | `tools/gen_map.py`, `server/app/data/map.json`, `server/tests/test_map.py`, `web/mock/map.json` | 34 territórios válidos, grafo conexo, prévia SVG |
+| 1 | **C — Infra Docker, config, fontes** | `Dockerfile`, `docker-compose.yml`, `.dockerignore`, `server/requirements.txt`, `server/app/config.py`, `web/fonts/*`, `web/css/fonts.css`, `README.md` | `docker build` ok; fontes locais |
+| 2 | **D1 — Núcleo do jogo** (`Game`) | `server/app/game/*`, `server/tests/test_game*.py` | partida simulada de 8 turnos sem erro; balanceamento verificado |
+| 2 | **D2 — Camada HTTP/WS** | `server/app/main.py`, `auth.py`, `persistence.py`, `hub.py`, `routes_public.py`, `routes_faction.py`, `routes_admin.py`, `server/tests/test_api.py` | testes de API com `TestClient` |
+| 2 | **E — Mapa, Teatro e Portão** | `web/js/map.js`, `web/css/map.css`, `web/teatro.html`, `web/css/teatro.css`, `web/js/teatro.js`, `web/index.html`, `web/js/login.js`, `web/js/api.js`, `web/js/ws.js`, `web/js/sfx.js`, `web/mock/public_state.json` | telas funcionam com mocks e com servidor |
+| 3 | **F — Quartel-General + Mesa de Cálculo** | `web/qg.html`, `web/css/qg.css`, `web/js/qg.js`, `web/js/calc.js`, `web/mock/faction_*.json`, `web/mock/dossier_*.json` | 4 seções completas |
+| 3 | **F2 — Painel do Árbitro** | `web/arbitro.html`, `web/css/arbitro.css`, `web/js/arbitro.js` | todas as ações do árbitro |
+| 4 | **G — Manuais e toolkit** | `docs/MANUAL_JOGADORES.md`, `docs/MANUAL_ARBITRO.md`, `tools/toolkit.py` | revisado |
+| 4 | Integração, testes E2E (Playwright), capturas de tela, ajustes | — | partida completa jogada no navegador via Docker |
 
 Sincronização com o Drive (pasta "Guerra"): ao fim de cada onda, o código é espelhado em
 `Guerra/estado-maior/…` mantendo a estrutura de pastas. O repositório Git é a fonte da verdade.

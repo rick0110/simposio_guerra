@@ -1,6 +1,6 @@
 # Contrato técnico (fonte da verdade para todos os módulos)
 
-Qualquer agente/colaborador deve seguir este documento. Se algo precisar mudar, mude aqui primeiro.
+Todo colaborador deve seguir este documento. Se algo precisar mudar, mude aqui primeiro.
 Regras do jogo: ver `docs/DESIGN.md`.
 
 ## 0. Convenções
