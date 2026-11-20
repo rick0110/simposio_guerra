@@ -106,7 +106,7 @@ class Clima(Ritmo, Scene):
         self.play(FadeIn(rot), LaggedStart(*[FadeIn(i, shift=DOWN * 0.2) for i in fita], lag_ratio=0.06), run_time=2.0)
         # tabela de contagem (vazia)
         dx, dy = 1.5, 0.8
-        org = np.array([-1.0, -0.6, 0])
+        org = np.array([-2.2, -0.6, 0])
         cab_c = VGroup(*[icone(e, 0.25).move_to(org + [j * dx, dy, 0]) for j, e in enumerate(ORD)])
         cab_l = VGroup(*[icone(e, 0.25).move_to(org + [-1.4, -i * dy, 0]) for i, e in enumerate(ORD)])
         tit_c = txt("amanhã →", 22, PAPEL_2, font=MAQ).next_to(cab_c, UP, buff=0.15)
@@ -145,8 +145,8 @@ class Clima(Ritmo, Scene):
         self.play(FadeOut(tit_l), FadeIn(lp), run_time=0.5)
         self.ate(self.ini[3] + self.dur[3] * 0.35)
         alvo = SurroundingRectangle(valores[1][2], color=VERMELHO, buff=0.12, stroke_width=5)
-        resp = VGroup(txt("hoje chove →", 30, PAPEL), txt("tempestade amanhã: 0,25", 32, VERMELHO, weight=BOLD)).arrange(DOWN, aligned_edge=LEFT, buff=0.12)
-        resp.to_edge(RIGHT, buff=0.5).match_y(valores[1][2])
+        resp = VGroup(txt("hoje chove →", 28, PAPEL), txt("tempestade amanhã: 0,25", 30, VERMELHO, weight=BOLD)).arrange(DOWN, aligned_edge=LEFT, buff=0.12)
+        resp.next_to(alvo, RIGHT, buff=0.6)
         self.play(Create(alvo), FadeIn(resp, shift=LEFT * 0.2), run_time=0.8)
         self.ate(self.ini[3] + self.dur[3] * 0.78)
         p2 = MathTex(r"\text{dois turnos: } P^{2}", font_size=44, color=AMBAR).to_edge(DOWN, buff=0.5)
@@ -159,15 +159,17 @@ class PorQueClima(Ritmo, Scene):
 
     def construct(self):
         self.preparar()
-        grupo, polys, dono, p = mapa(4, opacidade=lambda f: 0.5)
+        grupo, polys, dono, p = mapa(4, opacidade=lambda f: 0.5, escala=0.0075)
+        desloc = LEFT * 1.6
+        grupo.shift(desloc)
         self.fala(0)
         self.play(FadeIn(grupo), run_time=1.0)
         rotas = VGroup()
         for r in mapa_json()["sea_routes"]:
-            v = VMobject(color=AZUL, stroke_width=6).set_points_smoothly([p(*q) for q in r["path"]])
+            v = VMobject(color=AZUL, stroke_width=6).set_points_smoothly([p(*q) + desloc for q in r["path"]])
             rotas.add(DashedVMobject(v, num_dashes=10))
         self.play(Create(rotas), run_time=1.0)
-        raio = icone("T", 0.9).to_corner(UR, buff=0.6)
+        raio = icone("T", 0.9).move_to([5.0, 1.8, 0])
         self.ate(self.ini[0] + self.dur[0] * 0.3)
         self.play(GrowFromCenter(raio), run_time=0.5)
         atq = txt("ataque × 0,65", 34, EST["T"][1], weight=BOLD).next_to(raio, DOWN, buff=0.3)
@@ -271,9 +273,9 @@ class Exemplo(Ritmo, Scene):
         # fala 0: o cenário
         self.fala(0)
         a = VGroup(txt("12", 80, VERMELHO, font=MONO, weight=BOLD), txt("atacantes", 28, VERMELHO)).arrange(DOWN, buff=0.1)
-        b = VGroup(txt("6", 80, AZUL, font=MONO, weight=BOLD), txt("defensores", 28, AZUL)).arrange(DOWN, buff=0.1)
         monte = Polygon([-1.2, -0.6, 0], [0, 0.9, 0], [1.2, -0.6, 0], color=PAPEL_2, fill_opacity=0.25, stroke_width=3)
-        b.move_to(monte.get_center() + DOWN * 0.1)
+        seis = txt("6", 72, AZUL, font=MONO, weight=BOLD).move_to(monte.get_center() + DOWN * 0.12)
+        b = VGroup(seis, txt("defensores", 28, AZUL).next_to(monte, DOWN, buff=0.1))
         cena = VGroup(a, VGroup(monte, b)).arrange(RIGHT, buff=2.2).to_edge(UP, buff=0.7)
         vs = txt("contra", 28, PAPEL_2, font=SERIF, slant=ITALIC).move_to(cena)
         moral = txt("moral 70 nos dois lados", 26, PAPEL, font=MAQ).next_to(cena, DOWN, buff=0.3)
@@ -288,7 +290,7 @@ class Exemplo(Ritmo, Scene):
         cols = VGroup(ea, eb).arrange(DOWN, aligned_edge=LEFT, buff=0.4).next_to(moral, DOWN, buff=0.5)
         self.play(Write(ea), run_time=1.2)
         self.ate(self.ini[1] + self.dur[1] * 0.55)
-        mont = txt("montanha", 24, PAPEL_2, font=MAQ).next_to(eb[0], RIGHT, buff=0.2).shift(UP * 0.35)
+        mont = txt("(montanha)", 24, PAPEL_2, font=MAQ).next_to(eb, RIGHT, buff=0.3)
         self.play(Write(eb), FadeIn(mont), run_time=1.2)
         # fala 2: forças
         self.fala(2)
