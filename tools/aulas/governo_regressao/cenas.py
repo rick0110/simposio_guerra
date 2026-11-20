@@ -402,9 +402,9 @@ class Plano(Ritmo, ThreeDScene):
     def construct(self):
         self.preparar()
         ax = ThreeDAxes(x_range=[0, 2.2, 1], y_range=[0, 5.5, 1], z_range=[-6, 8, 2],
-                        x_length=4.4, y_length=6.0, z_length=4.6, axis_config={"color": PAPEL})
+                        x_length=4.4, y_length=5.0, z_length=4.6, axis_config={"color": PAPEL}).shift(DOWN * 0.35)
         lx = txt("ração", 28, AZUL).move_to(ax.c2p(2.6, 0, 0))
-        ly = txt("propaganda", 28, AZUL).move_to(ax.c2p(0, 6.2, 0))
+        ly = txt("propaganda", 28, AZUL).move_to(ax.c2p(0, 6.1, 0))   # abaixo da equação do topo
         self.add_fixed_orientation_mobjects(lx, ly)
         self.remove(lx, ly)
         self.set_camera_orientation(phi=0, theta=-90 * DEGREES, zoom=0.95)
