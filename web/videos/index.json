@@ -5,6 +5,11 @@
    "titulo": "Intendência · O modelo de Leontief",
    "duracao": "4:07"
   },
+  "operacoes": {
+   "arquivo": "operacoes-markov-lanchester.mp4",
+   "titulo": "Operações · Markov e Lanchester",
+   "duracao": "4:13"
+  },
   "governo": {
    "arquivo": "governo-regressao.mp4",
    "titulo": "Governo · Regressão linear",
