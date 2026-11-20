@@ -509,7 +509,7 @@ class Projecao(Ritmo, ThreeDScene):
 
     def construct(self):
         self.preparar()
-        self.set_camera_orientation(phi=70 * DEGREES, theta=-40 * DEGREES, zoom=0.9)
+        self.set_camera_orientation(phi=58 * DEGREES, theta=100 * DEGREES, zoom=0.9)
         ax = ThreeDAxes(x_range=[-1, 4], y_range=[-1, 4], z_range=[-1, 4], x_length=5, y_length=5, z_length=5,
                         axis_config={"color": "#55604f"})
         o = ax.c2p(0, 0, 0)
@@ -543,7 +543,7 @@ class Projecao(Ritmo, ThreeDScene):
         self.remove(lp)
         self.play(Create(v1), Create(v2), run_time=1.2)
         self.play(Create(plano), FadeIn(lp), run_time=1.6)
-        self.begin_ambient_camera_rotation(rate=0.08)
+        self.begin_ambient_camera_rotation(rate=0.035)
         # fala 2: a sombra
         self.fala(2)
         self.ate(self.ini[2] + 4.0)
@@ -611,10 +611,10 @@ class Decisao(Ritmo, Scene):
         barras = VGroup()
         self.fala(0)
         tit = txt("Os betas de Noethéria", 40, AMBAR, font=SERIF, weight=BOLD).to_edge(UP, buff=0.45)
-        eixo = Line([zero, 2.4, 0], [zero, -3.2, 0], color=PAPEL, stroke_width=2)
+        eixo = Line([zero, 2.55, 0], [zero, -2.2, 0], color=PAPEL, stroke_width=2)
         self.play(Write(tit), Create(eixo), run_time=1.2)
         for k, (nome, v) in enumerate(itens):
-            yk = 1.75 - k * 1.05
+            yk = 2.05 - k * 0.92
             cor = VERDE if v > 0 else VERMELHO
             r = Rectangle(width=abs(v) * u, height=0.62, color=cor, fill_color=cor, fill_opacity=0.85, stroke_width=0)
             r.move_to([zero + v * u / 2, yk, 0])
@@ -634,7 +634,7 @@ class Decisao(Ritmo, Scene):
         self.fala(1)
         e1 = SurroundingRectangle(barras[0], color=PAPEL, buff=0.1)
         e2 = SurroundingRectangle(barras[1], color=PAPEL, buff=0.1)
-        p1 = txt("1 nível de ração = −3 de moral", 26, VERMELHO, font=MAQ).to_edge(DOWN, buff=0.95)
+        p1 = txt("1 nível de ração = −3 de moral", 26, VERMELHO, font=MAQ).move_to([0, -2.75, 0])
         p2 = txt("1 ponto de propaganda = +1,5 de moral (custa 1 Aço)", 26, VERDE, font=MAQ).next_to(p1, DOWN, buff=0.2)
         self.play(Create(e1), FadeIn(p1), run_time=1.0)
         self.ate(self.ini[1] + 4.6)
