@@ -504,6 +504,16 @@ class Matriz(Ritmo, Scene):
         self.encerrar()
 
 
+def seta3d(a, b, color, thickness=0.03):
+    """Arrow3D com menos faces (o renderizador Cairo ordena cada face a cada quadro: menos faces, render mais rápido)."""
+    s = Arrow3D(a, b, color=color, thickness=thickness, resolution=10)
+    ponta = Cone(direction=s.direction, base_radius=0.08, height=0.3, resolution=10).shift(np.asarray(b, dtype=float))
+    s.remove(s.cone)
+    s.cone = ponta
+    s.add(ponta)
+    return s.set_color(color)
+
+
 class Projecao(Ritmo, ThreeDScene):
     CENA = "projecao"
 
@@ -523,7 +533,7 @@ class Projecao(Ritmo, ThreeDScene):
         # fala 0: y como uma seta
         self.fala(0)
         self.play(Create(ax), run_time=1.2)
-        vy = Arrow3D(o, P(y), color=VERMELHO, thickness=0.03)
+        vy = seta3d(o, P(y), VERMELHO, 0.03)
         ly = MathTex("y", font_size=56, color=VERMELHO).move_to(P(y * 1.12))
         self.add_fixed_orientation_mobjects(ly)
         self.remove(ly)
@@ -534,8 +544,8 @@ class Projecao(Ritmo, ThreeDScene):
         self.play(FadeIn(dims), run_time=0.6)
         # fala 1: o plano das colunas de X
         self.fala(1)
-        v1 = Arrow3D(o, P(c1 * 1.6), color=AZUL, thickness=0.025)
-        v2 = Arrow3D(o, P(c2 * 1.4), color=AZUL, thickness=0.025)
+        v1 = seta3d(o, P(c1 * 1.6), AZUL, 0.025)
+        v2 = seta3d(o, P(c2 * 1.4), AZUL, 0.025)
         plano = Surface(lambda u, v: P(u * c1 + v * c2), u_range=[-0.6, 3.2], v_range=[-0.5, 1.9], resolution=(6, 6),
                         fill_opacity=0.32, checkerboard_colors=[AZUL, "#4a6f9a"], stroke_width=0.4, stroke_color=AZUL)
         lp = MathTex(r"\text{tudo o que } X\beta \text{ produz}", font_size=36, color=AZUL).to_corner(UR, buff=0.5)
@@ -548,7 +558,7 @@ class Projecao(Ritmo, ThreeDScene):
         self.fala(2)
         self.ate(self.ini[2] + 4.0)
         queda = DashedLine(P(y), P(yh), color=PAPEL, dash_length=0.08)
-        vyh = Arrow3D(o, P(yh), color=AMBAR, thickness=0.03)
+        vyh = seta3d(o, P(yh), AMBAR, 0.03)
         lyh = MathTex(r"X\beta", font_size=50, color=AMBAR).move_to(P(yh * 1.18) + np.array([0, 0, -0.2]))
         self.add_fixed_orientation_mobjects(lyh)
         self.remove(lyh)
@@ -562,7 +572,7 @@ class Projecao(Ritmo, ThreeDScene):
         s = 0.28
         canto = VGroup(Line(P(yh + n_e * s), P(yh + n_e * s - d1 * s), color=PAPEL),
                        Line(P(yh - d1 * s), P(yh + n_e * s - d1 * s), color=PAPEL))
-        ve = Arrow3D(P(yh), P(y), color=VERMELHO, thickness=0.02)
+        ve = seta3d(P(yh), P(y), VERMELHO, 0.02)
         self.play(Create(canto), Create(ve), run_time=1.4)
         eq1 = MathTex(r"X^{T}\,(y - X\beta) = 0", font_size=56).to_edge(DOWN, buff=0.6)
         self.add_fixed_in_frame_mobjects(eq1)
@@ -646,8 +656,9 @@ class Decisao(Ritmo, Scene):
         moldura = SurroundingRectangle(carimbo, color=VERMELHO, buff=0.25, stroke_width=6)
         sel = VGroup(carimbo, moldura).rotate(-7 * DEGREES)
         self.play(FadeIn(sel, scale=1.8), run_time=0.5, rate_func=rush_into)
-        nota = txt("se uma causa importante ficou de fora", 28, PAPEL).next_to(sel, DOWN, buff=0.5)
-        self.play(FadeIn(nota), run_time=0.8)
+        nota = txt("se uma causa importante ficou de fora", 28, PAPEL).move_to([0, -3.05, 0])
+        fundo_nota = BackgroundRectangle(nota, color=FUNDO, fill_opacity=0.9, buff=0.15)
+        self.play(FadeIn(fundo_nota), FadeIn(nota), run_time=0.8)
         self.encerrar()
 
 
