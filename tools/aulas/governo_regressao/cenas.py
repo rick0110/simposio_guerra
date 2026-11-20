@@ -375,7 +375,7 @@ class Leitura(Ritmo, Scene):
         val = MathTex(r"\beta_1 \approx " + f"{B1:.1f}".replace(".", "{,}"), font_size=52, color=AMBAR).move_to([3.4, 1.4, 0], aligned_edge=LEFT)
         self.ate(self.ini[1] + 6.0)
         self.play(TransformFromCopy(lv, val), run_time=1.2)
-        exp = txt("cada ponto de propaganda\n≈ +" + f"{B1:.1f}".replace(".", ",") + " de moral", 26, PAPEL, line_spacing=0.9).next_to(val, DOWN, buff=0.35, aligned_edge=LEFT)
+        exp = txt("cada ponto a mais\nde propaganda:\n≈ +" + f"{B1:.1f}".replace(".", ",") + " de moral", 26, PAPEL, line_spacing=0.9).next_to(val, DOWN, buff=0.35, aligned_edge=LEFT)
         self.play(FadeIn(exp, shift=UP * 0.15), run_time=0.8)
         # fala 2: intercepto
         self.fala(2)
