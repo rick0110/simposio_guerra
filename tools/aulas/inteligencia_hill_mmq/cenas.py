@@ -108,7 +108,7 @@ class HillIdeia(Ritmo, Scene):
         # fala 2: módulo 37 — o relógio
         self.fala(2)
         self.play(FadeOut(VGroup(par, vec, rk)), eq.animate.scale(0.7).to_corner(UL, buff=0.6), run_time=0.6)
-        rel = Circle(radius=2.2, color=PAPEL, stroke_width=4).shift(DOWN * 0.3)
+        rel = Circle(radius=2.2, color=PAPEL, stroke_width=4).shift(DOWN * 0.3 + LEFT * 2.6)
         marcas = VGroup()
         for k in range(37):
             ang = PI / 2 - TAU * k / 37
@@ -121,7 +121,7 @@ class HillIdeia(Ritmo, Scene):
         self.add(pont)
         self.ate(self.ini[2] + self.dur[2] * 0.4)
         self.play(Rotate(pont, angle=-TAU * 40 / 37, about_point=rel.get_center()), run_time=2.0)
-        conta = MathTex(r"40 \equiv 3 \pmod{37}", font_size=50, color=AMBAR).to_edge(RIGHT, buff=0.7).shift(UP * 0.4)
+        conta = MathTex(r"40 \equiv 3 \pmod{37}", font_size=50, color=AMBAR).move_to([3.3, 0.2, 0])
         resto = txt("só o resto da divisão por 37", 26, PAPEL, font=MAQ).next_to(conta, DOWN, buff=0.3)
         self.play(Write(conta), FadeIn(resto), run_time=1.0)
         # fala 3: com a chave, a inversa; o problema é achar K
@@ -159,14 +159,14 @@ class HillChave(Ritmo, Scene):
         c1 = SurroundingRectangle(VGroup(cif[0], cif[1]), color=VERMELHO, buff=0.04, stroke_width=4)
         c2 = SurroundingRectangle(VGroup(cif[2], cif[3]), color=VERMELHO, buff=0.04, stroke_width=4)
         self.play(FadeOut(pedra), Create(b1), Create(b2), run_time=0.6)
-        Pm = MathTex(r"P = \begin{bmatrix} 20 & 6 \\ 17 & 4 \end{bmatrix}", font_size=52, color=VERDE).move_to([-3.6, -1.4, 0])
+        Pm = MathTex(r"P = \begin{bmatrix} 20 & 6 \\ 17 & 4 \end{bmatrix}", font_size=52, color=VERDE).move_to([-4.9, -1.4, 0])
         self.play(Write(Pm), run_time=1.0)
         self.ate(self.ini[1] + self.dur[1] * 0.4)
         self.play(Create(c1), Create(c2), run_time=0.5)
-        Cm = MathTex(r"C = \begin{bmatrix} 34 & 1 \\ 11 & 3 \end{bmatrix}", font_size=52, color=VERMELHO).move_to([0.4, -1.4, 0])
+        Cm = MathTex(r"C = \begin{bmatrix} 34 & 1 \\ 11 & 3 \end{bmatrix}", font_size=52, color=VERMELHO).move_to([-1.6, -1.4, 0])
         self.play(Write(Cm), run_time=1.0)
         self.ate(self.ini[1] + self.dur[1] * 0.72)
-        Kf = MathTex(r"C = K\,P", r"\ \Rightarrow\ ", r"K = C\,P^{-1}", font_size=50).move_to([4.6, -1.4, 0])
+        Kf = MathTex(r"C = K\,P", r"\ \Rightarrow\ ", r"K = C\,P^{-1}", font_size=46).move_to([3.7, -1.4, 0])
         Kf[2].set_color(AMBAR)
         self.play(Write(Kf), run_time=1.2)
         # fala 2: inverter P módulo 37
@@ -229,10 +229,10 @@ class Deposito(Ritmo, Scene):
 
     def construct(self):
         self.preparar()
-        esc = 0.0085
+        esc = 0.0072
 
         def p(x, y):
-            return np.array([(x - 400) * esc, -(y - 380) * esc, 0]) + LEFT * 2.6
+            return np.array([(x - 400) * esc, -(y - 380) * esc, 0]) + LEFT * 3.6
 
         quad = NumberPlane(x_range=[0, 800, 50], y_range=[0, 760, 50], x_length=800 * esc, y_length=760 * esc,
                            background_line_style={"stroke_color": "#3a4436", "stroke_width": 1}, axis_config={"stroke_opacity": 0}).move_to(p(400, 380))
@@ -247,24 +247,33 @@ class Deposito(Ritmo, Scene):
         circ = VGroup(*[Circle(radius=DIST[k] * esc, color=AZUL, stroke_width=2.5).move_to(p(*EST[k])) for k in range(3)])
         self.ate(self.ini[0] + self.dur[0] * 0.5)
         self.play(LaggedStart(*[Create(c) for c in circ], lag_ratio=0.3), run_time=2.0)
-        eqc = MathTex(r"(x - x_i)^2 + (y - y_i)^2 = r_i^2", font_size=40).to_edge(RIGHT, buff=0.4).shift(UP * 2.4)
+        fundo_txt = Rectangle(width=6.0, height=8.2, stroke_width=0, fill_color=FUNDO, fill_opacity=0.92).move_to([4.1, 0, 0])
+        fundo_txt.set_z_index(5)
+        self.add(fundo_txt)
+        eqc = MathTex(r"(x - x_i)^2 + (y - y_i)^2 = r_i^2", font_size=38).move_to([4.1, 2.9, 0])
+        eqc.set_z_index(6)
         self.play(Write(eqc), run_time=1.0)
         # fala 1: subtrair a primeira equação -> sistema linear
         self.fala(1)
         menos = MathTex(r"\text{equação } i \;-\; \text{equação } 1", font_size=38, color=AMBAR).next_to(eqc, DOWN, buff=0.5)
+        menos.set_z_index(6)
         self.play(FadeIn(menos), run_time=0.6)
         lin = MathTex(r"2(x_i - x_1)\,x + 2(y_i - y_1)\,y = b_i", font_size=38).next_to(menos, DOWN, buff=0.4)
+        lin.set_z_index(6)
         self.ate(self.ini[1] + self.dur[1] * 0.55)
         self.play(Write(lin), run_time=1.4)
         rl = txt("linear!", 32, VERDE, weight=BOLD).next_to(lin, DOWN, buff=0.25)
+        rl.set_z_index(6)
         self.play(FadeIn(rl), run_time=0.4)
         # fala 2: três estações -> solução exata (420; 330)
         self.fala(2)
         sis = MathTex(r"1200\,x + 100\,y &= 536\,992{,}4 \\ 400\,x + 1100\,y &= 530\,987{,}6", font_size=38)
+        sis.set_z_index(6)
         sis.next_to(rl, DOWN, buff=0.4).align_to(lin, LEFT)
         self.play(Write(sis), run_time=1.4)
         alvo = Star(5, outer_radius=0.2, color=VERMELHO, fill_opacity=1).move_to(p(*DEP))
         sol = MathTex(r"(x;\,y) = (420;\,330)", font_size=44, color=VERMELHO).next_to(sis, DOWN, buff=0.4)
+        sol.set_z_index(6)
         self.ate(self.ini[2] + self.dur[2] * 0.55)
         self.play(SpinInFromNothing(alvo), Write(sol), run_time=1.0)
         # fala 3: quatro estações, ruído -> mínimos quadrados
@@ -276,11 +285,14 @@ class Deposito(Ritmo, Scene):
         zona = Circle(radius=0.22, color=AMBAR, stroke_width=3).move_to(p(*DEP))
         self.play(Create(zona), run_time=0.5)
         self.play(FadeOut(VGroup(menos, lin, rl, sis, sol)), run_time=0.5)
-        mais = txt("3 equações, 2 incógnitas: sem solução exata", 28, PAPEL).next_to(eqc, DOWN, buff=0.6)
+        mais = VGroup(txt("3 equações, 2 incógnitas:", 28, PAPEL), txt("sem solução exata", 28, PAPEL)).arrange(DOWN, buff=0.1).next_to(eqc, DOWN, buff=0.6)
+        mais.set_z_index(6)
         self.play(FadeIn(mais), run_time=0.5)
         self.ate(self.ini[3] + self.dur[3] * 0.6)
         normal = MathTex(r"A^{T}A\,p = A^{T}b", font_size=60, color=AMBAR).next_to(mais, DOWN, buff=0.6)
+        normal.set_z_index(6)
         rn = txt("equações normais", 28, AMBAR, font=SERIF, slant=ITALIC).next_to(normal, DOWN, buff=0.2)
+        rn.set_z_index(6)
         self.play(Write(normal), FadeIn(rn), run_time=1.2)
         self.encerrar()
 
@@ -293,16 +305,18 @@ class Recompensa(Ritmo, Scene):
         self.fala(0)
         col = "ABCDEFGHIJKL"
         grade = VGroup()
+        q, cx = 0.44, -3.7
         for i in range(8):
             for j in range(12):
-                grade.add(Square(0.5, stroke_width=1, color="#4a5546").move_to([(j - 5.5) * 0.5 - 2.0, (3.5 - i) * 0.5, 0]))
-        letras = VGroup(*[txt(col[j], 22, PAPEL_2, font=MONO).move_to([(j - 5.5) * 0.5 - 2.0, 2.25, 0]) for j in range(12)])
-        nums = VGroup(*[txt(str(i + 1), 22, PAPEL_2, font=MONO).move_to([-5.25, (3.5 - i) * 0.5, 0]) for i in range(8)])
+                grade.add(Square(q, stroke_width=1, color="#4a5546").move_to([(j - 5.5) * q + cx, (3.5 - i) * q, 0]))
+        letras = VGroup(*[txt(col[j], 22, PAPEL_2, font=MONO).move_to([(j - 5.5) * q + cx, 4.5 * q, 0]) for j in range(12)])
+        nums = VGroup(*[txt(str(i + 1), 22, PAPEL_2, font=MONO).move_to([cx - 6.4 * q, (3.5 - i) * q, 0]) for i in range(8)])
         self.play(FadeIn(grade), FadeIn(letras), FadeIn(nums), run_time=1.0)
         alvo = grade[6 * 12 + 8].copy().set_fill(VERMELHO, 0.8).set_stroke(VERMELHO, 3)
         self.ate(self.ini[0] + self.dur[0] * 0.4)
-        regra = VGroup(txt("coluna = x ÷ 50 → 420 ÷ 50 = 8 → I", 28, PAPEL, font=MONO),
-                       txt("linha = y ÷ 50 + 1 → 330 ÷ 50 + 1 = 7", 28, PAPEL, font=MONO)).arrange(DOWN, aligned_edge=LEFT, buff=0.2).to_edge(RIGHT, buff=0.4).shift(UP * 1.0)
+        regra = VGroup(txt("coluna = x ÷ 50", 26, PAPEL, font=MONO), txt("  420 ÷ 50 = 8 → I", 26, AMBAR, font=MONO),
+                       txt("linha = y ÷ 50 + 1", 26, PAPEL, font=MONO), txt("  330 ÷ 50 + 1 = 7", 26, AMBAR, font=MONO)
+                       ).arrange(DOWN, aligned_edge=LEFT, buff=0.15).move_to([3.6, 0.8, 0])
         self.play(FadeIn(regra), run_time=0.8)
         self.play(FadeIn(alvo), run_time=0.5)
         i7 = txt("I7", 60, VERMELHO, weight=BOLD).next_to(regra, DOWN, buff=0.5)
