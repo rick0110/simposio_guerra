@@ -86,13 +86,15 @@ class Abertura(Ritmo, Scene):
         def fluxo(de, para, rotulo, curv=0.35):
             a = CurvedArrow(nos[de].get_center(), nos[para].get_center(), angle=curv, color=COR_S[de], stroke_width=5)
             a.scale(0.62, about_point=a.get_center())
-            r = txt(rotulo, 24, COR_S[de], font=MAQ).move_to(a.point_from_proportion(0.5))
-            r.shift(normalize(r.get_center() - ORIGIN + np.array([0, 0.6, 0])) * 0.45)
+            meio = a.point_from_proportion(0.5)
+            corda = (a.get_start() + a.get_end()) / 2          # o rótulo vai para o lado em que o arco se curva
+            r = txt(rotulo, 24, COR_S[de], font=MAQ)
+            r.move_to(meio + normalize(meio - corda) * (0.25 + r.width / 2))
             return VGroup(a, r)
 
-        f1 = fluxo("ACO", "ALI", "trator")
-        f2 = fluxo("COM", "ALI", "diesel", -0.35)
-        f3 = fluxo("ALI", "COM", "comida dos operários", 0.35)
+        f1 = fluxo("ACO", "ALI", "trator", -0.5)
+        f2 = fluxo("COM", "ALI", "diesel", 0.8)
+        f3 = fluxo("ALI", "COM", "comida dos operários", 0.8)
         marcas = [0.32, 0.55, 0.78]
         for f, m in zip((f1, f2, f3), marcas):
             self.ate(self.ini[1] + self.dur[1] * m)
@@ -121,12 +123,13 @@ class Tabela(Ritmo, Scene):
         self.preparar()
         vals = Z + [X]
         g, cel, rl, rc, fundo = tabela(vals, ["ALI", "ACO", "COM", "X"], ["ALI", "ACO", "COM"])
-        g.shift(LEFT * 2.6 + DOWN * 0.2)
-        tit = txt("TABELA DE TRANSAÇÕES · Z", 30, LATAO, weight=BOLD).next_to(g, UP, buff=0.35)
+        g.shift(LEFT * 3.4 + UP * 0.45)
+        tit = txt("TABELA DE TRANSAÇÕES · Z", 30, LATAO, weight=BOLD).next_to(g, UP, buff=0.45)
         sep = Line(fundo.get_left() + RIGHT * 0.3, fundo.get_right() + LEFT * 0.3, color=TINTA, stroke_width=2)
         sep.move_to([fundo.get_center()[0], (cel[2][0].get_y() + cel[3][0].get_y()) / 2, 0])
-        dir_c = txt("consumido pelo setor →", 22, PAPEL_2, font=MAQ).next_to(fundo, UP, buff=0.12).align_to(fundo, RIGHT)
-        dir_l = txt("produção do setor ↓", 22, PAPEL_2, font=MAQ).rotate(PI / 2).next_to(fundo, LEFT, buff=0.15)
+        dir_l = txt("linha: o setor que fornece", 22, PAPEL_2, font=MAQ)
+        dir_c = txt("coluna: o setor que consome", 22, PAPEL_2, font=MAQ)
+        VGroup(dir_l, dir_c).arrange(DOWN, aligned_edge=LEFT, buff=0.1).next_to(fundo, DOWN, buff=0.25).align_to(fundo, LEFT)
         # fala 0: a tabela
         self.fala(0)
         self.play(FadeIn(fundo, shift=UP * 0.3), FadeIn(tit), run_time=0.9)
@@ -140,10 +143,10 @@ class Tabela(Ritmo, Scene):
         self.play(FadeOut(linha_ali), run_time=0.3)
         caixa = SurroundingRectangle(cel[0][1], color=VERMELHO, buff=0.14, stroke_width=5)
         self.play(Create(caixa), cel[0][1].animate.set_color(VERMELHO), run_time=0.7)
-        nota = VGroup(txt("4 unidades de alimento", 32, VERDE, weight=BOLD),
-                      txt("consumidas pelo setor de aço", 32, PAPEL),
-                      txt("(a comida dos operários da siderúrgica)", 24, PAPEL_2, font=MAQ)).arrange(DOWN, aligned_edge=LEFT, buff=0.15)
-        nota.to_edge(RIGHT, buff=0.6).shift(UP * 0.8)
+        nota = VGroup(txt("4 unidades de alimento", 30, VERDE, weight=BOLD),
+                      txt("consumidas pelo setor de aço", 30, PAPEL),
+                      txt("(comida dos operários da siderúrgica)", 22, PAPEL_2, font=MAQ)).arrange(DOWN, aligned_edge=LEFT, buff=0.15)
+        nota.to_edge(RIGHT, buff=0.4).shift(UP * 0.8)
         seta = Arrow(nota.get_left() + LEFT * 0.1, caixa.get_right(), color=VERMELHO, buff=0.15)
         self.play(GrowArrow(seta), FadeIn(nota[0]), FadeIn(nota[1]), run_time=0.9)
         self.ate(self.ini[1] + self.dur[1] * 0.72)
@@ -164,8 +167,8 @@ class MatrizA(Ritmo, Scene):
     def construct(self):
         self.preparar()
         g, cel, rl, rc, fundo = tabela(Z + [X], ["ALI", "ACO", "COM", "X"], ["ALI", "ACO", "COM"])
-        g.shift(LEFT * 2.6 + DOWN * 0.2)
-        tit = txt("TABELA DE TRANSAÇÕES · Z", 30, LATAO, weight=BOLD).next_to(g, UP, buff=0.35)
+        g.shift(LEFT * 3.4 + UP * 0.45)
+        tit = txt("TABELA DE TRANSAÇÕES · Z", 30, LATAO, weight=BOLD).next_to(g, UP, buff=0.45)
         # fala 0: a receita por unidade
         self.fala(0)
         self.play(FadeIn(g), FadeIn(tit), run_time=0.9)
@@ -280,24 +283,23 @@ class Resolver(Ritmo, Scene):
                       font_size=50).to_edge(UP, buff=0.7).shift(RIGHT * 2.2)
         self.play(Write(ima), run_time=1.6)
         sis = MathTex(r"0{,}9\,x_1 - 0{,}2\,x_2 &= 23 \\ -0{,}2\,x_1 + 0{,}9\,x_2 - 0{,}1\,x_3 &= 11 \\ -0{,}1\,x_1 + 0{,}8\,x_3 &= 5",
-                      font_size=48).shift(DOWN * 1.0 + RIGHT * 0.6)
+                      font_size=46).move_to([-2.2, -0.9, 0])
         self.ate(self.ini[1] + self.dur[1] * 0.5)
         self.play(Write(sis), run_time=2.0)
         # fala 2: a solução
         self.fala(2)
-        sol = MathTex(r"x = \begin{bmatrix} 30 \\ 20 \\ 10 \end{bmatrix}", font_size=64).to_corner(DR, buff=0.8)
-        self.play(sis.animate.shift(LEFT * 1.8).scale(0.85), run_time=0.7)
+        sol = MathTex(r"x = \begin{bmatrix} 30 \\ 20 \\ 10 \end{bmatrix}", font_size=64).move_to([4.6, -1.0, 0])
         self.ate(self.ini[2] + self.dur[2] * 0.55)
         caixa = SurroundingRectangle(sol, color=AMBAR, buff=0.2)
         self.play(Write(sol), run_time=1.0)
         self.play(Create(caixa), run_time=0.5)
         # fala 3: conferência da primeira linha
         self.fala(3)
-        conf = MathTex(r"0{,}9 \cdot 30 - 0{,}2 \cdot 20", r"= 27 - 4", r"= 23", font_size=50).next_to(sis, DOWN, buff=0.5).align_to(sis, LEFT)
+        conf = MathTex(r"0{,}9 \cdot 30 - 0{,}2 \cdot 20", r"= 27 - 4", r"= 23", font_size=46).next_to(sis, DOWN, buff=0.45).align_to(sis, LEFT)
         conf[2].set_color(VERDE)
         self.play(Indicate(sis[0][:15], color=AMBAR), run_time=0.8)
         self.play(Write(conf), run_time=1.6)
-        ok = txt("✓ bate", 34, VERDE, weight=BOLD).next_to(conf, RIGHT, buff=0.4)
+        ok = txt("✓ bate", 34, VERDE, weight=BOLD).next_to(conf, RIGHT, buff=0.3)
         self.play(FadeIn(ok, scale=1.3), run_time=0.4)
         self.ate(self.ini[3] + self.dur[3] * 0.7)
         frase = txt("entregar 23 de comida → produzir 30", 32, AMBAR, weight=BOLD).to_edge(DOWN, buff=0.35)
@@ -344,7 +346,7 @@ class Limites(Ritmo, Scene):
         self.ate(self.ini[0] + self.dur[0] * 0.72)
         f = 1 / 1.18
         self.play(uso.animate.set_value(1.0), *[b.animate.stretch(f, 1, about_edge=DOWN) for b in barras], FadeOut(alerta), run_time=1.4)
-        corte = txt("o servidor corta tudo na mesma proporção", 24, AMBAR, font=MAQ).next_to(med, DOWN, buff=0.7)
+        corte = txt("o servidor corta tudo na mesma proporção", 22, AMBAR, font=MAQ).next_to(med, DOWN, buff=0.7).to_edge(RIGHT, buff=0.4)
         self.play(FadeIn(corte), run_time=0.5)
         # fala 1: comida das tropas
         self.fala(1)
