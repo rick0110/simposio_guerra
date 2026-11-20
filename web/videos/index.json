@@ -10,6 +10,11 @@
    "titulo": "Operações · Markov e Lanchester",
    "duracao": "4:13"
   },
+  "inteligencia": {
+   "arquivo": "inteligencia-hill-mmq.mp4",
+   "titulo": "Inteligência · Cifra de Hill e mínimos quadrados",
+   "duracao": "4:07"
+  },
   "governo": {
    "arquivo": "governo-regressao.mp4",
    "titulo": "Governo · Regressão linear",
