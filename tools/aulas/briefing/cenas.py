@@ -383,9 +383,7 @@ class Secoes(Ritmo, Scene):
         # fala 5: a equipe se divide; um chefe de estado-maior
         self.fala(5)
         self.play(*[x.animate.set_opacity(1) for x in cartoes], run_time=0.5)
-        for c in cartoes:
-            c[1][2].set_opacity(0.35)
-            c[1][3].set_opacity(0.35)
+        self.play(*[FadeOut(c[1][2:]) for c in cartoes], *[c[1][:2].animate.shift(UP * 0.55) for c in cartoes], run_time=0.5)
         pessoas = VGroup()
         for k, c in enumerate(cartoes):
             n = 3 if k < 2 else 3

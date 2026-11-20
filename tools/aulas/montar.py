@@ -124,7 +124,10 @@ def main():
     mus = trilha(n)
     env = np.abs(voz_trilha)
     janela = int(0.35 * SR)
-    env = np.convolve(env, np.ones(janela) / janela, mode="same")
+    c = np.concatenate([[0.0], np.cumsum(env, dtype=np.float64)])   # média móvel por soma acumulada: O(n)
+    a0 = np.clip(np.arange(n) - janela // 2, 0, n)
+    a1 = np.clip(np.arange(n) + (janela - janela // 2), 0, n)
+    env = ((c[a1] - c[a0]) / janela).astype(np.float32)
     fala = np.clip(env / (env.max() * 0.08 + 1e-9), 0, 1)
     ganho = 0.16 - 0.11 * fala                     # 0,16 sem voz; 0,05 com voz
     mix = voz_trilha / (np.max(np.abs(voz_trilha)) + 1e-9) * 0.9 + mus * ganho
