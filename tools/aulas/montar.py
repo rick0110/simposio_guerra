@@ -22,8 +22,9 @@ SR = 48000
 FUNDO = "0x1c241e"
 FONTE = str(Path.home() / ".local/share/fonts/estado-maior/ibm-plex-sans-condensed-700.ttf")
 
-# (classe do Manim ou "JOGO", cena do roteiro com narração ou None)
-SEQUENCIA = [("Titulo", None), ("Abertura", "abertura"), ("Dados", "dados"), ("Reta", "reta"),
+# (classe do Manim ou "JOGO", cena do roteiro com narração ou None). Um roteiro pode trazer a própria
+# SEQUENCIA e o CLIPE_ROTULO (texto acima do clipe do jogo).
+SEQUENCIA_PADRAO = [("Titulo", None), ("Abertura", "abertura"), ("Dados", "dados"), ("Reta", "reta"),
              ("Leitura", "leitura"), ("Plano", "plano"), ("Matriz", "matriz"), ("Projecao", "projecao"),
              ("Decisao", "decisao"), ("JOGO", "jogo"), ("Fim", "fim"), ("Creditos", None)]
 
@@ -75,19 +76,29 @@ def trilha(n, seed=1943):
     return (y / (np.max(np.abs(y)) + 1e-9)).astype(np.float32)
 
 
+def carregar_roteiro(pasta):
+    spec = importlib.util.spec_from_file_location("roteiro", pasta / "roteiro.py")
+    mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mod)
+    return mod
+
+
 def main():
     roteiro_dir, voz, cenas_dir, clipe, saida = map(Path, sys.argv[1:6])
+    roteiro = carregar_roteiro(roteiro_dir)
+    sequencia = getattr(roteiro, "SEQUENCIA", SEQUENCIA_PADRAO)
+    rotulo = getattr(roteiro, "CLIPE_ROTULO", "NO JOGO · ABA GOVERNO")
     dur = json.loads((voz / "duracoes.json").read_text())
     work = Path(tempfile.mkdtemp(prefix="montar_"))
 
     # 1. vídeo de cada bloco, na ordem
     blocos = []
-    for classe, cena in SEQUENCIA:
+    for classe, cena in sequencia:
         if classe == "JOGO":
             p = work / "jogo.mp4"
             filtro = (f"color=c={FUNDO}:s=1920x1080:r=30:d={dur_video(clipe):.3f}[bg];"
                       f"[0:v]scale=1600:900,setsar=1[c];[bg][c]overlay=160:140,"
-                      f"drawtext=fontfile='{FONTE}':text='NO JOGO · ABA GOVERNO':fontcolor=0xb08d3c:fontsize=34:"
+                      f"drawtext=fontfile='{FONTE}':text='{rotulo}':fontcolor=0xb08d3c:fontsize=34:"
                       f"x=(w-text_w)/2:y=62,drawbox=x=158:y=138:w=1604:h=904:color=0xb08d3c@0.8:t=2,"
                       f"fade=t=in:st=0:d=0.5,fade=t=out:st={dur_video(clipe) - 0.6:.3f}:d=0.6,format=yuv420p")
             subprocess.run(["ffmpeg", "-y", "-v", "error", "-i", str(clipe), "-filter_complex", filtro,
