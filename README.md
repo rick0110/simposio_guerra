@@ -15,6 +15,20 @@ pelo navegador. Não é preciso instalar nada nos computadores das equipes.
 com as seis telas ao mesmo tempo (árbitro, projetor e as quatro salas), com legendas explicando cada passo.
 Para gerar de novo: `python tools/video/director.py <pasta>` e depois `python tools/video/compose.py <pasta> saida.mp4`.
 
+### Aulas em vídeo
+
+[docs/video/aula-governo-regressao-720p.mp4](docs/video/aula-governo-regressao-720p.mp4) (6,7 min): **Governo ·
+Regressão linear** — a história da pesquisa de opinião de Noethéria, mínimos quadrados, o plano com várias causas,
+a forma matricial y ≈ Xβ, a projeção ortogonal e as equações normais, como ler cada β e como resolver o desafio no jogo.
+
+Como gerar (ferramentas em `tools/aulas/`):
+1. narração (Kokoro, voz `pm_santa`, Python 3.12): `python tools/aulas/narracao.py tools/aulas/governo_regressao <voz>`
+2. cenas (Manim CE): `AULA_VOZ=<voz> manim -r 1920,1080 --frame_rate 30 tools/aulas/governo_regressao/cenas.py <Cena>`
+3. clipe do jogo: `python tools/aulas/governo_regressao/clip_jogo.py <voz> clipe.mp4`
+4. montagem: `python tools/aulas/montar.py tools/aulas/governo_regressao <voz> <pasta_das_cenas> clipe.mp4 saida.mp4`
+
+A animação e a voz ficam sincronizadas por construção: `tools/aulas/ritmo.py` define o instante de cada fala.
+
 ## Capturas
 
 Imagens de uma partida real (4 nações, jogada pela interface). As demais estão em [docs/capturas/](docs/capturas/).
