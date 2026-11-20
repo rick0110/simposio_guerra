@@ -1,6 +1,38 @@
 {
-  "secoes": {
-    "governo": {"arquivo": "governo-regressao.mp4", "titulo": "Governo · Regressão linear", "duracao": "6:41"}
+ "secoes": {
+  "intendencia": {
+   "arquivo": "intendencia-leontief.mp4",
+   "titulo": "Intendência · O modelo de Leontief",
+   "duracao": "4:07"
   },
-  "briefing": {}
+  "governo": {
+   "arquivo": "governo-regressao.mp4",
+   "titulo": "Governo · Regressão linear",
+   "duracao": "6:41"
+  }
+ },
+ "briefing": {
+  "4": {
+   "GAU": {
+    "arquivo": "briefing-GAU.mp4",
+    "titulo": "Briefing · República de Gáussia",
+    "duracao": "5:10"
+   },
+   "EUL": {
+    "arquivo": "briefing-EUL.mp4",
+    "titulo": "Briefing · Império de Eulerândia",
+    "duracao": "5:10"
+   },
+   "HIL": {
+    "arquivo": "briefing-HIL.mp4",
+    "titulo": "Briefing · Federação de Hilbertânia",
+    "duracao": "5:10"
+   },
+   "NOE": {
+    "arquivo": "briefing-NOE.mp4",
+    "titulo": "Briefing · Reino de Noethéria",
+    "duracao": "5:10"
+   }
+  }
+ }
 }
