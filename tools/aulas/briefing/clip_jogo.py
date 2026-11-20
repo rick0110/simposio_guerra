@@ -7,6 +7,7 @@ import glob
 import json
 import os
 import sys
+import tempfile
 import time
 from pathlib import Path
 
@@ -43,7 +44,7 @@ async def main():
             await post(adm, base, "/api/admin/new_game", {"n_factions": N, "turn_minutes": 12, "max_turns": 8, "seed": 7})
             await post(adm, base, "/api/admin/start", {})
             senha = (await (await adm.request.get(base + "/api/admin/credentials")).json())[FID]
-            work = Path(os.environ.get("TMPDIR", "/tmp")) / f"clip_briefing_{FID}"
+            work = Path(tempfile.mkdtemp(prefix=f"clip_briefing_{FID}_"))
             ctx = await b.new_context(viewport={"width": W, "height": H}, record_video_dir=str(work),
                                       record_video_size={"width": W, "height": H}, locale="pt-BR")
             await ctx.add_init_script(CURSOR_JS)

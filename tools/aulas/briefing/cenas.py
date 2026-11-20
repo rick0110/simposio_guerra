@@ -27,6 +27,10 @@ DEFESA = {"urbano": "+30%", "floresta": "+25%", "pantano": "+20%", "montanha": "
 CLIMA = {"norte": AZUL, "centro": VERDE, "sul": AMBAR}
 
 
+def area(poly):
+    return abs(sum(x0 * y1 - x1 * y0 for (x0, y0), (x1, y1) in zip(poly, poly[1:] + poly[:1]))) / 2
+
+
 def selo(raio=1.2, cor=COR, fid=FID):
     """O selo da nação: dois anéis e o emblema."""
     g = MathTex(GLIFO[fid], color=cor).scale(raio * 2.3)
@@ -129,11 +133,12 @@ class Mapa(Ritmo, MovingCameraScene):
         rot_reg = VGroup()
         for reg, cor in CLIMA.items():
             ts = [t for t in T.values() if t["climate"] == reg]
-            regioes.add(*[polys[t["id"]].copy().set_fill(cor, 0.55).set_stroke(width=0) for t in ts])
+            regioes.add(*[polys[t["id"]].copy().set_fill(cor, 0.92).set_stroke(FUNDO, 1.2) for t in ts])
             cx = sum(t["centroid"][0] for t in ts) / len(ts)
             cy = sum(t["centroid"][1] for t in ts) / len(ts)
+            perto = max(ts, key=lambda t: area(t["polygon"]))   # o maior território da região (nunca uma ilha)
             r = txt(reg.upper(), 34, PAPEL, weight=BOLD)
-            rot_reg.add(VGroup(caixa_texto(r, cor, 0.12), r).move_to(p(cx, cy)))
+            rot_reg.add(VGroup(caixa_texto(r, cor, 0.12), r).move_to(p(*perto["label_pos"])))
         self.ate(self.ini[0] + 2.8)
         self.play(FadeIn(regioes), LaggedStart(*[FadeIn(r) for r in rot_reg], lag_ratio=0.3), run_time=1.6)
         self.ate(self.ini[0] + self.dur[0] - 0.3)
@@ -142,7 +147,7 @@ class Mapa(Ritmo, MovingCameraScene):
         self.fala(1)
         nossos = VGroup(*[polys[t["id"]] for t in D["territorios"]])
         outros_polys = [pl for t, pl in polys.items() if dono.get(t) != FID]
-        self.play(*[pl.animate.set_fill(opacity=0.12) for pl in outros_polys], enquadrar(self, nossos, 2.0), run_time=1.6)
+        self.play(*[pl.animate.set_fill(opacity=0.12) for pl in outros_polys], enquadrar(self, nossos, 2.45), run_time=1.6)
         s = frame.width / config.frame_width
         rotulos = VGroup()
         for t in D["territorios"]:
@@ -151,16 +156,18 @@ class Mapa(Ritmo, MovingCameraScene):
             rotulos.add(VGroup(caixa_texto(r, PAPEL_2, 0.06 * s * 2).set_stroke(width=1), r).move_to(c))
         self.play(LaggedStart(*[FadeIn(r) for r in rotulos], lag_ratio=0.35), run_time=1.8)
         cap = T[D["capital_tid"]]
-        estrela = Star(5, outer_radius=0.16 * s * 2, color=AMBAR, fill_opacity=1).move_to(p(*cap["centroid"]))
+        i_cap = [t["id"] for t in D["territorios"]].index(D["capital_tid"])
+        estrela = Star(5, outer_radius=0.16 * s * 2, color=AMBAR, fill_opacity=1).next_to(rotulos[i_cap], LEFT, buff=0.06 * s * 2)
         self.ate(self.ini[1] + self.dur[1] * 0.55)
         self.play(SpinInFromNothing(estrela), run_time=0.6)
-        tags = VGroup()
         fortes = [t for t in D["territorios"] if t["terreno"] in DEFESA]
-        for t in fortes:
-            tg = txt(f"{TERRENO[t['terreno']]} · defesa {DEFESA[t['terreno']]}", 20 * s, FUNDO, weight=BOLD)
-            tags.add(VGroup(BackgroundRectangle(tg, color=AMBAR, fill_opacity=0.95, buff=0.05 * s * 2), tg)
-                     .next_to(rotulos[D["territorios"].index(t)], DOWN, buff=0.05 * s * 2))
-        self.play(LaggedStart(*[FadeIn(tg, shift=UP * 0.1 * s) for tg in tags], lag_ratio=0.6), run_time=1.4)
+        linhas = VGroup(*[txt(f"{t['nome']}: {TERRENO[t['terreno']]}, defesa {DEFESA[t['terreno']]}", 24 * s, PAPEL)
+                          for t in fortes]).arrange(DOWN, aligned_edge=LEFT, buff=0.08 * s * 2)
+        cab = txt("QUEM DEFENDE LUTA MELHOR EM", 20 * s, AMBAR, weight=BOLD)
+        leg = VGroup(cab, linhas).arrange(DOWN, aligned_edge=LEFT, buff=0.1 * s * 2)
+        tags = VGroup(caixa_texto(leg, AMBAR, 0.12 * s * 2), leg)
+        tags.move_to(frame.get_corner(DR) + np.array([-0.25, 0.25, 0]) * s * 2, aligned_edge=DR)
+        self.play(FadeIn(tags[0]), FadeIn(cab), LaggedStart(*[FadeIn(x, shift=RIGHT * 0.1 * s) for x in linhas], lag_ratio=0.5), run_time=1.4)
         # fala 2: as outras nações, cada uma uma sala
         self.fala(2)
         self.play(FadeOut(rotulos), FadeOut(tags), frame.animate.set(width=config.frame_width).move_to(ORIGIN),
@@ -197,7 +204,7 @@ class Mapa(Ritmo, MovingCameraScene):
             self.play(LaggedStart(*[FadeIn(x) for x in nomes], lag_ratio=0.4), run_time=1.0)
             quente = txt("FRONTEIRA QUENTE", 40 * s, VERMELHO, weight=BOLD).next_to(par, UP, buff=0.25 * s)
             self.play(FadeIn(quente, scale=1.3), Flash(linha.get_center(), color=VERMELHO, flash_radius=0.5 * s), run_time=0.8)
-            self.ate(self.ini[3] + self.dur[3] + 0.1)
+            self.ate(self.ini[3] + self.dur[3] - 0.4)
             self.play(FadeOut(VGroup(linha, nomes, quente)), polys[meu].animate.set_stroke(FUNDO, 1.2),
                       polys[dele].animate.set_stroke(FUNDO, 1.2), frame.animate.set(width=config.frame_width).move_to(ORIGIN), run_time=0.8)
         # fala 4: neutros (milícias) e rotas marítimas
@@ -425,10 +432,11 @@ class Fim(Ritmo, MovingCameraScene):
                 frase = f"{D['nome_de'](dele)} está ao alcance"
                 seta = Arrow(p(*T[meu]["centroid"]), p(*T[dele]["centroid"]), buff=0.25 * s, color=AMBAR, stroke_width=10 * s)
             r = txt(frase, 40 * s, PAPEL, font=SERIF, weight=BOLD)
-            r.next_to(par, UP, buff=0.3 * s)
+            r = VGroup(caixa_texto(r, PAPEL_2, 0.12 * s), r).next_to(par, UP, buff=0.3 * s)
             self.play(GrowArrow(seta), FadeIn(r), run_time=1.0)
             self.ate(self.ini[0] + self.dur[0] - 3.6)
-            ali = txt("Alimento acaba rápido.", 30 * s, AMBAR, font=MAQ).next_to(par, DOWN, buff=0.3 * s)
+            ali = txt("Alimento acaba rápido.", 30 * s, AMBAR, font=MAQ)
+            ali = VGroup(caixa_texto(ali, AMBAR, 0.1 * s), ali).next_to(par, DOWN, buff=0.3 * s)
             self.play(FadeIn(ali), run_time=0.6)
         # fala 1: boa sorte
         self.fala(1)
