@@ -15,17 +15,35 @@ pelo navegador. Não é preciso instalar nada nos computadores das equipes.
 com as seis telas ao mesmo tempo (árbitro, projetor e as quatro salas), com legendas explicando cada passo.
 Para gerar de novo: `python tools/video/director.py <pasta>` e depois `python tools/video/compose.py <pasta> saida.mp4`.
 
-### Aulas em vídeo
+### Aulas em vídeo (dentro do jogo)
 
-[web/videos/governo-regressao.mp4](web/videos/governo-regressao.mp4) (6,7 min): **Governo ·
-Regressão linear** — a história da pesquisa de opinião de Noethéria, mínimos quadrados, o plano com várias causas,
-a forma matricial y ≈ Xβ, a projeção ortogonal e as equações normais, como ler cada β e como resolver o desafio no jogo.
+O QG tem os vídeos embutidos, servidos pelo próprio servidor (não precisa de internet):
 
-Como gerar (ferramentas em `tools/aulas/`):
-1. narração (Kokoro, voz `pm_santa`, Python 3.12): `python tools/aulas/narracao.py tools/aulas/governo_regressao <voz>`
-2. cenas (Manim CE): `AULA_VOZ=<voz> manim -r 1920,1080 --frame_rate 30 tools/aulas/governo_regressao/cenas.py <Cena>`
-3. clipe do jogo: `python tools/aulas/governo_regressao/clip_jogo.py <voz> clipe.mp4`
-4. montagem: `python tools/aulas/montar.py tools/aulas/governo_regressao <voz> <pasta_das_cenas> clipe.mp4 saida.mp4`
+- **▶ Briefing**, no alto do QG: um vídeo por nação (≈ 5 min) com o contexto da guerra, o mapa visto daquela
+  nação (territórios, capital, vizinhos, a fronteira mais quente), como se vence, o ciclo do turno, as quatro seções
+  e um passeio pela tela do QG. Na primeira visita, um telegrama pede que a equipe assista.
+- **Instrução em vídeo**, na etiqueta à direita das abas: uma aula por seção, com a história, a dedução da
+  matemática passo a passo, o significado de cada número e onde clicar no jogo.
+
+| Arquivo (em `web/videos/`) | Conteúdo |
+|---|---|
+| `briefing-GAU.mp4`, `briefing-EUL.mp4`, `briefing-HIL.mp4`, `briefing-NOE.mp4` | briefing de cada nação (partida de 4 nações) |
+| `intendencia-leontief.mp4` | Intendência: tabela Z, matriz técnica A, (I − A)x = d, limites e bônus |
+| `operacoes-markov-lanchester.mp4` | Operações: cadeia de Markov do clima, lei quadrática de Lanchester, ordens |
+| `inteligencia-hill-mmq.mp4` | Inteligência: cifra de Hill mod 37, chave por K = C·P⁻¹, triangulação por mínimos quadrados |
+| `governo-regressao.mp4` | Governo: regressão linear, forma matricial, projeção e equações normais |
+
+O catálogo que o QG lê é `web/videos/index.json`, gerado por `python tools/aulas/catalogo.py`.
+
+**Como gerar uma aula** (ferramentas em `tools/aulas/`; cada aula tem `roteiro.py`, `cenas.py` e `clip_jogo.py`):
+1. narração (Kokoro, voz `pm_santa`, Python 3.12): `python tools/aulas/narracao.py tools/aulas/<aula> <voz>`
+2. cenas (Manim CE): `AULA_VOZ=<voz> manim -r 1920,1080 --frame_rate 30 tools/aulas/<aula>/cenas.py <Cena>`
+3. clipe do jogo (Playwright, grava o jogo de verdade): `python tools/aulas/<aula>/clip_jogo.py <voz> clipe.mp4`
+4. montagem (narração, trilha, mixagem): `python tools/aulas/montar.py tools/aulas/<aula> <voz> <pasta_das_cenas> clipe.mp4 saida.mp4`
+
+Os briefings usam a pasta `tools/aulas/briefing` com `NACAO=<id> N_NACOES=4` no ambiente: o roteiro e o mapa
+são gerados a partir de `balance.py` e `map.json`, então refletem o jogo. Para uma partida com outro número de
+nações, gere de novo com `N_NACOES` e acrescente a entrada correspondente no catálogo.
 
 A animação e a voz ficam sincronizadas por construção: `tools/aulas/ritmo.py` define o instante de cada fala.
 
