@@ -41,6 +41,23 @@ def nome_curto(fid):
     return next(o["short"] for o in D["outras"] if o["id"] == fid) if fid != FID else D["short"]
 
 
+def afastar(rotulos, folga):
+    """Empurra rótulos que se sobrepõem (de cima para baixo) até ficarem separados por 'folga'."""
+    for _ in range(30):
+        mexeu = False
+        ordem = sorted(rotulos, key=lambda r: -r.get_y())
+        for i, a in enumerate(ordem):
+            for b in ordem[i + 1:]:
+                dx = abs(a.get_x() - b.get_x()) - (a.width + b.width) / 2
+                dy = abs(a.get_y() - b.get_y()) - (a.height + b.height) / 2
+                if dx < 0 and dy < folga:
+                    b.shift(DOWN * (folga - dy) * 0.6)
+                    a.shift(UP * (folga - dy) * 0.4)
+                    mexeu = True
+        if not mexeu:
+            break
+
+
 def caixa_texto(grupo, cor=LATAO, buff=0.3):
     return SurroundingRectangle(grupo, color=cor, buff=buff, stroke_width=2, fill_color=FUNDO, fill_opacity=0.88)
 
@@ -154,6 +171,7 @@ class Mapa(Ritmo, MovingCameraScene):
             c = p(*T[t["id"]]["label_pos"])
             r = txt(t["nome"], 26 * s, PAPEL, weight=BOLD)
             rotulos.add(VGroup(caixa_texto(r, PAPEL_2, 0.06 * s * 2).set_stroke(width=1), r).move_to(c))
+        afastar(rotulos, 0.06 * s * 2)
         self.play(LaggedStart(*[FadeIn(r) for r in rotulos], lag_ratio=0.35), run_time=1.8)
         cap = T[D["capital_tid"]]
         i_cap = [t["id"] for t in D["territorios"]].index(D["capital_tid"])
@@ -166,7 +184,21 @@ class Mapa(Ritmo, MovingCameraScene):
         cab = txt("QUEM DEFENDE LUTA MELHOR EM", 20 * s, AMBAR, weight=BOLD)
         leg = VGroup(cab, linhas).arrange(DOWN, aligned_edge=LEFT, buff=0.1 * s * 2)
         tags = VGroup(caixa_texto(leg, AMBAR, 0.12 * s * 2), leg)
-        tags.move_to(frame.get_corner(DR) + np.array([-0.25, 0.25, 0]) * s * 2, aligned_edge=DR)
+        def sobreposicao(m):
+            area = 0.0
+            for r in [*rotulos, estrela]:
+                dx = min(m.get_right()[0], r.get_right()[0]) - max(m.get_left()[0], r.get_left()[0])
+                dy = min(m.get_top()[1], r.get_top()[1]) - max(m.get_bottom()[1], r.get_bottom()[1])
+                area += max(dx, 0) * max(dy, 0)
+            return area
+
+        melhor = None
+        for canto in (DR, DL, UR, UL):       # o canto do quadro onde a legenda cobre menos nomes
+            tags.move_to(frame.get_corner(canto) - canto * 0.25 * s * 2, aligned_edge=canto)
+            custo = sobreposicao(tags)
+            if melhor is None or custo < melhor[0] - 1e-6:
+                melhor = (custo, canto)
+        tags.move_to(frame.get_corner(melhor[1]) - melhor[1] * 0.25 * s * 2, aligned_edge=melhor[1])
         self.play(FadeIn(tags[0]), FadeIn(cab), LaggedStart(*[FadeIn(x, shift=RIGHT * 0.1 * s) for x in linhas], lag_ratio=0.5), run_time=1.4)
         # fala 2: as outras nações, cada uma uma sala
         self.fala(2)
