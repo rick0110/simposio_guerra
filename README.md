@@ -9,6 +9,12 @@ mostra o teatro de operações. As regras completas estão em [docs/DESIGN.md](d
 O jogo roda num **PC servidor**. Os outros computadores da mesma rede (Wi-Fi ou cabo) acessam o jogo
 pelo navegador. Não é preciso instalar nada nos computadores das equipes.
 
+## Vídeo de demonstração
+
+[docs/video/estado-maior-como-se-joga-720p.mp4](docs/video/estado-maior-como-se-joga-720p.mp4) (8 min): uma partida real
+com as seis telas ao mesmo tempo (árbitro, projetor e as quatro salas), com legendas explicando cada passo.
+Para gerar de novo: `python tools/video/director.py <pasta>` e depois `python tools/video/compose.py <pasta> saida.mp4`.
+
 ## Capturas
 
 Imagens de uma partida real (4 nações, jogada pela interface). As demais estão em [docs/capturas/](docs/capturas/).
