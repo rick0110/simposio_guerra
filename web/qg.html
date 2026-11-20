@@ -39,6 +39,7 @@
     <div class="timbre__ctrl">
       <span class="conn" id="conn" data-s="connecting">Conectando…</span>
       <div class="btn-row">
+        <button class="btn btn--small btn--film" id="b-briefing" type="button" hidden>▶ Briefing</button>
         <button class="btn btn--small" id="b-boletim" type="button">Boletim</button>
         <button class="btn btn--small" id="b-arquivo" type="button" aria-expanded="false" aria-controls="archive">Arquivo</button>
         <button class="btn btn--small" id="b-som" type="button">Som</button>
@@ -56,6 +57,10 @@
         <button class="folder__tab" role="tab" type="button" id="tab-inteligencia" aria-controls="sec-inteligencia">Inteligência</button>
         <button class="folder__tab" role="tab" type="button" id="tab-governo" aria-controls="sec-governo">Governo</button>
       </div>
+      <button class="film-tab" id="b-instrucao" type="button" hidden>
+        <span class="film-tab__reel" aria-hidden="true"></span>
+        <span class="film-tab__txt">Instrução em vídeo<b id="b-instrucao-sec"></b></span>
+      </button>
       <div class="folder__body" id="folder">
         <div class="sec" role="tabpanel" id="sec-intendencia" aria-labelledby="tab-intendencia" hidden></div>
         <div class="sec" role="tabpanel" id="sec-operacoes" aria-labelledby="tab-operacoes" hidden></div>
@@ -70,6 +75,8 @@
   <div class="veil hidden" id="veil"></div>
   <section class="boletim paper hidden" id="boletim" role="dialog" aria-modal="true" aria-labelledby="boletim-title" tabindex="-1"></section>
   <div class="dispatch-stack" id="dispatches" aria-live="polite"></div>
+  <div class="veil veil--cine hidden" id="cine-veil"></div>
+  <section class="cine hidden" id="cine" role="dialog" aria-modal="true" aria-labelledby="cine-title"></section>
 
   <!-- ============ gaveta inferior: a Mesa de Cálculo traz a própria alça ============ -->
   <div id="calc-drawer"></div>

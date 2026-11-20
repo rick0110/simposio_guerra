@@ -17,12 +17,14 @@ import { mountIntendencia } from "./qg/intendencia.js";
 import { mountOperacoes } from "./qg/operacoes.js";
 import { mountInteligencia } from "./qg/inteligencia.js";
 import { mountGoverno } from "./qg/governo.js";
+import { loadCatalog, sectionVideo, briefingVideo, openFilm, closeFilm, filmOpen } from "./qg/cinema.js";
 
 const $ = (id) => document.getElementById(id);
 const PORTAL = MOCK ? withMock("index.html") : "/";
 const REDUCED = !!(window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches);
 const SEC_KEY = "em_qg_sec";
 const BOL_KEY = "em_qg_bol";
+const FILM_KEY = "em_qg_briefing_visto";
 const CIPHER_KINDS = new Set(["intercept", "flash"]);
 
 const S = {
@@ -279,6 +281,44 @@ function showSection(sec, { save = true } = {}) {
     if (location.hash !== `#${sec}`) history.replaceState(null, "", `#${sec}`);
   }
   if (!$("archive").classList.contains("hidden")) renderArchive();
+  syncFilmTab();
+}
+
+/* ------------------------------------------------------------ vídeos de instrução */
+function syncFilmTab() {
+  const v = sectionVideo(S.sec);
+  $("b-instrucao").hidden = !v;
+  $("b-instrucao-sec").textContent = SEC_NAMES[S.sec] || "";
+  $("b-instrucao").title = v ? `${v.titulo}${v.duracao ? ` (${v.duracao})` : ""}` : "";
+}
+
+function myBriefing() {
+  const st = S.state;
+  if (!st) return null;
+  return briefingVideo(st.faction.id, (st.factions || []).length);
+}
+
+function openBriefing() {
+  const v = myBriefing();
+  if (!v) return;
+  openFilm(v, { kicker: `Briefing · ${S.state.faction.short || S.state.faction.name}` });
+  try { localStorage.setItem(`${FILM_KEY}_${S.state.faction.id}`, "1"); } catch { /* sem armazenamento */ }
+}
+
+/** Na primeira visita deste PC, um telegrama lembra a equipe de assistir ao briefing da nação. */
+function setupFilms() {
+  syncFilmTab();
+  const v = myBriefing();
+  $("b-briefing").hidden = !v;
+  if (!v) return;
+  let visto = false;
+  try { visto = !!localStorage.getItem(`${FILM_KEY}_${S.state.faction.id}`); } catch { /* sem armazenamento */ }
+  if (!visto) {
+    dispatch({
+      head: "GABINETE — ASSISTA AO BRIEFING",
+      text: `ANTES DA PRIMEIRA ORDEM, A EQUIPE INTEIRA DEVE ASSISTIR AO BRIEFING DA NAÇÃO (BOTÃO ▶ BRIEFING, NO ALTO). CADA SEÇÃO TEM TAMBÉM A SUA INSTRUÇÃO EM VÍDEO.`,
+    });
+  }
 }
 
 function mountSections() {
@@ -515,11 +555,20 @@ function wireChrome() {
     location.href = PORTAL;
   });
   $("veil").addEventListener("click", closeBoletim);
+  $("cine-veil").addEventListener("click", closeFilm);
+  $("b-briefing").addEventListener("click", openBriefing);
+  $("b-instrucao").addEventListener("click", () => {
+    const v = sectionVideo(S.sec);
+    if (v) openFilm(v, { kicker: `Instrução · ${SEC_NAMES[S.sec] || ""}` });
+  });
 
   window.addEventListener("keydown", (e) => {
     const typing = /^(INPUT|TEXTAREA|SELECT)$/.test(document.activeElement?.tagName || "");
-    if (e.key === "Escape") { closeBoletim(); closeArchive(); }
-    if (!typing && (e.key === "m" || e.key === "M")) { sfx.setMuted(!sfx.muted); syncSound(); }
+    if (e.key === "Escape") {
+      if (filmOpen()) { closeFilm(); return; }
+      closeBoletim(); closeArchive();
+    }
+    if (!typing && !filmOpen() && (e.key === "m" || e.key === "M")) { sfx.setMuted(!sfx.muted); syncSound(); }
   });
   syncSound();
 }
@@ -551,8 +600,9 @@ async function boot() {
     showFailure(e);
     return;
   }
-  await loadAllDossiers();
+  await Promise.all([loadAllDossiers(), loadCatalog()]);
   showSection(initialSection(), { save: false });
+  setupFilms();
   connect("faction", onMessage, onStatus);
   setInterval(tick, 250);
   // rede de segurança: se algum evento se perder, o estado é relido a cada minuto

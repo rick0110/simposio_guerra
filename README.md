@@ -17,7 +17,7 @@ Para gerar de novo: `python tools/video/director.py <pasta>` e depois `python to
 
 ### Aulas em vídeo
 
-[docs/video/aula-governo-regressao-720p.mp4](docs/video/aula-governo-regressao-720p.mp4) (6,7 min): **Governo ·
+[web/videos/governo-regressao.mp4](web/videos/governo-regressao.mp4) (6,7 min): **Governo ·
 Regressão linear** — a história da pesquisa de opinião de Noethéria, mínimos quadrados, o plano com várias causas,
 a forma matricial y ≈ Xβ, a projeção ortogonal e as equações normais, como ler cada β e como resolver o desafio no jogo.
 

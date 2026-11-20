@@ -269,6 +269,47 @@ body.qg {
 .order__stamp { position: absolute; top: 14px; right: 18px; pointer-events: none; text-align: center; }
 .order__stamp .stamp { font-size: 30px; padding: 5px 14px 3px; }
 .order__stamp .typed { margin: 2px 0 0; font-size: 13px; }
+/* ------------------------------------------------------------ vídeos de instrução (cinema) */
+.btn--film { --c: var(--brass-2); }
+.film-tab {                               /* etiqueta de lata de filme presa à pasta, à direita */
+  position: absolute; top: -40px; right: 18px; z-index: 2;
+  display: inline-flex; align-items: center; gap: 10px;
+  font-family: var(--f-stencil); font-weight: 700; letter-spacing: .1em; text-transform: uppercase; font-size: 14px;
+  color: var(--paper); background: #2a2520; border: 2px solid var(--brass); padding: 6px 14px 5px 8px; cursor: pointer;
+  box-shadow: 0 2px 0 rgba(0,0,0,.35); transition: transform .08s, background .15s;
+}
+.film-tab:hover { background: #3a3128; }
+.film-tab:active { transform: translateY(1px); }
+.film-tab:focus-visible { outline: 3px solid var(--brass); outline-offset: 2px; }
+.film-tab__reel {                         /* bobina: círculo com cinco furos */
+  width: 24px; height: 24px; border-radius: 50%; background:
+    radial-gradient(circle at 50% 22%, #2a2520 0 2.6px, transparent 3px),
+    radial-gradient(circle at 80% 42%, #2a2520 0 2.6px, transparent 3px),
+    radial-gradient(circle at 68% 77%, #2a2520 0 2.6px, transparent 3px),
+    radial-gradient(circle at 32% 77%, #2a2520 0 2.6px, transparent 3px),
+    radial-gradient(circle at 20% 42%, #2a2520 0 2.6px, transparent 3px),
+    radial-gradient(circle at 50% 50%, #2a2520 0 1.8px, var(--brass) 2.2px);
+  transition: transform .6s ease;
+}
+.film-tab:hover .film-tab__reel { transform: rotate(144deg); }
+.film-tab__txt b { color: var(--brass); margin-left: .5em; }
+.film-tab__txt b::before { content: "· "; color: var(--paper); }
+
+.veil--cine { background: rgba(6, 7, 6, .82); z-index: 70; }
+.cine {
+  position: fixed; left: 50%; top: 50%; transform: translate(-50%, -50%); z-index: 75;
+  width: min(1180px, calc(100vw - 32px)); max-height: calc(100vh - 24px); overflow: auto;
+  background: #141813; border: 2px solid var(--brass); padding: 16px 18px 12px;
+  box-shadow: 0 0 0 6px #0b0d0b, 0 30px 80px rgba(0,0,0,.7);
+}
+.cine__head { display: flex; align-items: flex-end; justify-content: space-between; gap: 16px; margin-bottom: 10px; }
+.cine__kicker { color: var(--brass); margin: 0 0 2px; font-size: 12px; letter-spacing: .16em; }
+.cine__head h2 { color: var(--paper); margin: 0; font-size: 24px; letter-spacing: .06em; }
+.cine__close { --c: var(--paper); flex: none; }
+.cine__close:hover { background: rgba(233, 223, 199, .1); }
+.cine__video { display: block; width: 100%; aspect-ratio: 16 / 9; max-height: calc(100vh - 150px); background: #000; }
+.cine__note { color: var(--paper-3); font-size: 13px; margin: 8px 0 0; }
+
 @media (min-width: 721px) { .order__head { padding-right: 190px; } }   /* o carimbo EXPEDIDA não cobre o texto */
 .expedida { display: inline-grid; justify-items: center; }
 
@@ -515,6 +556,9 @@ body.qg {
     position: static; top: auto; left: auto; flex-wrap: wrap; gap: 4px; margin: 0 0 8px;
   }
   .folder__tab { font-size: 14px; padding: 8px 12px 7px; }
+  .film-tab { position: static; margin: 0 0 8px; font-size: 13px; }
+  .cine { padding: 12px 10px 10px; }
+  .cine__head h2 { font-size: 19px; }
   .folder__tab.is-active { margin-top: 0; padding-bottom: 8px; }
   .qg-main .folder__body { padding: 14px 12px 16px; }
   .dossier { padding: 20px 18px; }
