@@ -143,17 +143,16 @@ class Tabela(Ritmo, Scene):
         self.play(FadeOut(linha_ali), run_time=0.3)
         caixa = SurroundingRectangle(cel[0][1], color=VERMELHO, buff=0.14, stroke_width=5)
         self.play(Create(caixa), cel[0][1].animate.set_color(VERMELHO), run_time=0.7)
-        nota = VGroup(txt("4 unidades de alimento", 30, VERDE, weight=BOLD),
+        nota = VGroup(txt("4 unidades de alimento", 30, VERMELHO, weight=BOLD),
                       txt("consumidas pelo setor de aço", 30, PAPEL),
                       txt("(comida dos operários da siderúrgica)", 22, PAPEL_2, font=MAQ)).arrange(DOWN, aligned_edge=LEFT, buff=0.15)
         nota.to_edge(RIGHT, buff=0.4).shift(UP * 0.8)
-        seta = Arrow(nota.get_left() + LEFT * 0.1, caixa.get_right(), color=VERMELHO, buff=0.15)
-        self.play(GrowArrow(seta), FadeIn(nota[0]), FadeIn(nota[1]), run_time=0.9)
+        self.play(FadeIn(nota[0], shift=LEFT * 0.2), FadeIn(nota[1], shift=LEFT * 0.2), run_time=0.9)
         self.ate(self.ini[1] + self.dur[1] * 0.72)
         self.play(FadeIn(nota[2]), run_time=0.6)
         # fala 2: a linha X, produção total
         self.fala(2)
-        self.play(FadeOut(VGroup(nota, seta)), FadeOut(caixa), cel[0][1].animate.set_color(TINTA), run_time=0.5)
+        self.play(FadeOut(nota), FadeOut(caixa), cel[0][1].animate.set_color(TINTA), run_time=0.5)
         self.play(Create(sep), FadeIn(rl[3]), LaggedStart(*[FadeIn(c) for c in cel[3]], lag_ratio=0.2), run_time=1.0)
         cx = SurroundingRectangle(VGroup(rl[3], *cel[3]), color=AMBAR, buff=0.12, stroke_width=4)
         rx = txt("produção total de cada setor", 30, AMBAR, weight=BOLD).to_edge(RIGHT, buff=0.6).match_y(cx)
@@ -197,7 +196,7 @@ class MatrizA(Ritmo, Scene):
         self.fala(2)
         caixa = SurroundingRectangle(cel[0][1], color=VERMELHO, buff=0.14, stroke_width=5)
         nota = VGroup(txt("cada 1 de aço", 32, AZUL, weight=BOLD), txt("consome 0,2 de alimento", 32, VERDE, weight=BOLD)).arrange(DOWN, aligned_edge=LEFT, buff=0.15)
-        nota.next_to(formula, DOWN, buff=0.8).align_to(formula, LEFT)
+        nota.next_to(formula, DOWN, buff=0.8).to_edge(RIGHT, buff=0.5)
         self.play(Create(caixa), cel[0][1].animate.set_color(VERMELHO), run_time=0.6)
         self.play(FadeIn(nota, shift=UP * 0.2), run_time=0.8)
         self.encerrar()
